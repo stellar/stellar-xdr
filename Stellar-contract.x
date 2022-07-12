@@ -71,8 +71,94 @@ enum SCStatic
 enum SCStatusType
 {
     SST_OK = 0,
-    SST_UNKNOWN_ERROR = 1
+    SST_UNKNOWN_ERROR = 1,
+    SST_HOST_VALUE_ERROR = 2,
+    SST_HOST_OBJECT_ERROR = 3,
+    SST_HOST_FUNCTION_ERROR = 4,
+    SST_HOST_STORAGE_ERROR = 5,
+    SST_HOST_CONTEXT_ERROR = 6,
+    SST_VM_ERROR = 7
     // TODO: add more
+};
+
+enum SCHostValErrorCode
+{
+    HOST_VALUE_UNKNOWN_ERROR = 0,
+    HOST_VALUE_RESERVED_TAG_VALUE = 1,
+    HOST_VALUE_UNEXPECTED_VAL_TYPE = 2,
+    HOST_VALUE_U63_OUT_OF_RANGE = 3,
+    HOST_VALUE_U32_OUT_OF_RANGE = 4,
+    HOST_VALUE_STATIC_UNKNOWN = 5,
+    HOST_VALUE_MISSING_OBJECT = 6,
+    HOST_VALUE_SYMBOL_TOO_LONG = 7,
+    HOST_VALUE_SYMBOL_BAD_CHAR = 8,
+    HOST_VALUE_SYMBOL_CONTAINS_NON_UTF8 = 9,
+    HOST_VALUE_BITSET_TOO_MANY_BITS = 10,
+    HOST_VALUE_STATUS_UNKNOWN = 11
+};
+
+enum SCHostObjErrorCode
+{
+    HOST_OBJECT_UNKNOWN_ERROR = 0,
+    HOST_OBJECT_UNKNOWN_REFERENCE = 1,
+    HOST_OBJECT_UNEXPECTED_TYPE = 2,
+    HOST_OBJECT_OBJECT_COUNT_EXCEEDS_U32_MAX = 3,
+    HOST_OBJECT_OBJECT_NOT_EXIST = 4,
+    HOST_OBJECT_VEC_INDEX_OUT_OF_BOUND = 5,
+    HOST_OBJECT_CONTRACT_HASH_WRONG_LENGTH = 6
+};
+
+enum SCHostFnErrorCode
+{
+    HOST_FN_UNKNOWN_ERROR = 0,
+    HOST_FN_UNEXPECTED_HOST_FUNCTION_ACTION = 1,
+    HOST_FN_INPUT_ARGS_WRONG_LENGTH = 2,
+    HOST_FN_INPUT_ARGS_WRONG_TYPE = 3,
+    HOST_FN_INPUT_ARGS_INVALID = 4
+};
+
+enum SCHostStorageErrorCode
+{
+    HOST_STORAGE_UNKNOWN_ERROR = 0,
+    HOST_STORAGE_EXPECT_CONTRACT_DATA = 1,
+    HOST_STORAGE_READWRITE_ACCESS_TO_READONLY_ENTRY = 2,
+    HOST_STORAGE_ACCESS_TO_UNKNOWN_ENTRY = 3,
+    HOST_STORAGE_MISSING_KEY_IN_GET = 4,
+    HOST_STORAGE_GET_ON_DELETED_KEY = 5
+};
+
+enum SCHostContextErrorCode
+{
+    HOST_CONTEXT_UNKNOWN_ERROR = 0,
+    HOST_CONTEXT_NO_CONTRACT_RUNNING = 1
+};
+
+enum SCVmErrorCode {
+    VM_UNKNOWN = 0,
+    VM_VALIDATION = 1,
+    VM_INSTANTIATION = 2,
+    VM_FUNCTION = 3,
+    VM_TABLE = 4,
+    VM_MEMORY = 5,
+    VM_GLOBAL = 6,
+    VM_VALUE = 7,
+    VM_TRAP_UNREACHABLE = 8,
+    VM_TRAP_MEMORY_ACCESS_OUT_OF_BOUNDS = 9,
+    VM_TRAP_TABLE_ACCESS_OUT_OF_BOUNDS = 10,
+    VM_TRAP_ELEM_UNINITIALIZED = 11,
+    VM_TRAP_DIVISION_BY_ZERO = 12,
+    VM_TRAP_INTEGER_OVERFLOW = 13,
+    VM_TRAP_INVALID_CONVERSION_TO_INT = 14,
+    VM_TRAP_STACK_OVERFLOW = 15,
+    VM_TRAP_UNEXPECTED_SIGNATURE = 16,
+    VM_TRAP_MEM_LIMIT_EXCEEDED = 17,
+    VM_TRAP_CPU_LIMIT_EXCEEDED = 18
+};
+
+enum SCUnknownErrorCode
+{
+    UNKNOWN_ERROR_GENERAL = 0,
+    UNKNOWN_ERROR_XDR = 1
 };
 
 union SCStatus switch (SCStatusType type)
@@ -80,7 +166,19 @@ union SCStatus switch (SCStatusType type)
 case SST_OK:
     void;
 case SST_UNKNOWN_ERROR:
-    uint32 unknownCode;
+    SCUnknownErrorCode unknownCode;
+case SST_HOST_VALUE_ERROR:
+    SCHostValErrorCode errorCode;
+case SST_HOST_OBJECT_ERROR:
+    SCHostObjErrorCode errorCode;
+case SST_HOST_FUNCTION_ERROR:
+    SCHostFnErrorCode errorCode;
+case SST_HOST_STORAGE_ERROR:
+    SCHostStorageErrorCode errorCode;
+case SST_HOST_CONTEXT_ERROR:
+    SCHostContextErrorCode errorCode;
+case SST_VM_ERROR:
+    SCVmErrorCode errorCode;
 };
 
 union SCVal switch (SCValType type)
@@ -112,7 +210,10 @@ enum SCObjectType
     SCO_MAP = 1,
     SCO_U64 = 2,
     SCO_I64 = 3,
-    SCO_BINARY = 4
+    SCO_BINARY = 4,
+    SCO_BIG_INT = 5,
+    SCO_HASH = 6,
+    SCO_PUBLIC_KEY = 7
 
     // TODO: add more
 };
@@ -128,6 +229,33 @@ const SCVAL_LIMIT = 256000;
 typedef SCVal SCVec<SCVAL_LIMIT>;
 typedef SCMapEntry SCMap<SCVAL_LIMIT>;
 
+enum SCNumSign
+{
+    NEGATIVE = -1,
+    ZERO = 0,
+    POSITIVE = 1
+};
+
+union SCBigInt switch (SCNumSign sign)
+{
+case ZERO:
+    void;
+case POSITIVE:
+case NEGATIVE:
+    opaque magnitude<256000>;
+};
+
+enum SCHashType
+{
+    SCHASH_SHA256 = 0
+};
+
+union SCHash switch (SCHashType type)
+{
+case SCHASH_SHA256:
+    Hash sha256;
+};
+
 union SCObject switch (SCObjectType type)
 {
 case SCO_VEC:
@@ -140,5 +268,11 @@ case SCO_I64:
     int64 i64;
 case SCO_BINARY:
     opaque bin<SCVAL_LIMIT>;
+case SCO_BIG_INT:
+    SCBigInt bigInt;
+case SCO_HASH:
+    SCHash hash;
+case SCO_PUBLIC_KEY:
+    PublicKey publicKey;
 };
 }
