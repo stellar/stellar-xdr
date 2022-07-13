@@ -62,10 +62,13 @@ enum SCValType
 
 enum SCStatic
 {
+    // Void indicates that no value is present and a value will not exist.
     SCS_VOID = 0,
     SCS_TRUE = 1,
     SCS_FALSE = 2,
     SCS_LEDGER_KEY_CONTRACT_CODE_WASM = 3,
+    // None indicates is useful with optional values, where no value is present
+    // but a value could exist at this location.
     SCS_NONE = 4
 };
 
