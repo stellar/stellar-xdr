@@ -65,7 +65,8 @@ enum SCStatic
     SCS_VOID = 0,
     SCS_TRUE = 1,
     SCS_FALSE = 2,
-    SCS_LEDGER_KEY_CONTRACT_CODE_WASM = 3
+    SCS_LEDGER_KEY_CONTRACT_CODE_WASM = 3,
+    SCS_NONE = 4
 };
 
 enum SCStatusType
