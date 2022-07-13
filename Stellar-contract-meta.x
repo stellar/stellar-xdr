@@ -10,6 +10,12 @@
 namespace stellar
 {
 
+struct SCMetaCustom
+{
+    opaque key<64>;
+    opaque value<64>;
+};
+
 struct SCMetaVersionSemVer
 {
     int64 major;
@@ -19,12 +25,15 @@ struct SCMetaVersionSemVer
 
 enum SC_META_KIND
 {
-    SC_META_KIND_INTERFACE_VERSION = 0,
-    SC_META_KIND_SDK_VERSION = 1
+    SC_META_KIND_CUSTOM = 0,
+    SC_META_KIND_INTERFACE_VERSION = 1,
+    SC_META_KIND_SDK_VERSION = 2
 };
 
 union SCMetaEntry switch (SpecEntryKind kind)
 {
+case SC_META_KIND_CUSTOM:
+    SCMetaCustom custom;
 case SC_META_KIND_INTERFACE_VERSION:
     int64 interfaceVersion;
 case SC_META_KIND_SDK_VERSION:
