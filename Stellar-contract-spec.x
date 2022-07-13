@@ -73,7 +73,7 @@ struct SCSpecTypeUDT
     string name<60>;
 };
 
-union SCSpecTypeDef switch (SpecType type)
+union SCSpecTypeDef switch (SCSpecType type)
 {
 case SC_SPEC_TYPE_U64:
 case SC_SPEC_TYPE_I64:
@@ -140,7 +140,7 @@ enum SCSpecEntryKind
     SC_SPEC_ENTRY_UDT_UNION_V0 = 2
 };
 
-union SCSpecEntry switch (SpecEntryKind kind)
+union SCSpecEntry switch (SCSpecEntryKind kind)
 {
 case SC_SPEC_ENTRY_FUNCTION_V0:
     SCSpecFunctionV0 functionV0;
