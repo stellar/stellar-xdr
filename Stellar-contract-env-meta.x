@@ -6,7 +6,6 @@
 // iterated on. Breaking changes expected.
 
 % #include "xdr/Stellar-types.h"
-% #include "xdr/Stellar-contract.h"
 namespace stellar
 {
 
