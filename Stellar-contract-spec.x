@@ -71,7 +71,6 @@ struct SpecTypeTuple
 struct SpecTypeUDT
 {
     string name<60>;
-    SpecUDTDef *udtDef;
 };
 
 union SpecTypeDef switch (SpecType type)
@@ -103,73 +102,52 @@ case SPEC_TYPE_UDT:
     SpecTypeUDT udt;
 };
 
-enum SpecUDTType
-{
-    SPEC_UDT_STRUCT = 0,
-    SPEC_UDT_UNION = 1
-};
-
-struct SpecUDTStructField
+struct SpecUDTStructFieldV0
 {
     string name<30>;
     SpecTypeDef type;
 };
 
-struct SpecUDTStruct
+struct SpecUDTStructV0
 {
-    SpecUDTStructField fields<40>;
+    string name<60>;
+    SpecUDTStructFieldV0 fields<40>;
 };
 
-struct SpecUDTUnionCase
+struct SpecUDTUnionCaseV0
 {
     string name<60>;
     SpecTypeDef *type;
 };
 
-struct SpecUDTUnion
+struct SpecUDTUnionV0
 {
-    SpecUDTUnionCase cases<50>;
+    string name<60>;
+    SpecUDTUnionCaseV0 cases<50>;
 };
 
-union SpecUDTDef switch (SpecUDTType type)
+struct SpecFunctionV0
 {
-case SPEC_UDT_STRUCT:
-    SpecUDTStruct struct;
-case SPEC_UDT_UNION:
-    SpecUDTUnion union;
-};
-
-union SpecEntryFunction switch (int v)
-{
-case 0:
-    struct {
-        SCSymbol name;
-        SpecTypeDef inputTypes<10>;
-        SpecTypeDef outputTypes<1>;
-    } v0;
-};
-
-union SpecEntryUDT switch (int v)
-{
-case 0:
-    struct {
-        string name<60>;
-        SpecUDTDef typ;
-    } v0;
+    SCSymbol name;
+    SpecTypeDef inputTypes<10>;
+    SpecTypeDef outputTypes<1>;
 };
 
 enum SpecEntryKind
 {
-    SPEC_ENTRY_FUNCTION = 0,
-    SPEC_ENTRY_UDT = 1
+    SPEC_ENTRY_FUNCTION_V0 = 0,
+    SPEC_ENTRY_UDT_STRUCT_V0 = 1,
+    SPEC_ENTRY_UDT_UNION_V0 = 2
 };
 
 union SpecEntry switch (SpecEntryKind kind)
 {
-case SPEC_ENTRY_FUNCTION:
-    SpecEntryFunction function;
-case SPEC_ENTRY_UDT:
-    SpecEntryUDT udt;
+case SPEC_ENTRY_FUNCTION_V0:
+    SpecFunctionV0 functionV0;
+case SPEC_ENTRY_UDT_STRUCT_V0:
+    SpecUDTStructV0 udtStructV0;
+case SPEC_ENTRY_UDT_UNION_V0:
+    SpecUDTUnionV0 udtUnionV0;
 };
 
 }
