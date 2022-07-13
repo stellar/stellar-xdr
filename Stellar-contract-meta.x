@@ -23,14 +23,14 @@ struct SCMetaVersionSemVer
     int64 patch;
 };
 
-enum SC_META_KIND
+enum SCMetaKind
 {
     SC_META_KIND_CUSTOM = 0,
     SC_META_KIND_INTERFACE_VERSION = 1,
     SC_META_KIND_SDK_VERSION = 2
 };
 
-union SCMetaEntry switch (SpecEntryKind kind)
+union SCMetaEntry switch (SCMetaKind kind)
 {
 case SC_META_KIND_CUSTOM:
     SCMetaCustom custom;
