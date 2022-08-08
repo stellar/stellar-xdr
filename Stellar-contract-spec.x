@@ -21,7 +21,7 @@ enum SCSpecType
     SC_SPEC_TYPE_SYMBOL = 6,
     SC_SPEC_TYPE_BITSET = 7,
     SC_SPEC_TYPE_STATUS = 8,
-    SC_SPEC_TYPE_BINARY = 9,
+    SC_SPEC_TYPE_BYTES = 9,
     SC_SPEC_TYPE_BIG_INT = 10,
 
     // Types with parameters.
@@ -83,7 +83,7 @@ case SC_SPEC_TYPE_BOOL:
 case SC_SPEC_TYPE_SYMBOL:
 case SC_SPEC_TYPE_BITSET:
 case SC_SPEC_TYPE_STATUS:
-case SC_SPEC_TYPE_BINARY:
+case SC_SPEC_TYPE_BYTES:
 case SC_SPEC_TYPE_BIG_INT:
     void;
 case SC_SPEC_TYPE_OPTION:
