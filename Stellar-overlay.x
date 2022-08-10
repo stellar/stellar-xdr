@@ -83,7 +83,7 @@ struct PeerAddress
     uint32 numFailures;
 };
 
-// Next ID: 18
+// Next ID: 20
 enum MessageType
 {
     ERROR_MSG = 0,
@@ -113,7 +113,11 @@ enum MessageType
 
     SEND_MORE = 16,
     FLOOD_ADVERT = 18,
-    FLOOD_DEMAND = 19
+    FLOOD_DEMAND = 19,
+    
+    // Configuration upgrades
+    GET_CONFIG_UPGRADE_SET = 20,
+    CONFIG_UPGRADE_SET = 21
 };
 
 struct DontHave
@@ -242,6 +246,11 @@ case SURVEY_REQUEST:
 
 case SURVEY_RESPONSE:
     SignedSurveyResponseMessage signedSurveyResponseMessage;
+
+case GET_CONFIG_UPGRADE_SET:
+    uint256 configUgradeSetHash;
+case CONFIG_UPGRADE_SET:
+    ConfigUpgradeSet configUpgradeSet;
 
 // SCP
 case GET_SCP_QUORUMSET:
