@@ -520,20 +520,13 @@ case CONFIG_SETTING_TYPE_UINT32:
 
 enum ConfigSettingID
 {
-    CONFIG_SETTING_CONTRACT_MAX_SIZE = 0
+    CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES = 0
 };
 
-struct ConfigSettingEntry
+union ConfigSettingEntry switch (ConfigSettingID configSettingID)
 {
-    union switch (int v)
-    {
-    case 0:
-        void;
-    }
-    ext;
-
-    ConfigSettingID configSettingID;
-    ConfigSetting setting;
+case CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES:
+    uint32 contractMaxSizeBytes;
 };
 
 struct LedgerEntryExtensionV1

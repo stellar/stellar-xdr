@@ -143,11 +143,11 @@ case LEDGER_UPGRADE_BASE_RESERVE:
 case LEDGER_UPGRADE_FLAGS:
     uint32 newFlags; // update flags
 case LEDGER_UPGRADE_CONFIG:
-    struct
-    {
-        ConfigSettingID id; // id to update
-        ConfigSetting setting; // new value
-    } configSetting;
+    Hash configUpgradeSetHash;
+};
+
+struct ConfigUpgradeSet {
+    ConfigSettingEntry updatedEntry<>;
 };
 
 /* Entries used to define the bucket list */
