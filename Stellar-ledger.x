@@ -130,6 +130,11 @@ enum LedgerUpgradeType
     LEDGER_UPGRADE_CONFIG = 6
 };
 
+struct ConfigUpgradeSetKey {
+    Hash contractID;
+    Hash contentHash;
+};
+
 union LedgerUpgrade switch (LedgerUpgradeType type)
 {
 case LEDGER_UPGRADE_VERSION:
@@ -143,11 +148,11 @@ case LEDGER_UPGRADE_BASE_RESERVE:
 case LEDGER_UPGRADE_FLAGS:
     uint32 newFlags; // update flags
 case LEDGER_UPGRADE_CONFIG:
-    struct
-    {
-        ConfigSettingID id; // id to update
-        ConfigSetting setting; // new value
-    } configSetting;
+    ConfigUpgradeSetKey newConfig;
+};
+
+struct ConfigUpgradeSet {
+    ConfigSettingEntry updatedEntry<>;
 };
 
 /* Entries used to define the bucket list */
