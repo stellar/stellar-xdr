@@ -65,7 +65,7 @@ enum SCStatic
     SCS_VOID = 0,
     SCS_TRUE = 1,
     SCS_FALSE = 2,
-    SCS_LEDGER_KEY_CONTRACT_CODE_WASM = 3
+    SCS_LEDGER_KEY_CONTRACT_CODE = 3
 };
 
 enum SCStatusType
@@ -213,7 +213,8 @@ enum SCObjectType
     SCO_BYTES = 4,
     SCO_BIG_INT = 5,
     SCO_HASH = 6,
-    SCO_PUBLIC_KEY = 7
+    SCO_PUBLIC_KEY = 7,
+    SCO_CONTRACT_CODE = 8
 
     // TODO: add more
 };
@@ -256,6 +257,20 @@ case SCHASH_SHA256:
     Hash sha256;
 };
 
+enum SCContractCodeType
+{
+    SCCONTRACT_CODE_WASM = 0,
+    SCCONTRACT_CODE_TOKEN = 1
+};
+
+union SCContractCode switch (SCContractCodeType type)
+{
+case SCCONTRACT_CODE_WASM:
+    opaque wasm<SCVAL_LIMIT>;
+case SCCONTRACT_CODE_TOKEN:
+    void;
+};
+
 union SCObject switch (SCObjectType type)
 {
 case SCO_VEC:
@@ -274,5 +289,7 @@ case SCO_HASH:
     SCHash hash;
 case SCO_PUBLIC_KEY:
     PublicKey publicKey;
+case SCO_CONTRACT_CODE:
+    SCContractCode contractCode;
 };
 }
