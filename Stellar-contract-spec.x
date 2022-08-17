@@ -126,11 +126,17 @@ struct SCSpecUDTUnionV0
     SCSpecUDTUnionCaseV0 cases<50>;
 };
 
+struct SCSpecFunctionInputV0
+{
+    string name<30>;
+    SCSpecTypeDef type;
+};
+
 struct SCSpecFunctionV0
 {
     SCSymbol name;
-    SCSpecTypeDef inputTypes<10>;
-    SCSpecTypeDef outputTypes<1>;
+    SCSpecFunctionInputV0 inputs<10>;
+    SCSpecTypeDef outputs<1>;
 };
 
 enum SCSpecEntryKind
