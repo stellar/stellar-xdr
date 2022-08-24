@@ -359,6 +359,33 @@ struct TransactionMetaV2
                                         // applied if any
 };
 
+enum ContractEventType
+{
+    SYSTEM = 0,
+    CONTRACT = 1
+};
+
+struct ContractEvent
+{
+    // We can use this to add more fields, or because it
+    // is first, to change ContractEvent into a union.
+    ExtensionPoint ext;
+
+    Hash* contractID;
+    ContractEventType type;
+
+    union switch (int v)
+    {
+    case 0:
+        struct
+        {
+            SCVec topics;
+            SCVal data;
+        } v0;
+    }
+    body;
+};
+
 // this is the meta produced when applying transactions
 // it does not include pre-apply updates such as fees
 union TransactionMeta switch (int v)
