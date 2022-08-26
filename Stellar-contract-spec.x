@@ -31,6 +31,7 @@ enum SCSpecType
     SC_SPEC_TYPE_SET = 1003,
     SC_SPEC_TYPE_MAP = 1004,
     SC_SPEC_TYPE_TUPLE = 1005,
+    SC_SPEC_TYPE_BYTES_N = 1006,
 
     // User defined types.
     SC_SPEC_TYPE_UDT = 2000
@@ -68,6 +69,11 @@ struct SCSpecTypeTuple
     SCSpecTypeDef valueTypes<12>;
 };
 
+struct SCSpecTypeBytesN
+{
+    uint32 n;
+};
+
 struct SCSpecTypeUDT
 {
     string name<60>;
@@ -98,6 +104,8 @@ case SC_SPEC_TYPE_SET:
     SCSpecTypeSet set;
 case SC_SPEC_TYPE_TUPLE:
     SCSpecTypeTuple tuple;
+case SC_SPEC_TYPE_BYTES_N:
+    SCSpecTypeBytesN bytesN;
 case SC_SPEC_TYPE_UDT:
     SCSpecTypeUDT udt;
 };
