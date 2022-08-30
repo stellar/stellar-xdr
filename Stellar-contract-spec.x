@@ -12,6 +12,8 @@ namespace stellar
 
 enum SCSpecType
 {
+    SC_SPEC_TYPE_VAL = 0,
+
     // Types with no parameters.
     SC_SPEC_TYPE_U32 = 1,
     SC_SPEC_TYPE_I32 = 2,
@@ -81,6 +83,7 @@ struct SCSpecTypeUDT
 
 union SCSpecTypeDef switch (SCSpecType type)
 {
+case SC_SPEC_TYPE_VAL:
 case SC_SPEC_TYPE_U64:
 case SC_SPEC_TYPE_I64:
 case SC_SPEC_TYPE_U32:
