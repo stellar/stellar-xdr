@@ -121,6 +121,7 @@ struct SCSpecUDTStructFieldV0
 
 struct SCSpecUDTStructV0
 {
+    string lib<80>;
     string name<60>;
     SCSpecUDTStructFieldV0 fields<40>;
 };
@@ -133,6 +134,7 @@ struct SCSpecUDTUnionCaseV0
 
 struct SCSpecUDTUnionV0
 {
+    string lib<80>;
     string name<60>;
     SCSpecUDTUnionCaseV0 cases<50>;
 };
