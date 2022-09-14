@@ -78,7 +78,6 @@ enum SCStatusType
     SST_HOST_STORAGE_ERROR = 5,
     SST_HOST_CONTEXT_ERROR = 6,
     SST_VM_ERROR = 7,
-    SST_CONTRACT_ERROR = 8
     // TODO: add more
 };
 
@@ -180,8 +179,6 @@ case SST_HOST_CONTEXT_ERROR:
     SCHostContextErrorCode contextCode;
 case SST_VM_ERROR:
     SCVmErrorCode vmCode;
-case SST_CONTRACT_ERROR:
-    uint32 contractCode;
 };
 
 union SCVal switch (SCValType type)
