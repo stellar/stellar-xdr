@@ -227,6 +227,7 @@ struct SCMapEntry
 };
 
 const SCVAL_LIMIT = 256000;
+const SCVAL_BYTES_LIMIT = 15000000;
 
 typedef SCVal SCVec<SCVAL_LIMIT>;
 typedef SCMapEntry SCMap<SCVAL_LIMIT>;
@@ -256,7 +257,7 @@ enum SCContractCodeType
 union SCContractCode switch (SCContractCodeType type)
 {
 case SCCONTRACT_CODE_WASM:
-    opaque wasm<SCVAL_LIMIT>;
+    opaque wasm<SCVAL_BYTES_LIMIT>;
 case SCCONTRACT_CODE_TOKEN:
     void;
 };
@@ -272,7 +273,7 @@ case SCO_U64:
 case SCO_I64:
     int64 i64;
 case SCO_BYTES:
-    opaque bin<SCVAL_LIMIT>;
+    opaque bin<SCVAL_BYTES_LIMIT>;
 case SCO_BIG_INT:
     SCBigInt bigInt;
 case SCO_CONTRACT_CODE:
