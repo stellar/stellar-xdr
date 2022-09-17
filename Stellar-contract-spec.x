@@ -139,6 +139,19 @@ struct SCSpecUDTUnionV0
     SCSpecUDTUnionCaseV0 cases<50>;
 };
 
+struct SCSpecUDTEnumCaseV0
+{
+    string name<60>;
+    uint32 value;
+};
+
+struct SCSpecUDTEnumV0
+{
+    string lib<80>;
+    string name<60>;
+    SCSpecUDTEnumCaseV0 cases<50>;
+};
+
 struct SCSpecFunctionInputV0
 {
     string name<30>;
@@ -167,6 +180,8 @@ case SC_SPEC_ENTRY_UDT_STRUCT_V0:
     SCSpecUDTStructV0 udtStructV0;
 case SC_SPEC_ENTRY_UDT_UNION_V0:
     SCSpecUDTUnionV0 udtUnionV0;
+case SC_SPEC_ENTRY_UDT_ENUM_V0:
+    SCSpecUDTEnumV0 udtEnumV0;
 };
 
 }
