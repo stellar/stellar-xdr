@@ -586,6 +586,8 @@ case ENVELOPE_TYPE_CONTRACT_ID_FROM_CONTRACT:
         Hash contractID;
         uint256 salt;
     } contractID;
+case ENVELOPE_TYPE_CONTRACT_ID_FROM_ASSET:
+    Asset fromAsset;
 };
 
 enum MemoType
