@@ -215,9 +215,7 @@ enum SCObjectType
     SCO_I64 = 3,
     SCO_BYTES = 4,
     SCO_BIG_INT = 5,
-    SCO_HASH = 6,
-    SCO_PUBLIC_KEY = 7,
-    SCO_CONTRACT_CODE = 8
+    SCO_CONTRACT_CODE = 6
 
     // TODO: add more
 };
@@ -249,17 +247,6 @@ case NEGATIVE:
     opaque magnitude<256000>;
 };
 
-enum SCHashType
-{
-    SCHASH_SHA256 = 0
-};
-
-union SCHash switch (SCHashType type)
-{
-case SCHASH_SHA256:
-    Hash sha256;
-};
-
 enum SCContractCodeType
 {
     SCCONTRACT_CODE_WASM = 0,
@@ -288,10 +275,6 @@ case SCO_BYTES:
     opaque bin<SCVAL_LIMIT>;
 case SCO_BIG_INT:
     SCBigInt bigInt;
-case SCO_HASH:
-    SCHash hash;
-case SCO_PUBLIC_KEY:
-    PublicKey publicKey;
 case SCO_CONTRACT_CODE:
     SCContractCode contractCode;
 };
