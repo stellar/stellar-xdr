@@ -1642,7 +1642,7 @@ enum InvokeHostFunctionResultCode
 union InvokeHostFunctionResult switch (InvokeHostFunctionResultCode code)
 {
 case INVOKE_HOST_FUNCTION_SUCCESS:
-    void;
+    SCVal success;
 case INVOKE_HOST_FUNCTION_MALFORMED:
 case INVOKE_HOST_FUNCTION_TRAPPED:
     void;
