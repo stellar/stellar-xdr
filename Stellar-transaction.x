@@ -477,7 +477,8 @@ struct LiquidityPoolWithdrawOp
 enum HostFunction
 {
     HOST_FN_CALL = 0,
-    HOST_FN_CREATE_CONTRACT = 1
+    HOST_FN_CREATE_CONTRACT = 1,
+    HOST_FN_CREATE_CONTRACT_WITH_SOURCE = 2
 };
 
 struct InvokeHostFunctionOp
