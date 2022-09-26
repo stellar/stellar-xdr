@@ -8,7 +8,6 @@
 namespace stellar
 {
 
-typedef PublicKey AccountID;
 typedef opaque Thresholds[4];
 typedef string string32<32>;
 typedef string string64<64>;
