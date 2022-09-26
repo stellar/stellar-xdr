@@ -594,7 +594,7 @@ case ENVELOPE_TYPE_CONTRACT_ID_FROM_SOURCE_ACCOUNT:
     {
         AccountID sourceAccount;
         uint256 salt;
-    } sourceContractID;
+    } sourceAccountContractID;
 };
 
 enum MemoType
