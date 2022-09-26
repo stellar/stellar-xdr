@@ -26,6 +26,7 @@ enum SCSpecType
     SC_SPEC_TYPE_BYTES = 9,
     SC_SPEC_TYPE_BIG_INT = 10,
     SC_SPEC_TYPE_INVOKER = 11,
+    SC_SPEC_TYPE_ACCOUNT_ID = 12,
 
     // Types with parameters.
     SC_SPEC_TYPE_OPTION = 1000,
@@ -96,6 +97,7 @@ case SC_SPEC_TYPE_STATUS:
 case SC_SPEC_TYPE_BYTES:
 case SC_SPEC_TYPE_BIG_INT:
 case SC_SPEC_TYPE_INVOKER:
+case SC_SPEC_TYPE_ACCOUNT_ID:
     void;
 case SC_SPEC_TYPE_OPTION:
     SCSpecTypeOption option;
