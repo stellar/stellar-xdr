@@ -1659,7 +1659,7 @@ case INVOKE_HOST_FUNCTION_MALFORMED:
 case INVOKE_HOST_FUNCTION_TRAPPED:
     void;
 case INVOKE_HOST_FUNCTION_ERROR:
-    SCVal error;
+    SCStatus error;
 };
 
 /* High level Operation Result */
