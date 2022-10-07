@@ -1647,7 +1647,8 @@ enum InvokeHostFunctionResultCode
 
     // codes considered as "failure" for the operation
     INVOKE_HOST_FUNCTION_MALFORMED = -1,
-    INVOKE_HOST_FUNCTION_TRAPPED = -2
+    INVOKE_HOST_FUNCTION_TRAPPED = -2,
+    INVOKE_HOST_FUNCTION_ERROR = -3
 };
 
 union InvokeHostFunctionResult switch (InvokeHostFunctionResultCode code)
@@ -1657,6 +1658,8 @@ case INVOKE_HOST_FUNCTION_SUCCESS:
 case INVOKE_HOST_FUNCTION_MALFORMED:
 case INVOKE_HOST_FUNCTION_TRAPPED:
     void;
+case INVOKE_HOST_FUNCTION_ERROR:
+    SCVal error;
 };
 
 /* High level Operation Result */
