@@ -9,15 +9,21 @@
 namespace stellar
 {
 
+struct SCMetaV0
+{
+    string key<10>;
+    string val<256>;
+};
+
 enum SCMetaKind
 {
-    SC_META_KIND_SDK = 0
+    SC_META_V0 = 0
 };
 
 union SCMetaEntry switch (SCMetaKind kind)
 {
-case SC_META_KIND_SDK:
-    string sdk<256>;
+case SC_META_V0:
+    SCMetaV0 v0;
 };
 
 }
