@@ -499,19 +499,6 @@ struct InstallContractCodeArgs
     opaque code<SCVAL_LIMIT>;
 };
 
-enum CreateContractSourceType {
-    CONTRACT_SOURCE_CODE_REF = 0,
-    CONTRACT_SOURCE_INSTALL_CODE = 1
-};
-
-union CreateContractSource switch (CreateContractSourceType type)
-{
-case CONTRACT_SOURCE_CODE_REF:
-    SCContractCode codeRef;
-case CONTRACT_SOURCE_INSTALL_CODE:
-    InstallContractCodeArgs installContractCodeArgs;
-};
-
 union ContractID switch (ContractIDType type)
 {
 case CONTRACT_ID_FROM_SOURCE_ACCOUNT:
@@ -530,7 +517,7 @@ case CONTRACT_ID_FROM_ASSET:
 struct CreateContractArgs
 {
     ContractID contractID;
-    CreateContractSource source;
+    SCContractCode source;
 };
 
 union HostFunction switch (HostFunctionType type)
@@ -664,7 +651,7 @@ case ENVELOPE_TYPE_CREATE_CONTRACT_ARGS:
     struct
     {
         Hash networkID;
-        CreateContractSource source;
+        SCContractCode source;
         uint256 salt;
     } createContractArgs;        
 };
