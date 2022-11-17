@@ -419,8 +419,8 @@ struct TransactionMetaV3
     OperationMeta operations<>;         // meta for each operation
     LedgerEntryChanges txChangesAfter;  // tx level changes after operations are
                                         // applied if any
-    ContractEvent events<>;            // custom events populated by the
-                                        // contracts themselves
+    ContractEvent events<><>;           // custom events populated by the
+                                        // contracts themselves. One list per operation.
     TransactionResult txResult;
 
     Hash hashes[3];                     // stores sha256(txChangesBefore, operations, txChangesAfter),
