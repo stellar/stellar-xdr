@@ -412,6 +412,11 @@ struct ContractEvent
     body;
 };
 
+struct OperationEvents
+{
+    ContractEvent events<>;
+};
+
 struct TransactionMetaV3
 {
     LedgerEntryChanges txChangesBefore; // tx level changes before operations
@@ -419,7 +424,7 @@ struct TransactionMetaV3
     OperationMeta operations<>;         // meta for each operation
     LedgerEntryChanges txChangesAfter;  // tx level changes after operations are
                                         // applied if any
-    ContractEvent events<><>;           // custom events populated by the
+    OperationEvents events<>;           // custom events populated by the
                                         // contracts themselves. One list per operation.
     TransactionResult txResult;
 
