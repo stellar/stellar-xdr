@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  push:
+    branches: [ "curr", "next" ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  complete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: No-op
+        run: echo success
