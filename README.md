@@ -1,2 +1,3 @@
-# stellar-xdr-next
-Staging area for future version of Stellar XDR.
+# stellar-xdr
+
+XDR for the Stellar Network.
