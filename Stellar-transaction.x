@@ -653,7 +653,13 @@ case ENVELOPE_TYPE_CREATE_CONTRACT_ARGS:
         Hash networkID;
         SCContractCode source;
         uint256 salt;
-    } createContractArgs;        
+    } createContractArgs;
+case ENVELOPE_TYPE_CONTRACT_AUTH:
+    struct
+    {
+        string networkPassphrase<>;
+        AuthorizedInvocation invocations<>;
+    } contractAuth;
 };
 
 enum MemoType

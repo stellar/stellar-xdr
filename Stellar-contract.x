@@ -217,7 +217,10 @@ enum SCObjectType
     SCO_I128 = 5,
     SCO_BYTES = 6,
     SCO_CONTRACT_CODE = 7,
-    SCO_ACCOUNT_ID = 8
+    SCO_ACCOUNT_ID = 8,
+    SCO_ACCOUNT = 9,
+    SCO_ADDRESS = 10,
+    SCO_NONCE_KEY = 11
 
     // TODO: add more
 };
@@ -255,6 +258,63 @@ struct Int128Parts {
     uint64 hi;
 };
 
+struct ContractInvocation
+{
+    Hash contractID;
+    SCSymbol functionName;
+};
+
+struct AuthorizedInvocation
+{
+    ContractInvocation callStack<>;
+    SCVec topArgs;
+    uint64* nonce;
+};
+
+enum SCAccountIdType
+{
+    SC_ACCOUNT_ID_TYPE_BUILTIN_INVOKER = 0,
+    SC_ACCOUNT_ID_TYPE_BUILTIN_CLASSIC_ACCOUNT = 1,
+    SC_ACCOUNT_ID_TYPE_BUILTIN_ED25519 = 2,
+    SC_ACCOUNT_ID_TYPE_GENERIC_ACCOUNT = 3
+};
+
+union ScAccountId switch (SCAccountIdType type)
+{
+case SC_ACCOUNT_ID_TYPE_BUILTIN_CLASSIC_ACCOUNT:
+    AccountID accountId;
+case SC_ACCOUNT_ID_TYPE_BUILTIN_ED25519:
+    Hash ed25519PublicKey;
+case SC_ACCOUNT_ID_TYPE_BUILTIN_INVOKER:
+    void;
+case SC_ACCOUNT_ID_TYPE_GENERIC_ACCOUNT:
+    Hash accountContractId;
+};
+
+struct SCAccount
+{
+    ScAccountId accountId;
+    AuthorizedInvocation invocations<>;
+    SCVec signatureArgs;
+};
+
+enum SCAddressType
+{
+    SC_ADDRESS_TYPE_CLASSIC_ACCOUNT = 0,
+    SC_ADDRESS_TYPE_ED25519 = 1,
+    SC_ADDRESS_TYPE_CONTRACT = 2
+};
+
+union SCAddress switch (SCAddressType type)
+{
+case SC_ADDRESS_TYPE_CLASSIC_ACCOUNT:
+    AccountID accountId;
+case SC_ADDRESS_TYPE_ED25519:
+    Hash ed25519PublicKey;
+case SC_ADDRESS_TYPE_CONTRACT:
+    Hash contractId;
+};
+
 union SCObject switch (SCObjectType type)
 {
 case SCO_VEC:
@@ -275,5 +335,11 @@ case SCO_CONTRACT_CODE:
     SCContractCode contractCode;
 case SCO_ACCOUNT_ID:
     AccountID accountID;
+case SCO_ACCOUNT:
+    SCAccount account;
+case SCO_ADDRESS:
+    SCAddress address;
+case SCO_NONCE_KEY:
+    SCAddress nonceAddress;
 };
 }
