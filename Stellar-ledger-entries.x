@@ -4,6 +4,7 @@
 
 %#include "xdr/Stellar-types.h"
 %#include "xdr/Stellar-contract.h"
+%#include "xdr/Stellar-contract-cost-type.h"
 
 namespace stellar
 {
@@ -494,46 +495,42 @@ struct LiquidityPoolEntry
     body;
 };
 
-struct ContractDataEntry {
+struct ContractDataEntry 
+{
     Hash contractID;
     SCVal key;
     SCVal val;
 };
 
-struct ContractCodeEntry {
+struct ContractCodeEntry 
+{
     ExtensionPoint ext;
 
     Hash hash;
     opaque code<SCVAL_LIMIT>;
 };
 
-enum ConfigSettingType
-{
-    CONFIG_SETTING_TYPE_UINT32 = 0
-};
-
-union ConfigSetting switch (ConfigSettingType type)
-{
-case CONFIG_SETTING_TYPE_UINT32:
-    uint32 uint32Val;
-};
-
 enum ConfigSettingID
 {
-    CONFIG_SETTING_CONTRACT_MAX_SIZE = 0
+    CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES = 0,
+    CONFIG_SETTING_CONTRACT_BUDGET_CPU_INSTRUCTIONS = 1,
+    CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS = 3,
+    CONFIG_SETTING_CONTRACT_BUDGET_MEMORY_BYTES = 2,
+    CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_MEMORY_BYTES = 4
 };
 
-struct ConfigSettingEntry
+union ConfigSettingEntry switch (ConfigSettingID configSettingID)
 {
-    union switch (int v)
-    {
-    case 0:
-        void;
-    }
-    ext;
-
-    ConfigSettingID configSettingID;
-    ConfigSetting setting;
+case CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES:
+    uint32 contractMaxSizeBytes;
+case CONFIG_SETTING_CONTRACT_BUDGET_CPU_INSTRUCTIONS:
+    uint32 contractBudgetCpuInsns;
+case CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS:
+    ContractCostParams contractCostParamsCpuInsns;
+case CONFIG_SETTING_CONTRACT_BUDGET_MEMORY_BYTES:
+    uint32 contractBudgetMemBytes;
+case CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_MEMORY_BYTES:
+    ContractCostParams contractCostParamsMemBytes;
 };
 
 struct LedgerEntryExtensionV1
