@@ -86,8 +86,8 @@ enum ContractCostType {
     ChargeBudget = 37,
 };
 
-const CONTRACT_COST_TYPE_COUNT = 38; // must match ContractCostType's count
+const CONTRACT_COST_COUNT_LIMIT = 1000;
 
 typedef uint32 ContractCostParamEntry[2]; // 0 - constant term, 1 - linear term
 
-typedef ContractCostParamEntry ContractCostParams[CONTRACT_COST_TYPE_COUNT];
+typedef ContractCostParamEntry ContractCostParams<CONTRACT_COST_COUNT_LIMIT>;
