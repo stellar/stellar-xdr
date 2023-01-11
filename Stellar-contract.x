@@ -216,7 +216,7 @@ enum SCObjectType
     SCO_U128 = 4,
     SCO_I128 = 5,
     SCO_BYTES = 6,
-    SCO_CONTRACT_CODE = 7,
+    SCO_CONTRACT_EXECUTABLE = 7,
     SCO_ACCOUNT_ID = 8
 
     // TODO: add more
@@ -233,17 +233,17 @@ const SCVAL_LIMIT = 256000;
 typedef SCVal SCVec<SCVAL_LIMIT>;
 typedef SCMapEntry SCMap<SCVAL_LIMIT>;
 
-enum SCContractCodeType
+enum SCContractExecutableType
 {
-    SCCONTRACT_CODE_WASM_REF = 0,
-    SCCONTRACT_CODE_TOKEN = 1
+    SCCONTRACT_EXECUTABLE_WASM = 0,
+    SCCONTRACT_EXECUTABLE_ASSET = 1
 };
 
-union SCContractCode switch (SCContractCodeType type)
+union SCContractExecutable switch (SCContractExecutableType type)
 {
-case SCCONTRACT_CODE_WASM_REF:
-    Hash wasm_id;
-case SCCONTRACT_CODE_TOKEN:
+case SCCONTRACT_EXECUTABLE_WASM:
+    Hash wasm_hash;
+case SCCONTRACT_EXECUTABLE_ASSET:
     void;
 };
 
@@ -271,8 +271,8 @@ case SCO_I128:
     Int128Parts i128;
 case SCO_BYTES:
     opaque bin<SCVAL_LIMIT>;
-case SCO_CONTRACT_CODE:
-    SCContractCode contractCode;
+case SCO_CONTRACT_EXECUTABLE:
+    SCContractExecutable contractExecutable;
 case SCO_ACCOUNT_ID:
     AccountID accountID;
 };

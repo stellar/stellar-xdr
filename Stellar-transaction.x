@@ -66,7 +66,7 @@ enum OperationType
     SET_TRUST_LINE_FLAGS = 21,
     LIQUIDITY_POOL_DEPOSIT = 22,
     LIQUIDITY_POOL_WITHDRAW = 23,
-    INVOKE_HOST_FUNCTION = 24
+    SMART_CONTRACT = 24
 };
 
 /* CreateAccount
@@ -474,11 +474,11 @@ struct LiquidityPoolWithdrawOp
     int64 minAmountB; // minimum amount of second asset to withdraw
 };
 
-enum HostFunctionType
+enum SmartContractOperationType
 {
-    HOST_FUNCTION_TYPE_INVOKE_CONTRACT = 0,
-    HOST_FUNCTION_TYPE_CREATE_CONTRACT = 1,
-    HOST_FUNCTION_TYPE_INSTALL_CONTRACT_CODE = 2
+    SMART_CONTRACT_OPERATION_CALL_CONTRACT = 0,
+    SMART_CONTRACT_OPERATION_INSTANTIATE_CONTRACT = 1,
+    SMART_CONTRACT_OPERATION_UPLOAD_WASM = 2
 };
 
 enum ContractIDType
@@ -492,11 +492,6 @@ enum ContractIDPublicKeyType
 {
     CONTRACT_ID_PUBLIC_KEY_SOURCE_ACCOUNT = 0,
     CONTRACT_ID_PUBLIC_KEY_ED25519 = 1
-};
-
-struct InstallContractCodeArgs
-{
-    opaque code<SCVAL_LIMIT>;
 };
 
 union ContractID switch (ContractIDType type)
@@ -514,27 +509,27 @@ case CONTRACT_ID_FROM_ASSET:
     Asset asset;
 };
 
-struct CreateContractArgs
+struct InstantiateContractArgs
 {
     ContractID contractID;
-    SCContractCode source;
+    SCContractExecutable executable;
 };
 
-union HostFunction switch (HostFunctionType type)
+union SmartContractOperation switch (SmartContractOperationType type)
 {
-case HOST_FUNCTION_TYPE_INVOKE_CONTRACT:
-    SCVec invokeArgs;
-case HOST_FUNCTION_TYPE_CREATE_CONTRACT:
-    CreateContractArgs createContractArgs;
-case HOST_FUNCTION_TYPE_INSTALL_CONTRACT_CODE:
-    InstallContractCodeArgs installContractCodeArgs;
+case SMART_CONTRACT_OPERATION_CALL_CONTRACT:
+    SCVec callArgs;
+case SMART_CONTRACT_OPERATION_INSTANTIATE_CONTRACT:
+    InstantiateContractArgs instantiateContractArgs;
+case SMART_CONTRACT_OPERATION_UPLOAD_WASM:
+    opaque wasm<SCVAL_LIMIT>;
 };
 
-struct InvokeHostFunctionOp
+struct SmartContractOp
 {
-    // The host function to invoke
-    HostFunction function;
-    // The footprint for this invocation
+    // The smart contract operation to perform
+    SmartContractOperation operation;
+    // The ledger footprint for this operation
     LedgerFootprint footprint;
 };
 
@@ -596,8 +591,8 @@ struct Operation
         LiquidityPoolDepositOp liquidityPoolDepositOp;
     case LIQUIDITY_POOL_WITHDRAW:
         LiquidityPoolWithdrawOp liquidityPoolWithdrawOp;
-    case INVOKE_HOST_FUNCTION:
-        InvokeHostFunctionOp invokeHostFunctionOp;
+    case SMART_CONTRACT:
+        SmartContractOp smartContractOp;
     }
     body;
 };
@@ -647,13 +642,13 @@ case ENVELOPE_TYPE_CONTRACT_ID_FROM_SOURCE_ACCOUNT:
         AccountID sourceAccount;
         uint256 salt;
     } sourceAccountContractID;
-case ENVELOPE_TYPE_CREATE_CONTRACT_ARGS:
+case ENVELOPE_TYPE_INSTANTIATE_CONTRACT_ARGS:
     struct
     {
         Hash networkID;
-        SCContractCode source;
+        SCContractExecutable executable;
         uint256 salt;
-    } createContractArgs;        
+    } InstantiateContractArgs;
 };
 
 enum MemoType
@@ -1697,22 +1692,22 @@ case LIQUIDITY_POOL_WITHDRAW_UNDER_MINIMUM:
     void;
 };
 
-enum InvokeHostFunctionResultCode
+enum SmartContractOperationResultCode
 {
     // codes considered as "success" for the operation
-    INVOKE_HOST_FUNCTION_SUCCESS = 0,
+    SMART_CONTRACT_OPERATION_SUCCESS = 0,
 
     // codes considered as "failure" for the operation
-    INVOKE_HOST_FUNCTION_MALFORMED = -1,
-    INVOKE_HOST_FUNCTION_TRAPPED = -2
+    SMART_CONTRACT_OPERATION_MALFORMED = -1,
+    SMART_CONTRACT_OPERATION_TRAPPED = -2
 };
 
-union InvokeHostFunctionResult switch (InvokeHostFunctionResultCode code)
+union SmartContractOperationResult switch (SmartContractOperationResultCode code)
 {
-case INVOKE_HOST_FUNCTION_SUCCESS:
+case SMART_CONTRACT_OPERATION_SUCCESS:
     SCVal success;
-case INVOKE_HOST_FUNCTION_MALFORMED:
-case INVOKE_HOST_FUNCTION_TRAPPED:
+case SMART_CONTRACT_OPERATION_MALFORMED:
+case SMART_CONTRACT_OPERATION_TRAPPED:
     void;
 };
 
@@ -1782,8 +1777,8 @@ case opINNER:
         LiquidityPoolDepositResult liquidityPoolDepositResult;
     case LIQUIDITY_POOL_WITHDRAW:
         LiquidityPoolWithdrawResult liquidityPoolWithdrawResult;
-    case INVOKE_HOST_FUNCTION:
-        InvokeHostFunctionResult invokeHostFunctionResult;
+    case SMART_CONTRACT:
+        SmartContractOperationResult smartContractOperationResult;
     }
     tr;
 case opBAD_AUTH:
