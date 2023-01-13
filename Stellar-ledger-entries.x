@@ -524,11 +524,11 @@ union ConfigSettingEntry switch (ConfigSettingID configSettingID)
 case CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES:
     uint32 contractMaxSizeBytes;
 case CONFIG_SETTING_CONTRACT_BUDGET_CPU_INSTRUCTIONS:
-    uint32 contractBudgetCpuInsns;
+    uint64 contractBudgetCpuInsns;
 case CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS:
     ContractCostParams contractCostParamsCpuInsns;
 case CONFIG_SETTING_CONTRACT_BUDGET_MEMORY_BYTES:
-    uint32 contractBudgetMemBytes;
+    uint64 contractBudgetMemBytes;
 case CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES:
     ContractCostParams contractCostParamsMemBytes;
 };

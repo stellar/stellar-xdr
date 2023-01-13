@@ -1,3 +1,5 @@
+%#include "xdr/Stellar-types.h"
+
 enum ContractCostType {
     // Cost of running 1 wasm tier-0 instruction
     WasmInsnExecT0 = 0,
@@ -86,10 +88,13 @@ enum ContractCostType {
     ChargeBudget = 37,
 };
 
-const CONTRACT_COST_PARAM_ENTRY_MAX_TERMS = 2; 
+struct ContractCostParamEntry {
+    int32 constTerm;
+    int32 linearTerm;
+    // use `ext` to add more terms (e.g. higher order polynomials) in the future
+    ExtensionPoint ext;
+};
 
-typedef uint32 ContractCostParamEntry<CONTRACT_COST_PARAM_ENTRY_MAX_TERMS>; // 0 - constant term, 1 - linear term
-
-const CONTRACT_COST_COUNT_LIMIT = 1024; // limits the ContractCostParams size to 8kB
+const CONTRACT_COST_COUNT_LIMIT = 1024; // limits the ContractCostParams size to 12kB
 
 typedef ContractCostParamEntry ContractCostParams<CONTRACT_COST_COUNT_LIMIT>;
