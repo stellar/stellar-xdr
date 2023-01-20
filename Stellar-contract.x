@@ -44,22 +44,27 @@ typedef string SCSymbol<10>;
 
 enum SCValType
 {
-    SCV_U64 = 0,
-    SCV_I64 = 0,
-    SCV_U32 = 1,
-    SCV_I32 = 2,
-    SCV_STATIC = 3,
-    SCV_OPTION = 4,
-    SCV_SYMBOL = 5,
-    SCV_BITSET = 6,
-    SCV_STATUS = 7,
-    SCV_VEC = 8,
-    SCV_MAP = 9,
-    SCV_U128 = 10,
-    SCV_I128 = 11,
-    SCV_BYTES = 12,
-    SCV_CONTRACT_CODE = 13,
-    SCV_ACCOUNT_ID = 14
+    // Numbers
+    SCV_U32 = 0,
+    SCV_I32 = 1,
+    SCV_U64 = 2,
+    SCV_I64 = 3,
+    SCV_U128 = 4,
+    SCV_I128 = 5,
+
+    // Other Primitives
+    SCV_STATIC = 100,
+    SCV_SYMBOL = 101,
+    SCV_BITSET = 102,
+    SCV_STATUS = 103,
+    SCV_BYTES = 104,
+    SCV_ACCOUNT_ID = 105,
+
+    // Containers
+    SCV_VEC = 1000,
+    SCV_MAP = 1001,
+    SCV_OPTION = 1002,
+    SCV_CONTRACT_CODE = 1003
 };
 
 enum SCStatic
@@ -188,38 +193,38 @@ case SST_CONTRACT_ERROR:
 
 union SCVal switch (SCValType type)
 {
-case SCV_U64:
-    uint64 u64;
-case SCV_I64:
-    int64 i64;
 case SCV_U32:
     uint32 u32;
 case SCV_I32:
     int32 i32;
+case SCV_U64:
+    uint64 u64;
+case SCV_I64:
+    int64 i64;
+case SCV_U128:
+    Int128Parts u128;
+case SCV_I128:
+    Int128Parts i128;
 case SCV_STATIC:
     SCStatic ic;
-case SCV_OPTION:
-    SCOption obj;
 case SCV_SYMBOL:
     SCSymbol sym;
 case SCV_BITSET:
     uint64 bits;
 case SCV_STATUS:
     SCStatus status;
+case SCV_BYTES:
+    opaque bin<SCVAL_LIMIT>;
+case SCV_ACCOUNT_ID:
+    AccountID accountID;
 case SCV_VEC:
     SCVec vec;
 case SCV_MAP:
     SCMap map;
-case SCV_U128:
-    Int128Parts u128;
-case SCV_I128:
-    Int128Parts i128;
-case SCV_BYTES:
-    opaque bin<SCVAL_LIMIT>;
+case SCV_OPTION:
+    SCOption obj;
 case SCV_CONTRACT_CODE:
     SCContractCode contractCode;
-case SCV_ACCOUNT_ID:
-    AccountID accountID;
 };
 
 struct SCMapEntry
