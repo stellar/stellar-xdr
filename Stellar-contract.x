@@ -33,11 +33,7 @@ namespace stellar
  * Up here in XDR we have variable-length tagged disjoint unions but no
  * bit-level packing, so we can be more explicit in their structure, at the
  * cost of spending more than 64 bits to encode many cases, and also having
- * to convert. It's a little non-obvious at the XDR level why there's a
- * split between SCVal and SCObject given that they are both immutable types
- * with value semantics; but the split reflects the split that happens in
- * the implementation, and marks a place where different implementations of
- * immutability (CoW, structural sharing, etc.) will likely occur.
+ * to convert.
  */
 
 // A symbol is up to 10 chars drawn from [a-zA-Z0-9_], which can be packed
@@ -48,17 +44,23 @@ typedef string SCSymbol<10>;
 
 enum SCValType
 {
-    SCV_U63 = 0,
+    SCV_U64 = 0,
+    SCV_I64 = 0,
     SCV_U32 = 1,
     SCV_I32 = 2,
     SCV_STATIC = 3,
-    SCV_OBJECT = 4,
+    SCV_OPTION = 4,
     SCV_SYMBOL = 5,
     SCV_BITSET = 6,
-    SCV_STATUS = 7
+    SCV_STATUS = 7,
+    SCV_VEC = 8,
+    SCV_MAP = 9,
+    SCV_U128 = 10,
+    SCV_I128 = 11,
+    SCV_BYTES = 12,
+    SCV_CONTRACT_CODE = 13,
+    SCV_ACCOUNT_ID = 14
 };
-
-% struct SCObject;
 
 enum SCStatic
 {
@@ -186,40 +188,38 @@ case SST_CONTRACT_ERROR:
 
 union SCVal switch (SCValType type)
 {
-case SCV_U63:
-    int64 u63;
+case SCV_U64:
+    uint64 u64;
+case SCV_I64:
+    int64 i64;
 case SCV_U32:
     uint32 u32;
 case SCV_I32:
     int32 i32;
 case SCV_STATIC:
     SCStatic ic;
-case SCV_OBJECT:
-    SCObject* obj;
+case SCV_OPTION:
+    SCOption obj;
 case SCV_SYMBOL:
     SCSymbol sym;
 case SCV_BITSET:
     uint64 bits;
 case SCV_STATUS:
     SCStatus status;
-};
-
-enum SCObjectType
-{
-    // We have a few objects that represent non-stellar-specific concepts
-    // like general-purpose maps, vectors, numbers, blobs.
-
-    SCO_VEC = 0,
-    SCO_MAP = 1,
-    SCO_U64 = 2,
-    SCO_I64 = 3,
-    SCO_U128 = 4,
-    SCO_I128 = 5,
-    SCO_BYTES = 6,
-    SCO_CONTRACT_CODE = 7,
-    SCO_ACCOUNT_ID = 8
-
-    // TODO: add more
+case SCV_VEC:
+    SCVec vec;
+case SCV_MAP:
+    SCMap map;
+case SCV_U128:
+    Int128Parts u128;
+case SCV_I128:
+    Int128Parts i128;
+case SCV_BYTES:
+    opaque bin<SCVAL_LIMIT>;
+case SCV_CONTRACT_CODE:
+    SCContractCode contractCode;
+case SCV_ACCOUNT_ID:
+    AccountID accountID;
 };
 
 struct SCMapEntry
@@ -232,6 +232,7 @@ const SCVAL_LIMIT = 256000;
 
 typedef SCVal SCVec<SCVAL_LIMIT>;
 typedef SCMapEntry SCMap<SCVAL_LIMIT>;
+typedef *SCVal SCOption;
 
 enum SCContractCodeType
 {
@@ -254,26 +255,3 @@ struct Int128Parts {
     uint64 lo;
     uint64 hi;
 };
-
-union SCObject switch (SCObjectType type)
-{
-case SCO_VEC:
-    SCVec vec;
-case SCO_MAP:
-    SCMap map;
-case SCO_U64:
-    uint64 u64;
-case SCO_I64:
-    int64 i64;
-case SCO_U128:
-    Int128Parts u128;
-case SCO_I128:
-    Int128Parts i128;
-case SCO_BYTES:
-    opaque bin<SCVAL_LIMIT>;
-case SCO_CONTRACT_CODE:
-    SCContractCode contractCode;
-case SCO_ACCOUNT_ID:
-    AccountID accountID;
-};
-}
