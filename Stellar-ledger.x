@@ -388,7 +388,8 @@ struct TransactionMetaV2
 enum ContractEventType
 {
     SYSTEM = 0,
-    CONTRACT = 1
+    CONTRACT = 1,
+    DIAGNOSTIC = 2
 };
 
 struct ContractEvent
@@ -412,6 +413,17 @@ struct ContractEvent
     body;
 };
 
+struct DiagnosticEvent
+{
+    bool inSuccessfulContractCall;
+    ContractEvent event;
+};
+
+struct OperationDiagnosticEvents
+{
+    DiagnosticEvent events<>;
+};
+
 struct OperationEvents
 {
     ContractEvent events<>;
@@ -430,6 +442,11 @@ struct TransactionMetaV3
 
     Hash hashes[3];                     // stores sha256(txChangesBefore, operations, txChangesAfter),
                                         // sha256(events), and sha256(txResult)
+
+    // Diagnostics events that are not hashed. One list per operation.
+    // This will contain all contract and diagnostic events. Even ones
+    // that were emitted in a failed contract call.
+    OperationDiagnosticEvents diagnosticEvents<>;
 };
 
 // this is the meta produced when applying transactions
