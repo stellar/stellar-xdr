@@ -183,6 +183,7 @@ struct SCSpecUDTErrorEnumV0
 
 struct SCSpecFunctionInputV0
 {
+    string docs<SC_SPEC_DOC_LIMIT>;
     string name<30>;
     SCSpecTypeDef type;
 };
