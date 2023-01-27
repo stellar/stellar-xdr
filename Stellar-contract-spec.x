@@ -123,14 +123,14 @@ case SC_SPEC_TYPE_UDT:
 
 struct SCSpecUDTStructFieldV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string name<30>;
     SCSpecTypeDef type;
 };
 
 struct SCSpecUDTStructV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<60>;
     SCSpecUDTStructFieldV0 fields<40>;
@@ -138,14 +138,14 @@ struct SCSpecUDTStructV0
 
 struct SCSpecUDTUnionCaseV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string name<60>;
     SCSpecTypeDef *type;
 };
 
 struct SCSpecUDTUnionV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<60>;
     SCSpecUDTUnionCaseV0 cases<50>;
@@ -153,14 +153,14 @@ struct SCSpecUDTUnionV0
 
 struct SCSpecUDTEnumCaseV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string name<60>;
     uint32 value;
 };
 
 struct SCSpecUDTEnumV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<60>;
     SCSpecUDTEnumCaseV0 cases<50>;
@@ -168,14 +168,14 @@ struct SCSpecUDTEnumV0
 
 struct SCSpecUDTErrorEnumCaseV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string name<60>;
     uint32 value;
 };
 
 struct SCSpecUDTErrorEnumV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<60>;
     SCSpecUDTErrorEnumCaseV0 cases<50>;
@@ -183,14 +183,14 @@ struct SCSpecUDTErrorEnumV0
 
 struct SCSpecFunctionInputV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     string name<30>;
     SCSpecTypeDef type;
 };
 
 struct SCSpecFunctionV0
 {
-    string docs<SC_SPEC_DOC_LIMIT>;
+    string doc<SC_SPEC_DOC_LIMIT>;
     SCSymbol name;
     SCSpecFunctionInputV0 inputs<10>;
     SCSpecTypeDef outputs<1>;
