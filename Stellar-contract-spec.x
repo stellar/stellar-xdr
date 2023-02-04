@@ -151,7 +151,7 @@ struct SCSpecUDTUnionCaseTupleV0
 enum SCSpecUDTUnionCaseV0Kind
 {
     SC_SPEC_UDT_UNION_CASE_VOID_V0 = 0,
-    SC_SPEC_UDT_UNION_CASE_TUPLE_V0 = 1,
+    SC_SPEC_UDT_UNION_CASE_TUPLE_V0 = 1
 };
 
 union SCSpecUDTUnionCaseV0 switch (SCSpecUDTUnionCaseV0Kind kind)
