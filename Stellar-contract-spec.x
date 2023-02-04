@@ -157,9 +157,9 @@ enum SCSpecUDTUnionCaseV0Kind
 union SCSpecUDTUnionCaseV0 switch (SCSpecUDTUnionCaseV0Kind kind)
 {
 case SC_SPEC_UDT_UNION_CASE_VOID_V0:
-    SCSpecUDTUnionCaseVoidV0 void;
+    SCSpecUDTUnionCaseVoidV0 voidCase;
 case SC_SPEC_UDT_UNION_CASE_TUPLE_V0:
-    SCSpecUDTUnionCaseTupleV0 tuple;
+    SCSpecUDTUnionCaseTupleV0 tupleCase;
 };
 
 struct SCSpecUDTUnionV0
