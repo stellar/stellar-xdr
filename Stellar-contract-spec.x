@@ -135,11 +135,31 @@ struct SCSpecUDTStructV0
     SCSpecUDTStructFieldV0 fields<40>;
 };
 
-struct SCSpecUDTUnionCaseV0
+struct SCSpecUDTUnionCaseVoidV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<60>;
-    SCSpecTypeDef *type;
+};
+
+struct SCSpecUDTUnionCaseTupleV0
+{
+    string doc<SC_SPEC_DOC_LIMIT>;
+    string name<60>;
+    SCSpecTypeDef type<12>;
+};
+
+enum SCSpecUDTUnionCaseV0Kind
+{
+    SC_SPEC_UDT_UNION_CASE_VOID_V0 = 0,
+    SC_SPEC_UDT_UNION_CASE_TUPLE_V0 = 1,
+};
+
+union SCSpecUDTUnionCaseV0 switch (SCSpecUDTUnionCaseV0Kind kind)
+{
+case SC_SPEC_UDT_UNION_CASE_VOID_V0:
+    SCSpecUDTUnionCaseVoidV0 voidCase;
+case SC_SPEC_UDT_UNION_CASE_TUPLE_V0:
+    SCSpecUDTUnionCaseTupleV0 tupleCase;
 };
 
 struct SCSpecUDTUnionV0
