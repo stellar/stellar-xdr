@@ -78,7 +78,8 @@ enum SCStatusType
     SST_HOST_STORAGE_ERROR = 5,
     SST_HOST_CONTEXT_ERROR = 6,
     SST_VM_ERROR = 7,
-    SST_CONTRACT_ERROR = 8
+    SST_CONTRACT_ERROR = 8,
+    SST_HOST_AUTH_ERROR = 9
     // TODO: add more
 };
 
@@ -126,6 +127,16 @@ enum SCHostStorageErrorCode
     HOST_STORAGE_ACCESS_TO_UNKNOWN_ENTRY = 3,
     HOST_STORAGE_MISSING_KEY_IN_GET = 4,
     HOST_STORAGE_GET_ON_DELETED_KEY = 5
+};
+
+enum SCHostAuthErrorCode
+{
+    HOST_AUTH_UNKNOWN_ERROR = 0,
+    HOST_AUTH_WRONG_NONCE = 1,
+    HOST_AUTH_GET_RECORDING_IN_ENFORCING_MODE = 2,
+    HOST_AUTH_DUPLICATE_AUTHORIZATION = 3,
+    HOST_AUTH_NOT_AUTHORIZED = 4,
+    HOST_AUTH_MISSING_ADDRESS = 5
 };
 
 enum SCHostContextErrorCode
@@ -182,6 +193,8 @@ case SST_VM_ERROR:
     SCVmErrorCode vmCode;
 case SST_CONTRACT_ERROR:
     uint32 contractCode;
+case SST_HOST_AUTH_ERROR:
+    SCHostAuthErrorCode authCode;
 };
 
 union SCVal switch (SCValType type)
