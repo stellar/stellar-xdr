@@ -505,17 +505,6 @@ struct ContractCodeEntry {
     opaque code<SCVAL_LIMIT>;
 };
 
-enum ConfigSettingType
-{
-    CONFIG_SETTING_TYPE_UINT32 = 0
-};
-
-union ConfigSetting switch (ConfigSettingType type)
-{
-case CONFIG_SETTING_TYPE_UINT32:
-    uint32 uint32Val;
-};
-
 enum ConfigSettingID
 {
     CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES = 0
