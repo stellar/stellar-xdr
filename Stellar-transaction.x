@@ -517,7 +517,7 @@ case CONTRACT_ID_FROM_ASSET:
 struct CreateContractArgs
 {
     ContractID contractID;
-    SCContractExecutable source;
+    SCContractExecutable contractExecutable;
 };
 
 union HostFunction switch (HostFunctionType type)
@@ -533,6 +533,7 @@ case HOST_FUNCTION_TYPE_INSTALL_CONTRACT_CODE:
 struct AuthorizedInvocation
 {
     Hash contractID;
+    SCContractExecutable contractExecutable;
     SCSymbol functionName;
     SCVec args;
     AuthorizedInvocation subInvocations<>;
@@ -675,7 +676,7 @@ case ENVELOPE_TYPE_CREATE_CONTRACT_ARGS:
     struct
     {
         Hash networkID;
-        SCContractExecutable source;
+        SCContractExecutable contractExecutable;
         uint256 salt;
     } createContractArgs;
 case ENVELOPE_TYPE_CONTRACT_AUTH:
