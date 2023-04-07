@@ -203,7 +203,7 @@ case SST_HOST_AUTH_ERROR:
 
 struct UInt128Parts {
     uint64 hi;
-    uint16 lo;
+    uint64 lo;
 };
 
 // A signed int128 has a high sign bit and 127 value bits. We break it into a
