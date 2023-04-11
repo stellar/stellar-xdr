@@ -513,7 +513,8 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_LEDGER_COST_V0 = 2,
     CONFIG_SETTING_CONTRACT_HISTORICAL_DATA_V0 = 3,
     CONFIG_SETTING_CONTRACT_META_DATA_V0 = 4,
-    CONFIG_SETTING_CONTRACT_BANDWIDTH_V0 = 5
+    CONFIG_SETTING_CONTRACT_BANDWIDTH_V0 = 5,
+    CONFIG_SETTING_CONTRACT_HOST_LOGIC_VERSION = 6
 };
 
 // "Compute" settings for contracts (instructions and memory).
@@ -611,6 +612,8 @@ case CONFIG_SETTING_CONTRACT_META_DATA_V0:
     ConfigSettingContractMetaDataV0 contractMetaData;
 case CONFIG_SETTING_CONTRACT_BANDWIDTH_V0:
     ConfigSettingContractBandwidthV0 contractBandwidth;
+case CONFIG_SETTING_CONTRACT_HOST_LOGIC_VERSION:
+    uint32 contractHostLogicVersion;
 };
 
 struct LedgerEntryExtensionV1
