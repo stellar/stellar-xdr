@@ -45,7 +45,7 @@ enum ContractCostType {
     // Roundtrip cost of invoking a VM function from the host.
     InvokeVmFunction = 19,
     // Cost of charging a value to the budgeting system.
-    ChargeBudget = 20,
+    ChargeBudget = 20
 };
 
 struct ContractCostParamEntry {
