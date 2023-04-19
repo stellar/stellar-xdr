@@ -1,8 +1,5 @@
 %#include "xdr/Stellar-types.h"
 
-
-
-
 // "Compute" settings for contracts (instructions and memory).
 struct ConfigSettingContractComputeV0
 {
