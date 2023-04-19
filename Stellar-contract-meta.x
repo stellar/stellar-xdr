@@ -11,7 +11,7 @@ namespace stellar
 
 struct SCMetaV0
 {
-    string key<10>;
+    string key<>;
     string val<256>;
 };
 
