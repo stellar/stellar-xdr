@@ -12,7 +12,7 @@ namespace stellar
 struct SCMetaV0
 {
     string key<>;
-    string val<256>;
+    string val<>;
 };
 
 enum SCMetaKind
