@@ -1,5 +1,6 @@
 %#include "xdr/Stellar-types.h"
 
+namespace stellar {
 // "Compute" settings for contracts (instructions and memory).
 struct ConfigSettingContractComputeV0
 {
@@ -175,3 +176,4 @@ case CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS:
 case CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES:
     ContractCostParams contractCostParamsMemBytes;    
 };
+}
