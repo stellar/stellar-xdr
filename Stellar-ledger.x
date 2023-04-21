@@ -60,6 +60,17 @@ enum LedgerHeaderFlags
     DISABLE_CONTRACT_INVOKE = 0x40
 };
 
+struct LedgerHeaderExtensionV2
+{
+    Hash txMetaHashSetHash; // sha256(TxHashOfMetaHashesSet)
+    union switch (int v)
+    {
+    case 0:
+        void;
+    }
+    ext;
+};
+
 struct LedgerHeaderExtensionV1
 {
     uint32 flags; // LedgerHeaderFlags
@@ -68,6 +79,8 @@ struct LedgerHeaderExtensionV1
     {
     case 0:
         void;
+    case 2:
+        LedgerHeaderExtensionV2 v2;
     }
     ext;
 };
@@ -280,30 +293,12 @@ struct TransactionHistoryResultEntry
     ext;
 };
 
-struct TransactionResultPairV2
+struct TxHashOfMetaHashesSet
 {
-    Hash transactionHash;
-    Hash hashOfMetaHashes; // hash of hashes in TransactionMetaV3
-                           // TransactionResult is in the meta
-};
-
-struct TransactionResultSetV2
-{
-    TransactionResultPairV2 results<>;
-};
-
-struct TransactionHistoryResultEntryV2
-{
-    uint32 ledgerSeq;
-    TransactionResultSetV2 txResultSet;
-
-    // reserved for future use
-    union switch (int v)
-    {
-    case 0:
-        void;
-    }
-    ext;
+    // Each one is the hash of hashes in TransactionMetaV3.
+    // The index corresponds to the transaction that emitted
+    // the meta that was hashed.
+    Hash hashOfMetaHashes<>; 
 };
 
 struct LedgerHeaderHistoryEntry
@@ -443,10 +438,9 @@ struct TransactionMetaV3
                                         // applied if any
     OperationEvents events<>;           // custom events populated by the
                                         // contracts themselves. One list per operation.
-    TransactionResult txResult;
 
-    Hash hashes[3];                     // stores sha256(txChangesBefore, operations, txChangesAfter),
-                                        // sha256(events), and sha256(txResult)
+    Hash hashes[2];                     // stores sha256(txChangesBefore, operations, txChangesAfter),
+                                        // sha256(events)
 
     // Diagnostics events that are not hashed. One list per operation.
     // This will contain all contract and diagnostic events. Even ones
@@ -474,13 +468,6 @@ case 3:
 struct TransactionResultMeta
 {
     TransactionResultPair result;
-    LedgerEntryChanges feeProcessing;
-    TransactionMeta txApplyProcessing;
-};
-
-struct TransactionResultMetaV2
-{
-    TransactionResultPairV2 result;
     LedgerEntryChanges feeProcessing;
     TransactionMeta txApplyProcessing;
 };
@@ -529,32 +516,11 @@ struct LedgerCloseMetaV1
     SCPHistoryEntry scpInfo<>;
 };
 
-// only difference between V1 and V2 is this uses TransactionResultMetaV2
-struct LedgerCloseMetaV2
-{
-    LedgerHeaderHistoryEntry ledgerHeader;
-    
-    GeneralizedTransactionSet txSet;
-
-    // NB: transactions are sorted in apply order here
-    // fees for all transactions are processed first
-    // followed by applying transactions
-    TransactionResultMetaV2 txProcessing<>;
-
-    // upgrades are applied last
-    UpgradeEntryMeta upgradesProcessing<>;
-
-    // other misc information attached to the ledger close
-    SCPHistoryEntry scpInfo<>;
-};
-
 union LedgerCloseMeta switch (int v)
 {
 case 0:
     LedgerCloseMetaV0 v0;
 case 1:
     LedgerCloseMetaV1 v1;
-case 2:
-    LedgerCloseMetaV2 v2;
 };
 }
