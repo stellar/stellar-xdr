@@ -60,17 +60,6 @@ enum LedgerHeaderFlags
     DISABLE_CONTRACT_INVOKE = 0x40
 };
 
-struct LedgerHeaderExtensionV2
-{
-    Hash txMetaHashSetHash; // sha256(TxHashOfMetaHashesSet)
-    union switch (int v)
-    {
-    case 0:
-        void;
-    }
-    ext;
-};
-
 struct LedgerHeaderExtensionV1
 {
     uint32 flags; // LedgerHeaderFlags
@@ -79,8 +68,6 @@ struct LedgerHeaderExtensionV1
     {
     case 0:
         void;
-    case 2:
-        LedgerHeaderExtensionV2 v2;
     }
     ext;
 };
@@ -293,14 +280,6 @@ struct TransactionHistoryResultEntry
     ext;
 };
 
-struct TxHashOfMetaHashesSet
-{
-    // Each one is the hash of hashes in TransactionMetaV3.
-    // The index corresponds to the transaction that emitted
-    // the meta that was hashed.
-    Hash hashOfMetaHashes<>; 
-};
-
 struct LedgerHeaderHistoryEntry
 {
     Hash hash;
@@ -438,9 +417,6 @@ struct TransactionMetaV3
                                         // applied if any
     OperationEvents events<>;           // custom events populated by the
                                         // contracts themselves. One list per operation.
-
-    Hash hashes[2];                     // stores sha256(txChangesBefore, operations, txChangesAfter),
-                                        // sha256(events)
 
     // Diagnostics events that are not hashed. One list per operation.
     // This will contain all contract and diagnostic events. Even ones
