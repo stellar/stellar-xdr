@@ -1772,7 +1772,8 @@ enum InvokeHostFunctionResultCode
 
     // codes considered as "failure" for the operation
     INVOKE_HOST_FUNCTION_MALFORMED = -1,
-    INVOKE_HOST_FUNCTION_TRAPPED = -2
+    INVOKE_HOST_FUNCTION_TRAPPED = -2,
+    INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED = -3
 };
 
 union InvokeHostFunctionResult switch (InvokeHostFunctionResultCode code)
