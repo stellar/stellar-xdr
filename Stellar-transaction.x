@@ -513,7 +513,7 @@ case CONTRACT_ID_FROM_ASSET:
 struct CreateContractArgs
 {
     ContractID contractID;
-    SCContractExecutable source;
+    SCContractExecutable executable;
 };
 
 union HostFunctionArgs switch (HostFunctionType type)
@@ -678,7 +678,7 @@ case ENVELOPE_TYPE_CREATE_CONTRACT_ARGS:
     struct
     {
         Hash networkID;
-        SCContractExecutable source;
+        SCContractExecutable executable;
         uint256 salt;
     } createContractArgs;
 case ENVELOPE_TYPE_CONTRACT_AUTH:
