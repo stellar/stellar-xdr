@@ -11,11 +11,9 @@ struct ConfigSettingContractComputeV0
     // Cost of 10000 instructions
     int64 feeRatePerInstructionsIncrement;
 
-    // Memory limit per contract/host function invocation. Unlike 
-    // instructions, there is no fee for memory and it's not
-    // accumulated between operations - the same limit is applied 
-    // to every operation.
-    uint32 memoryLimit;
+    // Memory limit per transaction. Unlike instructions, there is no fee
+    // for memory, just the limit.
+    uint32 txMemoryLimit;
 };
 
 // Ledger access settings for contracts.
