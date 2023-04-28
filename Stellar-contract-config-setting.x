@@ -129,13 +129,14 @@ enum ContractCostType {
 };
 
 struct ContractCostParamEntry {
-    int32 constTerm;
-    int32 linearTerm;
+    int64 constTerm;
+    int64 linearTerm;
     // use `ext` to add more terms (e.g. higher order polynomials) in the future
     ExtensionPoint ext;
 };
 
-const CONTRACT_COST_COUNT_LIMIT = 1024; // limits the ContractCostParams size to 12kB
+// limits the ContractCostParams size to 20kB
+const CONTRACT_COST_COUNT_LIMIT = 1024;
 
 typedef ContractCostParamEntry ContractCostParams<CONTRACT_COST_COUNT_LIMIT>;
 
