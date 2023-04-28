@@ -534,10 +534,11 @@ struct AuthorizedInvocation
     AuthorizedInvocation subInvocations<>;
 };
 
-struct AddressWithNonce
+struct AddressAuthorizer
 {
     SCAddress address;
     uint64 nonce;
+    SCVec signatureArgs;
 };
 
 enum AuthorizerType
@@ -551,14 +552,13 @@ union Authorizer switch (AuthorizerType type)
 case AUTHORIZER_SOURCE_ACCOUNT:
     void;
 case AUTHORIZER_ADDRESS:
-    AddressWithNonce address;
+    AddressAuthorizer address;
 };
 
 struct ContractAuth
 {
     Authorizer authorizer;
     AuthorizedInvocation rootInvocation;
-    SCVec signatureArgs;
 };
 
 struct HostFunction {
