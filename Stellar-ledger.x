@@ -398,16 +398,6 @@ struct DiagnosticEvent
     ContractEvent event;
 };
 
-struct OperationDiagnosticEvents
-{
-    DiagnosticEvent events<>;
-};
-
-struct OperationEvents
-{
-    ContractEvent events<>;
-};
-
 struct TransactionMetaV3
 {
     LedgerEntryChanges txChangesBefore; // tx level changes before operations
@@ -415,13 +405,13 @@ struct TransactionMetaV3
     OperationMeta operations<>;         // meta for each operation
     LedgerEntryChanges txChangesAfter;  // tx level changes after operations are
                                         // applied if any
-    OperationEvents events<>;           // custom events populated by the
-                                        // contracts themselves. One list per operation.
+    ContractEvent events<>;           // custom events populated by the
+                                        // contracts themselves.
 
-    // Diagnostics events that are not hashed. One list per operation.
+    // Diagnostics events that are not hashed.
     // This will contain all contract and diagnostic events. Even ones
     // that were emitted in a failed contract call.
-    OperationDiagnosticEvents diagnosticEvents<>;
+    DiagnosticEvent diagnosticEvents<>;
 };
 
 // this is the meta produced when applying transactions
