@@ -407,11 +407,19 @@ struct TransactionMetaV3
                                         // applied if any
     ContractEvent events<>;           // custom events populated by the
                                         // contracts themselves.
+    SCVal returnValues<MAX_OPS_PER_TX>;    // return values of each invocation.
 
     // Diagnostics events that are not hashed.
     // This will contain all contract and diagnostic events. Even ones
     // that were emitted in a failed contract call.
     DiagnosticEvent diagnosticEvents<>;
+};
+
+// This is in Stellar-ledger.x to due to a circular dependency 
+struct InvokeHostFunctionSuccessPreImage
+{
+    SCVal returnValues<MAX_OPS_PER_TX>;
+    ContractEvent events<>;
 };
 
 // this is the meta produced when applying transactions
