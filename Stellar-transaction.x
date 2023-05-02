@@ -775,11 +775,18 @@ case PRECOND_V2:
     PreconditionsV2 v2;
 };
 
+// If bumpLedgers is not empty, the given key's lifetime is increased by bumpLedgers
+struct FootprintEntry
+{
+    LedgerKey key;
+    uint32* bumpLedgers;
+};
+
 // Ledger key sets touched by a smart contract transaction.
 struct LedgerFootprint
 {
-    LedgerKey readOnly<>;
-    LedgerKey readWrite<>;
+    FootprintEntry readOnly<>;
+    FootprintEntry readWrite<>;
 };
 
 // Resource limits for a Soroban transaction.

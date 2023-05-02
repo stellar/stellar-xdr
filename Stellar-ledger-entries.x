@@ -493,17 +493,56 @@ struct LiquidityPoolEntry
     body;
 };
 
+enum ContractLedgerEntryType {
+    DATA_ENTRY = 0,
+    LIFETIME_EXTENSION = 1
+};
+
+enum ContractDataFlags {
+    // When set, the given entry does not recieve automatic lifetime bumps
+    // on access. Note that entries can still be bumped manually via the footprint.
+    NO_AUTOBUMP = 0x1
+};
+
+enum ContractDataType {
+    TEMPORARY = 0,
+    RECREATABLE = 1,
+    UNIQUE = 2
+};
+
 struct ContractDataEntry {
     Hash contractID;
     SCVal key;
-    SCVal val;
+    ContractDataType type;
+
+    union switch (ContractLedgerEntryType leType)
+    {
+    case DATA_ENTRY:
+    struct
+    {
+        uint32 flags;
+        SCVal val;
+    } data;
+    case LIFETIME_EXTENSION:
+        void;
+    } body;
+
+    uint32 expirationLedgerSeq;
 };
 
 struct ContractCodeEntry {
     ExtensionPoint ext;
 
     Hash hash;
-    opaque code<SCVAL_LIMIT>;
+    union switch (ContractLedgerEntryType leType)
+    {
+    case DATA_ENTRY:
+        opaque code<SCVAL_LIMIT>;
+    case LIFETIME_EXTENSION:
+        void;
+    } body;
+
+    uint32 expirationLedgerSeq;
 };
 
 
@@ -602,11 +641,27 @@ case CONTRACT_DATA:
     {
         Hash contractID;
         SCVal key;
+        ContractDataType type;
+
+        // ContractLedgerEntryType t is part of key type, but is inside a switch in the actual entry,
+        // so we need to mirror the switch structure here with no body
+        union switch (ContractLedgerEntryType leType)
+        {
+        case DATA_ENTRY:
+        case LIFETIME_EXTENSION:
+            void;
+        } body;
     } contractData;
 case CONTRACT_CODE:
     struct
     {
         Hash hash;
+        union switch (ContractLedgerEntryType leType)
+        {
+        case DATA_ENTRY:
+        case LIFETIME_EXTENSION:
+            void;
+        } body;
     } contractCode;
 case CONFIG_SETTING:
     struct
