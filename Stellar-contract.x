@@ -49,9 +49,6 @@ enum SCValType
     SCV_U256 = 11,
     SCV_I256 = 12,
 
-    // TODO: possibly allocate subtypes of i64, i128 and/or u256 for
-    // fixed-precision with a specific number of decimals.
-
     // Bytes come in 3 flavors, 2 of which have meaningfully different
     // formatting and validity-checking / domain-restriction.
     SCV_BYTES = 13,
