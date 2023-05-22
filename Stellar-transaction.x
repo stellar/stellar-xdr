@@ -779,7 +779,7 @@ case PRECOND_V2:
 struct FootprintEntry
 {
     LedgerKey key;
-    uint32* bumpLedgers;
+    uint32 bumpLedgers;
 };
 
 // Ledger key sets touched by a smart contract transaction.

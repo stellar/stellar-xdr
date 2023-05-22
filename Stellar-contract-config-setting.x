@@ -135,6 +135,19 @@ struct ContractCostParamEntry {
     ExtensionPoint ext;
 };
 
+struct StateExpirationSettings {
+    uint32 maxEntryLifetime;
+    uint32 minTempEntryLifetime;
+    uint32 minRestorableEntryLifetime;
+    uint32 autoBumpLedgers;
+
+    union switch (int v)
+    {
+    case 0:
+        void;
+    } ext;
+};
+
 // limits the ContractCostParams size to 20kB
 const CONTRACT_COST_COUNT_LIMIT = 1024;
 
@@ -153,10 +166,7 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES = 7,
     CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
-    CONFIG_SETTING_MAXIMUM_ENTRY_LIFETIME = 10,
-    CONFIG_SETTING_MINIMUM_TEMP_ENTRY_LIFETIME = 11,
-    CONFIG_SETTING_MINIMUM_RESTORABLE_ENTRY_LIFETIME = 12,
-    CONFIG_SETTING_AUTO_BUMP_NUM_LEDGERS = 13
+    CONFIG_SETTING_STATE_EXPIRATION = 10
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -181,13 +191,7 @@ case CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES:
     uint32 contractDataKeySizeBytes;
 case CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES:
     uint32 contractDataEntrySizeBytes;
-case CONFIG_SETTING_MAXIMUM_ENTRY_LIFETIME:
-    uint32 maximumEntryLifetime;
-case CONFIG_SETTING_MINIMUM_TEMP_ENTRY_LIFETIME:
-    uint32 minimumTempEntryLifetime;
-case CONFIG_SETTING_MINIMUM_RESTORABLE_ENTRY_LIFETIME:
-    uint32 minimumRestorableEntryLifetime;
-case CONFIG_SETTING_AUTO_BUMP_NUM_LEDGERS:
-    uint32 autoBumpLedgers;
+case CONFIG_SETTING_STATE_EXPIRATION:
+    StateExpirationSettings stateExpirationSettings;
 };
 }

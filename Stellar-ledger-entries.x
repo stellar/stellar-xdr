@@ -642,26 +642,13 @@ case CONTRACT_DATA:
         Hash contractID;
         SCVal key;
         ContractDataType type;
-
-        // ContractLedgerEntryType t is part of key type, but is inside a switch in the actual entry,
-        // so we need to mirror the switch structure here with no body
-        union switch (ContractLedgerEntryType leType)
-        {
-        case DATA_ENTRY:
-        case LIFETIME_EXTENSION:
-            void;
-        } body;
+        ContractLedgerEntryType leType;
     } contractData;
 case CONTRACT_CODE:
     struct
     {
         Hash hash;
-        union switch (ContractLedgerEntryType leType)
-        {
-        case DATA_ENTRY:
-        case LIFETIME_EXTENSION:
-            void;
-        } body;
+        ContractLedgerEntryType leType;
     } contractCode;
 case CONFIG_SETTING:
     struct
