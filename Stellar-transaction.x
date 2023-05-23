@@ -534,31 +534,31 @@ struct AuthorizedInvocation
     AuthorizedInvocation subInvocations<>;
 };
 
-struct AddressWithNonce
+struct AddressAuthorization
 {
     SCAddress address;
     uint64 nonce;
+    SCVec signatureArgs;
 };
 
-enum AuthorizerType
+enum AuthorizationType
 {
-    AUTHORIZER_SOURCE_ACCOUNT = 0,
-    AUTHORIZER_ADDRESS = 1,
+    AUTHORIZATION_SOURCE_ACCOUNT = 0,
+    AUTHORIZATION_ADDRESS = 1,
 };
 
-union Authorizer switch (AuthorizerType type)
+union Authorization switch (AuthorizationType type)
 {
-case AUTHORIZER_SOURCE_ACCOUNT:
+case AUTHORIZATION_SOURCE_ACCOUNT:
     void;
-case AUTHORIZER_ADDRESS:
-    AddressWithNonce address;
+case AUTHORIZATION_ADDRESS:
+    AddressAuthorization address;
 };
 
 struct ContractAuth
 {
-    Authorizer authorizer;
+    Authorization authorizer;
     AuthorizedInvocation rootInvocation;
-    SCVec signatureArgs;
 };
 
 struct HostFunction {
