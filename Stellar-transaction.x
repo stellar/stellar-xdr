@@ -540,9 +540,23 @@ struct AddressWithNonce
     uint64 nonce;
 };
 
+enum AuthorizerType
+{
+    AUTHORIZER_SOURCE_ACCOUNT = 0,
+    AUTHORIZER_ADDRESS = 1,
+};
+
+union Authorizer switch (AuthorizerType type)
+{
+case AUTHORIZER_SOURCE_ACCOUNT:
+    void;
+case AUTHORIZER_ADDRESS:
+    AddressWithNonce address;
+};
+
 struct ContractAuth
 {
-    AddressWithNonce* addressWithNonce; // not present for invoker
+    Authorizer authorizer;
     AuthorizedInvocation rootInvocation;
     SCVec signatureArgs;
 };
