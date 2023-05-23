@@ -555,6 +555,20 @@ case AUTHORIZER_ADDRESS:
     AddressAuthorizer address;
 };
 
+enum AuthorizerType
+{
+    AUTHORIZER_SOURCE_ACCOUNT = 0,
+    AUTHORIZER_ADDRESS = 1,
+};
+
+union Authorizer switch (AuthorizerType type)
+{
+case AUTHORIZER_SOURCE_ACCOUNT:
+    void;
+case AUTHORIZER_ADDRESS:
+    AddressWithNonce address;
+};
+
 struct ContractAuth
 {
     Authorizer authorizer;
@@ -1793,7 +1807,7 @@ enum InvokeHostFunctionResultCode
 union InvokeHostFunctionResult switch (InvokeHostFunctionResultCode code)
 {
 case INVOKE_HOST_FUNCTION_SUCCESS:
-    SCVal success<MAX_OPS_PER_TX>;
+    Hash success; // sha256(InvokeHostFunctionSuccessPreImage)
 case INVOKE_HOST_FUNCTION_MALFORMED:
 case INVOKE_HOST_FUNCTION_TRAPPED:
 case INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED:
@@ -1936,6 +1950,7 @@ struct InnerTransactionResult
     case txBAD_SPONSORSHIP:
     case txBAD_MIN_SEQ_AGE_OR_GAP:
     case txMALFORMED:
+    case txSOROBAN_RESOURCE_LIMIT_EXCEEDED:
         void;
     }
     result;
@@ -1982,6 +1997,7 @@ struct TransactionResult
     case txBAD_SPONSORSHIP:
     case txBAD_MIN_SEQ_AGE_OR_GAP:
     case txMALFORMED:
+    case txSOROBAN_RESOURCE_LIMIT_EXCEEDED:
         void;
     }
     result;
