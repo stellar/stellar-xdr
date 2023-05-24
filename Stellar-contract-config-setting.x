@@ -141,6 +141,10 @@ struct StateExpirationSettings {
     uint32 minRestorableEntryLifetime;
     uint32 autoBumpLedgers;
 
+    // rent_fee = wfee_rate_average * rent_rate_for_type
+    double restorableRentRate;
+    double tempRentRate;
+
     union switch (int v)
     {
     case 0:
