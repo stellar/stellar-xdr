@@ -501,7 +501,7 @@ struct CreateContractArgs
     SCContractExecutable executable;
 };
 
-union HostFunctionArgs switch (HostFunctionType type)
+union HostFunction switch (HostFunctionType type)
 {
 case HOST_FUNCTION_TYPE_INVOKE_CONTRACT:
     SCVec invokeContract;
@@ -572,9 +572,8 @@ struct SorobanAuthorizationEntry
 
 struct InvokeHostFunctionOp
 {
-    // Arguments of the function to call defined by the function
-    // type.
-    HostFunctionArgs args;
+    // Host function to invoke.
+    HostFunction hostFunction;
     // Per-address authorizations for this host function.
     SorobanAuthorizationEntry auth<>;
 };
