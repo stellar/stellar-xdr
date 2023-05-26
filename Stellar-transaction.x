@@ -519,7 +519,7 @@ enum SorobanAuthorizedFunctionType
 
 struct SorobanAuthorizedContractFunction 
 {
-    Hash contractID;
+    SCAddress contractAddress;
     SCSymbol functionName;
     SCVec args;
 };
