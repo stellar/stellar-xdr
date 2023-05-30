@@ -534,17 +534,31 @@ struct AuthorizedInvocation
     AuthorizedInvocation subInvocations<>;
 };
 
-struct AddressWithNonce
+struct AddressAuthorization
 {
     SCAddress address;
     uint64 nonce;
+    SCVec signatureArgs;
+};
+
+enum AuthorizationType
+{
+    AUTHORIZATION_SOURCE_ACCOUNT = 0,
+    AUTHORIZATION_ADDRESS = 1,
+};
+
+union Authorization switch (AuthorizationType type)
+{
+case AUTHORIZATION_SOURCE_ACCOUNT:
+    void;
+case AUTHORIZATION_ADDRESS:
+    AddressAuthorization address;
 };
 
 struct ContractAuth
 {
-    AddressWithNonce* addressWithNonce; // not present for invoker
+    Authorization authorizer;
     AuthorizedInvocation rootInvocation;
-    SCVec signatureArgs;
 };
 
 struct HostFunction {
@@ -1779,7 +1793,7 @@ enum InvokeHostFunctionResultCode
 union InvokeHostFunctionResult switch (InvokeHostFunctionResultCode code)
 {
 case INVOKE_HOST_FUNCTION_SUCCESS:
-    SCVal success<MAX_OPS_PER_TX>;
+    Hash success; // sha256(InvokeHostFunctionSuccessPreImage)
 case INVOKE_HOST_FUNCTION_MALFORMED:
 case INVOKE_HOST_FUNCTION_TRAPPED:
 case INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED:
