@@ -544,7 +544,7 @@ struct AddressAuthorization
 enum AuthorizationType
 {
     AUTHORIZATION_SOURCE_ACCOUNT = 0,
-    AUTHORIZATION_ADDRESS = 1,
+    AUTHORIZATION_ADDRESS = 1
 };
 
 union Authorization switch (AuthorizationType type)
