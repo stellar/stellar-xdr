@@ -216,12 +216,19 @@ struct SCSpecFunctionInputV0
     SCSpecTypeDef type;
 };
 
+enum SCSpecFunctionV0DataAccess
+{
+    SC_SPEC_FUNCTION_V0_DATA_ACCESS_READ_ONLY = 0,
+    SC_SPEC_FUNCTION_V0_DATA_ACCESS_READ_WRITE = 1
+};
+
 struct SCSpecFunctionV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     SCSymbol name;
     SCSpecFunctionInputV0 inputs<10>;
     SCSpecTypeDef outputs<1>;
+    SCSpecFunctionV0DataAccess dataAccess;
 };
 
 enum SCSpecEntryKind
