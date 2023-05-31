@@ -418,7 +418,7 @@ struct TransactionMetaV3
 // This is in Stellar-ledger.x to due to a circular dependency 
 struct InvokeHostFunctionSuccessPreImage
 {
-    SCVal returnValues<MAX_OPS_PER_TX>;
+    SCVal returnValue;
     ContractEvent events<>;
 };
 
