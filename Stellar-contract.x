@@ -168,14 +168,13 @@ case SC_ADDRESS_TYPE_CONTRACT:
 %struct SCVal;
 %struct SCMapEntry;
 
-const SCVAL_LIMIT = 256000;
 const SCSYMBOL_LIMIT = 32;
 
-typedef SCVal SCVec<SCVAL_LIMIT>;
-typedef SCMapEntry SCMap<SCVAL_LIMIT>;
+typedef SCVal SCVec<>;
+typedef SCMapEntry SCMap<>;
 
-typedef opaque SCBytes<SCVAL_LIMIT>;
-typedef string SCString<SCVAL_LIMIT>;
+typedef opaque SCBytes<>;
+typedef string SCString<>;
 typedef string SCSymbol<SCSYMBOL_LIMIT>;
 
 struct SCNonceKey {
