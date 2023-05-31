@@ -498,16 +498,12 @@ enum ContractLedgerEntryType {
     LIFETIME_EXTENSION = 1
 };
 
+const MASK_CONTRACT_DATA_FLAGS_V20 = 0x1;
+
 enum ContractDataFlags {
     // When set, the given entry does not recieve automatic lifetime bumps
     // on access. Note that entries can still be bumped manually via the footprint.
     NO_AUTOBUMP = 0x1
-};
-
-enum ContractDataType {
-    TEMPORARY = 0,
-    RECREATABLE = 1,
-    UNIQUE = 2
 };
 
 struct ContractDataEntry {
