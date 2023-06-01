@@ -405,9 +405,9 @@ struct TransactionMetaV3
     OperationMeta operations<>;         // meta for each operation
     LedgerEntryChanges txChangesAfter;  // tx level changes after operations are
                                         // applied if any
-    ContractEvent events<>;           // custom events populated by the
+    ContractEvent events<>;             // custom events populated by the
                                         // contracts themselves.
-    SCVal returnValues<MAX_OPS_PER_TX>;    // return values of each invocation.
+    SCVal returnValue;                  // return value of the invocation.
 
     // Diagnostics events that are not hashed.
     // This will contain all contract and diagnostic events. Even ones
@@ -418,7 +418,7 @@ struct TransactionMetaV3
 // This is in Stellar-ledger.x to due to a circular dependency 
 struct InvokeHostFunctionSuccessPreImage
 {
-    SCVal returnValues<MAX_OPS_PER_TX>;
+    SCVal returnValue;
     ContractEvent events<>;
 };
 
