@@ -492,6 +492,10 @@ struct LedgerCloseMetaV1
 
 struct LedgerCloseMetaV2
 {
+    // We forgot to add an ExtensionPoint in v1 but at least
+    // we can add one now in v2.
+    ExtensionPoint ext;
+
     LedgerHeaderHistoryEntry ledgerHeader;
 
     GeneralizedTransactionSet txSet;
@@ -517,10 +521,6 @@ struct LedgerCloseMetaV2
     // Expired restorable ledger entries that are being
     // evicted at this ledger.
     LedgerEntry evictedRestorableLedgerEntries<>;
-
-    // We forgot to add an ExtensionPoint in v1 but at least
-    // we can add one now in v2.
-    ExtensionPoint ext;
 };
 
 union LedgerCloseMeta switch (int v)
