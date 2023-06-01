@@ -493,17 +493,52 @@ struct LiquidityPoolEntry
     body;
 };
 
+enum ContractLedgerEntryType {
+    DATA_ENTRY = 0,
+    EXPIRATION_EXTENSION = 1
+};
+
+const MASK_CONTRACT_DATA_FLAGS_V20 = 0x1;
+
+enum ContractDataFlags {
+    // When set, the given entry does not recieve automatic expiration bumps
+    // on access. Note that entries can still be bumped manually via the footprint.
+    NO_AUTOBUMP = 0x1
+};
+
 struct ContractDataEntry {
     Hash contractID;
     SCVal key;
-    SCVal val;
+    ContractDataType type;
+
+    union switch (ContractLedgerEntryType leType)
+    {
+    case DATA_ENTRY:
+    struct
+    {
+        uint32 flags;
+        SCVal val;
+    } data;
+    case EXPIRATION_EXTENSION:
+        void;
+    } body;
+
+    uint32 expirationLedgerSeq;
 };
 
 struct ContractCodeEntry {
     ExtensionPoint ext;
 
     Hash hash;
-    opaque code<>;
+    union switch (ContractLedgerEntryType leType)
+    {
+    case DATA_ENTRY:
+        opaque code<>;
+    case EXPIRATION_EXTENSION:
+        void;
+    } body;
+
+    uint32 expirationLedgerSeq;
 };
 
 
@@ -602,11 +637,14 @@ case CONTRACT_DATA:
     {
         Hash contractID;
         SCVal key;
+        ContractDataType type;
+        ContractLedgerEntryType leType;
     } contractData;
 case CONTRACT_CODE:
     struct
     {
         Hash hash;
+        ContractLedgerEntryType leType;
     } contractCode;
 case CONFIG_SETTING:
     struct
