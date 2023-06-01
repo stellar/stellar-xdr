@@ -136,9 +136,9 @@ struct ContractCostParamEntry {
 };
 
 struct StateExpirationSettings {
-    uint32 maxEntryLifetime;
-    uint32 minTempEntryLifetime;
-    uint32 minRestorableEntryLifetime;
+    uint32 maxEntryExpiration;
+    uint32 minTempEntryExpiration;
+    uint32 minRestorableEntryExpiration;
     uint32 autoBumpLedgers;
 
     // rent_fee = wfee_rate_average / rent_rate_denominator_for_type

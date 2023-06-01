@@ -495,13 +495,13 @@ struct LiquidityPoolEntry
 
 enum ContractLedgerEntryType {
     DATA_ENTRY = 0,
-    LIFETIME_EXTENSION = 1
+    EXPIRATION_EXTENSION = 1
 };
 
 const MASK_CONTRACT_DATA_FLAGS_V20 = 0x1;
 
 enum ContractDataFlags {
-    // When set, the given entry does not recieve automatic lifetime bumps
+    // When set, the given entry does not recieve automatic expiration bumps
     // on access. Note that entries can still be bumped manually via the footprint.
     NO_AUTOBUMP = 0x1
 };
@@ -519,7 +519,7 @@ struct ContractDataEntry {
         uint32 flags;
         SCVal val;
     } data;
-    case LIFETIME_EXTENSION:
+    case EXPIRATION_EXTENSION:
         void;
     } body;
 
@@ -534,7 +534,7 @@ struct ContractCodeEntry {
     {
     case DATA_ENTRY:
         opaque code<>;
-    case LIFETIME_EXTENSION:
+    case EXPIRATION_EXTENSION:
         void;
     } body;
 

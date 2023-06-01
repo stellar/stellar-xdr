@@ -170,8 +170,8 @@ case SC_ADDRESS_TYPE_CONTRACT:
 // Here due to circular dependency
 enum ContractDataType {
     TEMPORARY = 0,
-    RECREATABLE = 1,
-    UNIQUE = 2
+    MERGEABLE = 1,
+    EXCLUSIVE = 2
 };
 
 %struct SCVal;
