@@ -407,7 +407,7 @@ struct TransactionMetaV3
                                         // applied if any
     ContractEvent events<>;             // custom events populated by the
                                         // contracts themselves.
-    SCVal returnValue;                  // return value of the invocation.
+    SCVal* returnValue;                 // return value of the host fn invocation (if any)
 
     // Diagnostics events that are not hashed.
     // This will contain all contract and diagnostic events. Even ones
