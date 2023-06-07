@@ -1,6 +1,13 @@
 %#include "xdr/Stellar-types.h"
 
 namespace stellar {
+// General “smart contract execution lane” settings
+struct ConfigSettingContractExecutionLanesV0
+{
+    // maximum number of “smart” transactions per ledger
+    uint32 ledgerMaxTxCount;
+};
+
 // "Compute" settings for contracts (instructions and memory).
 struct ConfigSettingContractComputeV0
 {
@@ -170,7 +177,8 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES = 7,
     CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
-    CONFIG_SETTING_STATE_EXPIRATION = 10
+    CONFIG_SETTING_STATE_EXPIRATION = 10,
+    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -197,5 +205,7 @@ case CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES:
     uint32 contractDataEntrySizeBytes;
 case CONFIG_SETTING_STATE_EXPIRATION:
     StateExpirationSettings stateExpirationSettings;
+case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
+    ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
 };
 }
