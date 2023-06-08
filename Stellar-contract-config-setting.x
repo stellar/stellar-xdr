@@ -1,10 +1,10 @@
 %#include "xdr/Stellar-types.h"
 
 namespace stellar {
-// General “smart contract execution lane” settings
+// General “Soroban execution lane” settings
 struct ConfigSettingContractExecutionLanesV0
 {
-    // maximum number of “smart” transactions per ledger
+    // maximum number of Soroban transactions per ledger
     uint32 ledgerMaxTxCount;
 };
 
