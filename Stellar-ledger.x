@@ -410,7 +410,7 @@ struct SorobanTransactionMeta
     // This will contain all contract and diagnostic events. Even ones
     // that were emitted in a failed contract call.
     DiagnosticEvent diagnosticEvents<>;
-}
+};
 
 struct TransactionMetaV3
 {
