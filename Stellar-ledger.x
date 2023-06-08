@@ -398,21 +398,31 @@ struct DiagnosticEvent
     ContractEvent event;
 };
 
-struct TransactionMetaV3
+struct SorobanTransactionMeta 
 {
-    LedgerEntryChanges txChangesBefore; // tx level changes before operations
-                                        // are applied if any
-    OperationMeta operations<>;         // meta for each operation
-    LedgerEntryChanges txChangesAfter;  // tx level changes after operations are
-                                        // applied if any
+    ExtensionPoint ext;
+
     ContractEvent events<>;             // custom events populated by the
                                         // contracts themselves.
-    SCVal returnValue;                  // return value of the invocation.
+    SCVal returnValue;                  // return value of the host fn invocation
 
     // Diagnostics events that are not hashed.
     // This will contain all contract and diagnostic events. Even ones
     // that were emitted in a failed contract call.
     DiagnosticEvent diagnosticEvents<>;
+}
+
+struct TransactionMetaV3
+{
+    ExtensionPoint ext;
+
+    LedgerEntryChanges txChangesBefore;  // tx level changes before operations
+                                         // are applied if any
+    OperationMeta operations<>;          // meta for each operation
+    LedgerEntryChanges txChangesAfter;   // tx level changes after operations are
+                                         // applied if any
+    SorobanTransactionMeta* sorobanMeta; // Soroban-specific meta (only for 
+                                         // Soroban transactions).
 };
 
 // This is in Stellar-ledger.x to due to a circular dependency 

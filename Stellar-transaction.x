@@ -789,10 +789,10 @@ struct SorobanResources
 // The transaction extension for Soroban.
 struct SorobanTransactionData
 {
+    ExtensionPoint ext;
     SorobanResources resources;
     // Portion of transaction `fee` allocated to refundable fees.
     int64 refundableFee;
-    ExtensionPoint ext;
 };
 
 // TransactionV0 is a transaction with the AccountID discriminant stripped off,

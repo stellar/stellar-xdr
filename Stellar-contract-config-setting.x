@@ -136,10 +136,11 @@ enum ContractCostType {
 };
 
 struct ContractCostParamEntry {
-    int64 constTerm;
-    int64 linearTerm;
     // use `ext` to add more terms (e.g. higher order polynomials) in the future
     ExtensionPoint ext;
+    
+    int64 constTerm;
+    int64 linearTerm;
 };
 
 struct StateExpirationSettings {
