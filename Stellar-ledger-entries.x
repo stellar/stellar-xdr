@@ -507,7 +507,7 @@ enum ContractDataFlags {
 };
 
 struct ContractDataEntry {
-    Hash contractID;
+    SCAddress contract;
     SCVal key;
     ContractDataType type;
 
@@ -635,7 +635,7 @@ case LIQUIDITY_POOL:
 case CONTRACT_DATA:
     struct
     {
-        Hash contractID;
+        SCAddress contract;
         SCVal key;
         ContractDataType type;
         ContractLedgerEntryType leType;
