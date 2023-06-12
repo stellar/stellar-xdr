@@ -62,7 +62,8 @@ enum OperationType
     SET_TRUST_LINE_FLAGS = 21,
     LIQUIDITY_POOL_DEPOSIT = 22,
     LIQUIDITY_POOL_WITHDRAW = 23,
-    INVOKE_HOST_FUNCTION = 24
+    INVOKE_HOST_FUNCTION = 24,
+    BUMP_EXPIRATION = 25
 };
 
 /* CreateAccount
@@ -578,6 +579,22 @@ struct InvokeHostFunctionOp
     SorobanAuthorizationEntry auth<>;
 };
 
+enum BumpExpirationType
+{
+    BUMP_EXPIRATION_UNIFORM = 0
+};
+
+/* Bump the expiration ledger of the entries specified in the readOnly footprint
+   so they'll expire at least ledgersToExpire ledgers from lcl.
+    Threshold: low
+    Result: BumpExpirationResult
+*/
+union BumpExpirationOp switch (BumpExpirationType type)
+{
+case BUMP_EXPIRATION_UNIFORM:
+    uint32 ledgersToExpire;
+};
+
 /* An operation is the lowest unit of work that a transaction does */
 struct Operation
 {
@@ -638,6 +655,8 @@ struct Operation
         LiquidityPoolWithdrawOp liquidityPoolWithdrawOp;
     case INVOKE_HOST_FUNCTION:
         InvokeHostFunctionOp invokeHostFunctionOp;
+    case BUMP_EXPIRATION:
+        BumpExpirationOp bumpExpirationOp;
     }
     body;
 };
@@ -1771,6 +1790,24 @@ case INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED:
     void;
 };
 
+enum BumpExpirationOpResultCode
+{
+    // codes considered as "success" for the operation
+    BUMP_EXPIRATION_SUCCESS = 0,
+
+    // codes considered as "failure" for the operation
+    BUMP_EXPIRATION_MALFORMED = -1,
+    BUMP_EXPIRATION_RESOURCE_LIMIT_EXCEEDED = -2
+};
+
+union BumpExpirationResult switch (BumpExpirationOpResultCode code)
+{
+case BUMP_EXPIRATION_SUCCESS:
+    void;
+case BUMP_EXPIRATION_MALFORMED:
+    void;
+};
+
 /* High level Operation Result */
 enum OperationResultCode
 {
@@ -1839,6 +1876,8 @@ case opINNER:
         LiquidityPoolWithdrawResult liquidityPoolWithdrawResult;
     case INVOKE_HOST_FUNCTION:
         InvokeHostFunctionResult invokeHostFunctionResult;
+    case BUMP_EXPIRATION:
+        BumpExpirationResult bumpExpirationResult;
     }
     tr;
 case opBAD_AUTH:
