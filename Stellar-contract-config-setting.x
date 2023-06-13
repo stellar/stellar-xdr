@@ -132,7 +132,17 @@ enum ContractCostType {
     // Roundtrip cost of invoking a VM function from the host.
     InvokeVmFunction = 19,
     // Cost of charging a value to the budgeting system.
-    ChargeBudget = 20
+    ChargeBudget = 20,
+    // Cost of computing a keccak256 hash from bytes.
+    ComputeKeccak256Hash = 21,
+    // Cost of computing an ECDSA secp256k1 pubkey from bytes.
+    ComputeEcdsaSecp256k1Key = 22,
+    // Cost of computing an ECDSA secp256k1 signature from bytes.
+    ComputeEcdsaSecp256k1Sig = 23,
+    // Cost of verifying an ECDSA secp256k1 signature.
+    VerifyEcdsaSecp256k1Sig = 24,
+    // Cost of recovering an ECDSA secp256k1 key from a signature.
+    RecoverEcdsaSecp256k1Key = 25
 };
 
 struct ContractCostParamEntry {
