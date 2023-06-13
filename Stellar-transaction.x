@@ -542,7 +542,8 @@ struct SorobanAuthorizedInvocation
 struct SorobanAddressCredentials
 {
     SCAddress address;
-    uint64 nonce;
+    int64 nonce;
+    uint32 signatureExpirationLedger;    
     SCVec signatureArgs;
 };
 
@@ -695,7 +696,8 @@ case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION:
     struct
     {
         Hash networkID;
-        uint64 nonce;
+        int64 nonce;
+        uint32 signatureExpirationLedger;
         SorobanAuthorizedInvocation invocation;
     } sorobanAuthorization;
 };
@@ -814,10 +816,10 @@ struct SorobanResources
 // The transaction extension for Soroban.
 struct SorobanTransactionData
 {
+    ExtensionPoint ext;
     SorobanResources resources;
     // Portion of transaction `fee` allocated to refundable fees.
     int64 refundableFee;
-    ExtensionPoint ext;
 };
 
 // TransactionV0 is a transaction with the AccountID discriminant stripped off,

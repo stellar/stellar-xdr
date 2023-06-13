@@ -1,6 +1,13 @@
 %#include "xdr/Stellar-types.h"
 
 namespace stellar {
+// General “Soroban execution lane” settings
+struct ConfigSettingContractExecutionLanesV0
+{
+    // maximum number of Soroban transactions per ledger
+    uint32 ledgerMaxTxCount;
+};
+
 // "Compute" settings for contracts (instructions and memory).
 struct ConfigSettingContractComputeV0
 {
@@ -125,14 +132,25 @@ enum ContractCostType {
     // Roundtrip cost of invoking a VM function from the host.
     InvokeVmFunction = 19,
     // Cost of charging a value to the budgeting system.
-    ChargeBudget = 20
+    ChargeBudget = 20,
+    // Cost of computing a keccak256 hash from bytes.
+    ComputeKeccak256Hash = 21,
+    // Cost of computing an ECDSA secp256k1 pubkey from bytes.
+    ComputeEcdsaSecp256k1Key = 22,
+    // Cost of computing an ECDSA secp256k1 signature from bytes.
+    ComputeEcdsaSecp256k1Sig = 23,
+    // Cost of verifying an ECDSA secp256k1 signature.
+    VerifyEcdsaSecp256k1Sig = 24,
+    // Cost of recovering an ECDSA secp256k1 key from a signature.
+    RecoverEcdsaSecp256k1Key = 25
 };
 
 struct ContractCostParamEntry {
-    int64 constTerm;
-    int64 linearTerm;
     // use `ext` to add more terms (e.g. higher order polynomials) in the future
     ExtensionPoint ext;
+    
+    int64 constTerm;
+    int64 linearTerm;
 };
 
 struct StateExpirationSettings {
@@ -170,7 +188,8 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES = 7,
     CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
-    CONFIG_SETTING_STATE_EXPIRATION = 10
+    CONFIG_SETTING_STATE_EXPIRATION = 10,
+    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -197,5 +216,7 @@ case CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES:
     uint32 contractDataEntrySizeBytes;
 case CONFIG_SETTING_STATE_EXPIRATION:
     StateExpirationSettings stateExpirationSettings;
+case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
+    ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
 };
 }
