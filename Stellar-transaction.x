@@ -541,7 +541,8 @@ struct SorobanAuthorizedInvocation
 struct SorobanAddressCredentials
 {
     SCAddress address;
-    uint64 nonce;
+    int64 nonce;
+    uint32 signatureExpirationLedger;    
     SCVec signatureArgs;
 };
 
@@ -670,7 +671,8 @@ case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION:
     struct
     {
         Hash networkID;
-        uint64 nonce;
+        int64 nonce;
+        uint32 signatureExpirationLedger;
         SorobanAuthorizedInvocation invocation;
     } sorobanAuthorization;
 };

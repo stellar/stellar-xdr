@@ -187,7 +187,7 @@ typedef string SCString<>;
 typedef string SCSymbol<SCSYMBOL_LIMIT>;
 
 struct SCNonceKey {
-    SCAddress nonce_address;
+    int64 nonce;
 };
 
 union SCVal switch (SCValType type)
