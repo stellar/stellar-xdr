@@ -571,6 +571,11 @@ struct SorobanAuthorizationEntry
     SorobanAuthorizedInvocation rootInvocation;
 };
 
+/* Upload WASM, create, and invoke contracts in Soroban.
+
+    Threshold: med
+    Result: InvokeHostFunctionResult
+*/
 struct InvokeHostFunctionOp
 {
     // Host function to invoke.
@@ -586,7 +591,8 @@ enum BumpExpirationType
 
 /* Bump the expiration ledger of the entries specified in the readOnly footprint
    so they'll expire at least ledgersToExpire ledgers from lcl.
-    Threshold: low
+
+    Threshold: med
     Result: BumpExpirationResult
 */
 union BumpExpirationOp switch (BumpExpirationType type)
