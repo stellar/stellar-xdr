@@ -153,6 +153,25 @@ struct StateExpirationSettings {
     int64 restorableRentRateDenominator;
     int64 tempRentRateDenominator;
 
+    // max number of entries that emit expiration meta in a single ledger
+    uint32 maxEntriesToExpire;
+
+    // maximum bytes to scan the BucketList for expired entries in a single ledger, in megabytes
+    uint32 maxBytesToScan;
+
+    union switch (int v)
+    {
+    case 0:
+        void;
+    } ext;
+};
+
+// Points to BucketEntry in BucketList where expiration scan last stopped
+struct ExpirationIterator {
+    uint32 bucketListLevel;
+    bool isCurrBucket;
+    uint64 bucketFileOffset;
+
     union switch (int v)
     {
     case 0:
@@ -179,7 +198,8 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
     CONFIG_SETTING_STATE_EXPIRATION = 10,
-    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11
+    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,
+    CONFIG_SETTING_EXPIRATION_ITERATOR = 12
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -208,5 +228,7 @@ case CONFIG_SETTING_STATE_EXPIRATION:
     StateExpirationSettings stateExpirationSettings;
 case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
     ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
+case CONFIG_SETTING_EXPIRATION_ITERATOR:
+    ExpirationIterator expirationIterator;
 };
 }
