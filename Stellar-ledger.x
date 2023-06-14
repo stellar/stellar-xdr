@@ -398,6 +398,13 @@ struct DiagnosticEvent
     ContractEvent event;
 };
 
+struct ContractMetrics
+{
+    ExtensionPoint ext;
+    int64 cpuInsnsConsumed;
+    int64 memBytesConsumed;
+};
+
 struct SorobanTransactionMeta 
 {
     ExtensionPoint ext;
@@ -410,6 +417,8 @@ struct SorobanTransactionMeta
     // This will contain all contract and diagnostic events. Even ones
     // that were emitted in a failed contract call.
     DiagnosticEvent diagnosticEvents<>;
+
+    ContractMetrics metrics;            // metrics of the running contract
 };
 
 struct TransactionMetaV3
