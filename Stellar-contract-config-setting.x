@@ -140,7 +140,17 @@ enum ContractCostType {
     // Cost of computing an ECDSA secp256k1 signature from bytes.
     ComputeEcdsaSecp256k1Sig = 23,
     // Cost of recovering an ECDSA secp256k1 key from a signature.
-    RecoverEcdsaSecp256k1Key = 24
+    RecoverEcdsaSecp256k1Key = 24,
+    // Cost of int256 addition (`+`) and subtraction (`-`) operations
+    Int256AddSub = 25,
+    // Cost of int256 multiplication (`*`) operation
+    Int256Mul = 26,
+    // Cost of int256 division (`/`) operation
+    Int256Div = 27,
+    // Cost of int256 power (`exp`) operation
+    Int256Pow = 28,    
+    // Cost of int256 shift (`shl`, `shr`) operation
+    Int256Shift = 29
 };
 
 struct ContractCostParamEntry {
