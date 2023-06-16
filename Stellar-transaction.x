@@ -63,7 +63,7 @@ enum OperationType
     LIQUIDITY_POOL_DEPOSIT = 22,
     LIQUIDITY_POOL_WITHDRAW = 23,
     INVOKE_HOST_FUNCTION = 24,
-    BUMP_EXPIRATION = 25
+    BUMP_FOOTPRINT_EXPIRATION = 25
 };
 
 /* CreateAccount
@@ -585,20 +585,20 @@ struct InvokeHostFunctionOp
     SorobanAuthorizationEntry auth<>;
 };
 
-enum BumpExpirationType
+enum BumpFootprintExpirationType
 {
-    BUMP_EXPIRATION_UNIFORM = 0
+    BUMP_FOOTPRINT_EXPIRATION_UNIFORM = 0
 };
 
 /* Bump the expiration ledger of the entries specified in the readOnly footprint
    so they'll expire at least ledgersToExpire ledgers from lcl.
 
     Threshold: med
-    Result: BumpExpirationResult
+    Result: BumpFootprintExpirationResult
 */
-union BumpExpirationOp switch (BumpExpirationType type)
+union BumpFootprintExpirationOp switch (BumpFootprintExpirationType type)
 {
-case BUMP_EXPIRATION_UNIFORM:
+case BUMP_FOOTPRINT_EXPIRATION_UNIFORM:
     uint32 ledgersToExpire;
 };
 
@@ -662,8 +662,8 @@ struct Operation
         LiquidityPoolWithdrawOp liquidityPoolWithdrawOp;
     case INVOKE_HOST_FUNCTION:
         InvokeHostFunctionOp invokeHostFunctionOp;
-    case BUMP_EXPIRATION:
-        BumpExpirationOp bumpExpirationOp;
+    case BUMP_FOOTPRINT_EXPIRATION:
+        BumpFootprintExpirationOp bumpFootprintExpirationOp;
     }
     body;
 };
@@ -1798,21 +1798,21 @@ case INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED:
     void;
 };
 
-enum BumpExpirationOpResultCode
+enum BumpFootprintExpirationOpResultCode
 {
     // codes considered as "success" for the operation
-    BUMP_EXPIRATION_SUCCESS = 0,
+    BUMP_FOOTPRINT_EXPIRATION_SUCCESS = 0,
 
     // codes considered as "failure" for the operation
-    BUMP_EXPIRATION_MALFORMED = -1,
-    BUMP_EXPIRATION_RESOURCE_LIMIT_EXCEEDED = -2
+    BUMP_FOOTPRINT_EXPIRATION_MALFORMED = -1,
+    BUMP_FOOTPRINT_EXPIRATION_RESOURCE_LIMIT_EXCEEDED = -2
 };
 
-union BumpExpirationResult switch (BumpExpirationOpResultCode code)
+union BumpFootprintExpirationResult switch (BumpFootprintExpirationOpResultCode code)
 {
-case BUMP_EXPIRATION_SUCCESS:
+case BUMP_FOOTPRINT_EXPIRATION_SUCCESS:
     void;
-case BUMP_EXPIRATION_MALFORMED:
+case BUMP_FOOTPRINT_EXPIRATION_MALFORMED:
     void;
 };
 
@@ -1884,8 +1884,8 @@ case opINNER:
         LiquidityPoolWithdrawResult liquidityPoolWithdrawResult;
     case INVOKE_HOST_FUNCTION:
         InvokeHostFunctionResult invokeHostFunctionResult;
-    case BUMP_EXPIRATION:
-        BumpExpirationResult bumpExpirationResult;
+    case BUMP_FOOTPRINT_EXPIRATION:
+        BumpFootprintExpirationResult bumpFootprintExpirationResult;
     }
     tr;
 case opBAD_AUTH:
