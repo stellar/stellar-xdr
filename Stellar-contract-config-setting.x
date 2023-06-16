@@ -47,7 +47,7 @@ struct ConfigSettingContractLedgerCostV0
     int64 feeReadLedgerEntry;  // Fee per ledger entry read
     int64 feeWriteLedgerEntry; // Fee per ledger entry write
 
-    int64 feeRead1KB;  // Fee for reading 1KB    
+    int64 feeRead1KB;  // Fee for reading 1KB
     int64 feeWrite1KB; // Fee for writing 1KB
 
     // Bucket list fees grow slowly up to that size
@@ -148,7 +148,7 @@ enum ContractCostType {
     // Cost of int256 division (`/`) operation
     Int256Div = 27,
     // Cost of int256 power (`exp`) operation
-    Int256Pow = 28,    
+    Int256Pow = 28,
     // Cost of int256 shift (`shl`, `shr`) operation
     Int256Shift = 29
 };
@@ -156,7 +156,7 @@ enum ContractCostType {
 struct ContractCostParamEntry {
     // use `ext` to add more terms (e.g. higher order polynomials) in the future
     ExtensionPoint ext;
-    
+
     int64 constTerm;
     int64 linearTerm;
 };
@@ -171,11 +171,11 @@ struct StateExpirationSettings {
     int64 restorableRentRateDenominator;
     int64 tempRentRateDenominator;
 
-    union switch (int v)
-    {
-    case 0:
-        void;
-    } ext;
+    // max number of entries that emit expiration meta in a single ledger
+    uint32 maxEntriesToExpire;
+
+    // Number of days to use when calculating average BucketList size
+    uint32 bucketListSizeWindowSampleSize;
 };
 
 // limits the ContractCostParams size to 20kB
@@ -197,7 +197,8 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
     CONFIG_SETTING_STATE_EXPIRATION = 10,
-    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11
+    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,
+    CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW = 12
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -226,5 +227,7 @@ case CONFIG_SETTING_STATE_EXPIRATION:
     StateExpirationSettings stateExpirationSettings;
 case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
     ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
+case CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW:
+    uint64 bucketlistSizeWindow<>;
 };
 }
