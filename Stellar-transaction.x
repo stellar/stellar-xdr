@@ -1798,7 +1798,7 @@ case INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED:
     void;
 };
 
-enum BumpFootprintExpirationOpResultCode
+enum BumpFootprintExpirationResultCode
 {
     // codes considered as "success" for the operation
     BUMP_FOOTPRINT_EXPIRATION_SUCCESS = 0,
@@ -1808,7 +1808,7 @@ enum BumpFootprintExpirationOpResultCode
     BUMP_FOOTPRINT_EXPIRATION_RESOURCE_LIMIT_EXCEEDED = -2
 };
 
-union BumpFootprintExpirationResult switch (BumpFootprintExpirationOpResultCode code)
+union BumpFootprintExpirationResult switch (BumpFootprintExpirationResultCode code)
 {
 case BUMP_FOOTPRINT_EXPIRATION_SUCCESS:
     void;
