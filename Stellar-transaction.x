@@ -499,7 +499,7 @@ case CONTRACT_ID_PREIMAGE_FROM_ASSET:
 struct CreateContractArgs
 {
     ContractIDPreimage contractIDPreimage;
-    SCContractExecutable executable;
+    ContractExecutable executable;
 };
 
 union HostFunction switch (HostFunctionType type)
