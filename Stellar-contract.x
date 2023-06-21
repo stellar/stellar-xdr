@@ -59,9 +59,12 @@ enum SCValType
     SCV_VEC = 16,
     SCV_MAP = 17,
 
+    // Address is the universal identifier for contracts and classic
+    // accounts.
+    SCV_ADDRESS = 18,
+
     // The following are the internal SCVal variants that are not
     // exposed to the contracts. 
-    SCV_ADDRESS = 18,
     SCV_CONTRACT_INSTANCE = 19,
     SCV_STORAGE_TYPE = 20,
 
