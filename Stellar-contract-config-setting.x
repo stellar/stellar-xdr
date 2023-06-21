@@ -164,11 +164,11 @@ struct ContractCostParamEntry {
 struct StateExpirationSettings {
     uint32 maxEntryExpiration;
     uint32 minTempEntryExpiration;
-    uint32 minRestorableEntryExpiration;
+    uint32 minPersistentEntryExpiration;
     uint32 autoBumpLedgers;
 
     // rent_fee = wfee_rate_average / rent_rate_denominator_for_type
-    int64 restorableRentRateDenominator;
+    int64 persistentRentRateDenominator;
     int64 tempRentRateDenominator;
 
     union switch (int v)

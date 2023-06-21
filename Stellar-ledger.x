@@ -530,7 +530,7 @@ struct LedgerCloseMetaV2
 
     // Expired restorable ledger entries that are being
     // evicted at this ledger.
-    LedgerEntry evictedRestorableLedgerEntries<>;
+    LedgerEntry evictedPersistentLedgerEntries<>;
 };
 
 union LedgerCloseMeta switch (int v)
