@@ -59,18 +59,17 @@ enum SCValType
     SCV_VEC = 16,
     SCV_MAP = 17,
 
-    // SCContractExecutable and SCAddressType are types that gets used separately from
-    // SCVal so we do not flatten their structures into separate SCVal cases.
-    SCV_CONTRACT_EXECUTABLE = 18,
-    SCV_ADDRESS = 19,
+    // The following are the internal SCVal variants that are not
+    // exposed to the contracts. 
+    SCV_ADDRESS = 18,
+    SCV_CONTRACT_INSTANCE = 19,
+    SCV_STORAGE_TYPE = 20,
 
-    // SCV_LEDGER_KEY_CONTRACT_EXECUTABLE and SCV_LEDGER_KEY_NONCE are unique
-    // symbolic SCVals used as the key for ledger entries for a contract's code
-    // and an address' nonce, respectively.
-    SCV_LEDGER_KEY_CONTRACT_EXECUTABLE = 20,
-    SCV_LEDGER_KEY_NONCE = 21,
-
-    SCV_STORAGE_TYPE = 22
+    // SCV_LEDGER_KEY_CONTRACT_INSTANCE and SCV_LEDGER_KEY_NONCE are unique
+    // symbolic SCVals used as the key for ledger entries for a contract's
+    // instance and an address' nonce, respectively.
+    SCV_LEDGER_KEY_CONTRACT_INSTANCE = 21,
+    SCV_LEDGER_KEY_NONCE = 22
 };
 
 enum SCErrorType
@@ -139,17 +138,17 @@ struct Int256Parts {
     uint64 lo_lo;
 };
 
-enum SCContractExecutableType
+enum ContractExecutableType
 {
-    SCCONTRACT_EXECUTABLE_WASM_REF = 0,
-    SCCONTRACT_EXECUTABLE_TOKEN = 1
+    CONTRACT_EXECUTABLE_WASM = 0,
+    CONTRACT_EXECUTABLE_TOKEN = 1
 };
 
-union SCContractExecutable switch (SCContractExecutableType type)
+union ContractExecutable switch (ContractExecutableType type)
 {
-case SCCONTRACT_EXECUTABLE_WASM_REF:
-    Hash wasm_id;
-case SCCONTRACT_EXECUTABLE_TOKEN:
+case CONTRACT_EXECUTABLE_WASM:
+    Hash wasm_hash;
+case CONTRACT_EXECUTABLE_TOKEN:
     void;
 };
 
@@ -187,6 +186,11 @@ typedef string SCSymbol<SCSYMBOL_LIMIT>;
 
 struct SCNonceKey {
     int64 nonce;
+};
+
+struct SCContractInstance {
+    ContractExecutable executable;
+    SCMap* storage;
 };
 
 union SCVal switch (SCValType type)
@@ -237,20 +241,21 @@ case SCV_VEC:
 case SCV_MAP:
     SCMap *map;
 
-case SCV_CONTRACT_EXECUTABLE:
-    SCContractExecutable exec;
 case SCV_ADDRESS:
     SCAddress address;
 
 // Special SCVals reserved for system-constructed contract-data
 // ledger keys, not generally usable elsewhere.
-case SCV_LEDGER_KEY_CONTRACT_EXECUTABLE:
+case SCV_LEDGER_KEY_CONTRACT_INSTANCE:
     void;
 case SCV_LEDGER_KEY_NONCE:
     SCNonceKey nonce_key;
 
 case SCV_STORAGE_TYPE:
     ContractDataType storageType;
+
+case SCV_CONTRACT_INSTANCE:
+    SCContractInstance instance;
 };
 
 struct SCMapEntry
