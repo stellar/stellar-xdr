@@ -129,10 +129,30 @@ enum ContractCostType {
     VmMemWrite = 17,
     // Cost of instantiation a VM from wasm bytes code.
     VmInstantiation = 18,
+    // Cost of instantiation a VM from a cached state.
+    VmCachedInstantiation = 19,
     // Roundtrip cost of invoking a VM function from the host.
-    InvokeVmFunction = 19,
+    InvokeVmFunction = 20,
     // Cost of charging a value to the budgeting system.
-    ChargeBudget = 20
+    ChargeBudget = 21,
+    // Cost of computing a keccak256 hash from bytes.
+    ComputeKeccak256Hash = 22,
+    // Cost of computing an ECDSA secp256k1 pubkey from bytes.
+    ComputeEcdsaSecp256k1Key = 23,
+    // Cost of computing an ECDSA secp256k1 signature from bytes.
+    ComputeEcdsaSecp256k1Sig = 24,
+    // Cost of recovering an ECDSA secp256k1 key from a signature.
+    RecoverEcdsaSecp256k1Key = 25,
+    // Cost of int256 addition (`+`) and subtraction (`-`) operations
+    Int256AddSub = 26,
+    // Cost of int256 multiplication (`*`) operation
+    Int256Mul = 27,
+    // Cost of int256 division (`/`) operation
+    Int256Div = 28,
+    // Cost of int256 power (`exp`) operation
+    Int256Pow = 29,    
+    // Cost of int256 shift (`shl`, `shr`) operation
+    Int256Shift = 30
 };
 
 struct ContractCostParamEntry {

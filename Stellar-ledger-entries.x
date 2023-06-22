@@ -493,7 +493,7 @@ struct LiquidityPoolEntry
     body;
 };
 
-enum ContractLedgerEntryType {
+enum ContractEntryBodyType {
     DATA_ENTRY = 0,
     EXPIRATION_EXTENSION = 1
 };
@@ -506,12 +506,17 @@ enum ContractDataFlags {
     NO_AUTOBUMP = 0x1
 };
 
-struct ContractDataEntry {
-    Hash contractID;
-    SCVal key;
-    ContractDataType type;
+enum ContractDataDurability {
+    TEMPORARY = 0,
+    PERSISTENT = 1
+};
 
-    union switch (ContractLedgerEntryType leType)
+struct ContractDataEntry {
+    SCAddress contract;
+    SCVal key;
+    ContractDataDurability durability;
+
+    union switch (ContractEntryBodyType bodyType)
     {
     case DATA_ENTRY:
     struct
@@ -530,7 +535,7 @@ struct ContractCodeEntry {
     ExtensionPoint ext;
 
     Hash hash;
-    union switch (ContractLedgerEntryType leType)
+    union switch (ContractEntryBodyType bodyType)
     {
     case DATA_ENTRY:
         opaque code<>;
@@ -635,16 +640,16 @@ case LIQUIDITY_POOL:
 case CONTRACT_DATA:
     struct
     {
-        Hash contractID;
+        SCAddress contract;
         SCVal key;
-        ContractDataType type;
-        ContractLedgerEntryType leType;
+        ContractDataDurability durability;
+        ContractEntryBodyType bodyType;
     } contractData;
 case CONTRACT_CODE:
     struct
     {
         Hash hash;
-        ContractLedgerEntryType leType;
+        ContractEntryBodyType bodyType;
     } contractCode;
 case CONFIG_SETTING:
     struct
