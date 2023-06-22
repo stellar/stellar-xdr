@@ -63,7 +63,8 @@ enum OperationType
     LIQUIDITY_POOL_DEPOSIT = 22,
     LIQUIDITY_POOL_WITHDRAW = 23,
     INVOKE_HOST_FUNCTION = 24,
-    BUMP_FOOTPRINT_EXPIRATION = 25
+    BUMP_FOOTPRINT_EXPIRATION = 25,
+    RESTORE_FOOTPRINT = 26
 };
 
 /* CreateAccount
@@ -585,21 +586,26 @@ struct InvokeHostFunctionOp
     SorobanAuthorizationEntry auth<>;
 };
 
-enum BumpFootprintExpirationType
-{
-    BUMP_FOOTPRINT_EXPIRATION_UNIFORM = 0
-};
-
 /* Bump the expiration ledger of the entries specified in the readOnly footprint
    so they'll expire at least ledgersToExpire ledgers from lcl.
 
     Threshold: med
     Result: BumpFootprintExpirationResult
 */
-union BumpFootprintExpirationOp switch (BumpFootprintExpirationType type)
+struct BumpFootprintExpirationOp
 {
-case BUMP_FOOTPRINT_EXPIRATION_UNIFORM:
+    ExtensionPoint ext;
     uint32 ledgersToExpire;
+};
+
+/* Restore the expired or evicted entries specified in the readWrite footprint.
+
+    Threshold: med
+    Result: RestoreFootprintOp
+*/
+struct RestoreFootprintOp
+{
+    ExtensionPoint ext;
 };
 
 /* An operation is the lowest unit of work that a transaction does */
@@ -664,6 +670,8 @@ struct Operation
         InvokeHostFunctionOp invokeHostFunctionOp;
     case BUMP_FOOTPRINT_EXPIRATION:
         BumpFootprintExpirationOp bumpFootprintExpirationOp;
+    case RESTORE_FOOTPRINT:
+        RestoreFootprintOp restoreFootprintOp;
     }
     body;
 };
@@ -1813,6 +1821,26 @@ union BumpFootprintExpirationResult switch (BumpFootprintExpirationResultCode co
 case BUMP_FOOTPRINT_EXPIRATION_SUCCESS:
     void;
 case BUMP_FOOTPRINT_EXPIRATION_MALFORMED:
+case BUMP_FOOTPRINT_EXPIRATION_RESOURCE_LIMIT_EXCEEDED:
+    void;
+};
+
+enum RestoreFootprintResultCode
+{
+    // codes considered as "success" for the operation
+    RESTORE_FOOTPRINT_SUCCESS = 0,
+
+    // codes considered as "failure" for the operation
+    RESTORE_FOOTPRINT_MALFORMED = -1,
+    RESTORE_FOOTPRINT_RESOURCE_LIMIT_EXCEEDED = -2
+};
+
+union RestoreFootprintResult switch (RestoreFootprintResultCode code)
+{
+case RESTORE_FOOTPRINT_SUCCESS:
+    void;
+case RESTORE_FOOTPRINT_MALFORMED:
+case RESTORE_FOOTPRINT_RESOURCE_LIMIT_EXCEEDED:
     void;
 };
 
@@ -1886,6 +1914,8 @@ case opINNER:
         InvokeHostFunctionResult invokeHostFunctionResult;
     case BUMP_FOOTPRINT_EXPIRATION:
         BumpFootprintExpirationResult bumpFootprintExpirationResult;
+    case RESTORE_FOOTPRINT:
+        RestoreFootprintResult restoreFootprintResult;
     }
     tr;
 case opBAD_AUTH:
