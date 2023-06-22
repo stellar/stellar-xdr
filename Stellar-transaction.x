@@ -586,26 +586,16 @@ struct InvokeHostFunctionOp
     SorobanAuthorizationEntry auth<>;
 };
 
-enum BumpFootprintExpirationType
-{
-    BUMP_FOOTPRINT_EXPIRATION_UNIFORM = 0
-};
-
 /* Bump the expiration ledger of the entries specified in the readOnly footprint
    so they'll expire at least ledgersToExpire ledgers from lcl.
 
     Threshold: med
     Result: BumpFootprintExpirationResult
 */
-union BumpFootprintExpirationOp switch (BumpFootprintExpirationType type)
+struct BumpFootprintExpirationOp
 {
-case BUMP_FOOTPRINT_EXPIRATION_UNIFORM:
+    ExtensionPoint ext;
     uint32 ledgersToExpire;
-};
-
-enum RestoreFootprintType
-{
-    RESTORE_FOOTPRINT_V1 = 0
 };
 
 /* Restore the expired or evicted entries specified in the readWrite footprint.
@@ -613,10 +603,9 @@ enum RestoreFootprintType
     Threshold: med
     Result: RestoreFootprintOp
 */
-union RestoreFootprintOp switch (RestoreFootprintType type)
+struct RestoreFootprintOp
 {
-case RESTORE_FOOTPRINT_V1:
-    void;
+    ExtensionPoint ext;
 };
 
 /* An operation is the lowest unit of work that a transaction does */
