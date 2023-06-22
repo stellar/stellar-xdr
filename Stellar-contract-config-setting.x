@@ -47,7 +47,7 @@ struct ConfigSettingContractLedgerCostV0
     int64 feeReadLedgerEntry;  // Fee per ledger entry read
     int64 feeWriteLedgerEntry; // Fee per ledger entry write
 
-    int64 feeRead1KB;  // Fee for reading 1KB    
+    int64 feeRead1KB;  // Fee for reading 1KB
     int64 feeWrite1KB; // Fee for writing 1KB
 
     // Bucket list fees grow slowly up to that size
@@ -158,7 +158,7 @@ enum ContractCostType {
 struct ContractCostParamEntry {
     // use `ext` to add more terms (e.g. higher order polynomials) in the future
     ExtensionPoint ext;
-    
+
     int64 constTerm;
     int64 linearTerm;
 };
@@ -166,18 +166,21 @@ struct ContractCostParamEntry {
 struct StateExpirationSettings {
     uint32 maxEntryExpiration;
     uint32 minTempEntryExpiration;
-    uint32 minRestorableEntryExpiration;
+    uint32 minPersistentEntryExpiration;
     uint32 autoBumpLedgers;
 
     // rent_fee = wfee_rate_average / rent_rate_denominator_for_type
-    int64 restorableRentRateDenominator;
+    int64 persistentRentRateDenominator;
     int64 tempRentRateDenominator;
 
-    union switch (int v)
-    {
-    case 0:
-        void;
-    } ext;
+    // max number of entries that emit expiration meta in a single ledger
+    uint32 maxEntriesToExpire;
+
+    // Number of snapshots to use when calculating average BucketList size
+    uint32 bucketListSizeWindowSampleSize;
+
+    // Maximum number of bytes that we scan for eviction per ledger
+    uint64 evictionScanSize;
 };
 
 // limits the ContractCostParams size to 20kB
@@ -199,7 +202,8 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
     CONFIG_SETTING_STATE_EXPIRATION = 10,
-    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11
+    CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,
+    CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW = 12
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -228,5 +232,7 @@ case CONFIG_SETTING_STATE_EXPIRATION:
     StateExpirationSettings stateExpirationSettings;
 case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
     ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
+case CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW:
+    uint64 bucketListSizeWindow<>;
 };
 }
