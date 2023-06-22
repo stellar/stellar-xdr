@@ -66,13 +66,12 @@ enum SCValType
     // The following are the internal SCVal variants that are not
     // exposed to the contracts. 
     SCV_CONTRACT_INSTANCE = 19,
-    SCV_STORAGE_TYPE = 20,
 
     // SCV_LEDGER_KEY_CONTRACT_INSTANCE and SCV_LEDGER_KEY_NONCE are unique
     // symbolic SCVals used as the key for ledger entries for a contract's
     // instance and an address' nonce, respectively.
-    SCV_LEDGER_KEY_CONTRACT_INSTANCE = 21,
-    SCV_LEDGER_KEY_NONCE = 22
+    SCV_LEDGER_KEY_CONTRACT_INSTANCE = 20,
+    SCV_LEDGER_KEY_NONCE = 21
 };
 
 enum SCErrorType
@@ -169,12 +168,6 @@ case SC_ADDRESS_TYPE_CONTRACT:
     Hash contractId;
 };
 
-// Here due to circular dependency
-enum ContractDataType {
-    TEMPORARY = 0,
-    PERSISTENT = 1
-};
-
 %struct SCVal;
 %struct SCMapEntry;
 
@@ -253,9 +246,6 @@ case SCV_LEDGER_KEY_CONTRACT_INSTANCE:
     void;
 case SCV_LEDGER_KEY_NONCE:
     SCNonceKey nonce_key;
-
-case SCV_STORAGE_TYPE:
-    ContractDataType storageType;
 
 case SCV_CONTRACT_INSTANCE:
     SCContractInstance instance;
