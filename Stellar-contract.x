@@ -186,7 +186,7 @@ struct SCNonceKey {
 
 struct SCContractInstance {
     ContractExecutable executable;
-    SCMap* storage;
+    SCMap storage;
 };
 
 union SCVal switch (SCValType type)
@@ -248,7 +248,7 @@ case SCV_LEDGER_KEY_NONCE:
     SCNonceKey nonce_key;
 
 case SCV_CONTRACT_INSTANCE:
-    SCContractInstance instance;
+    SCContractInstance* instance;
 };
 
 struct SCMapEntry
