@@ -817,7 +817,7 @@ struct SorobanResources
     uint32 writeBytes;
 
     // Maximum size of dynamic metadata produced by this contract (
-    // currently only includes the events).
+    // bytes read from ledger + bytes written to ledger + event bytes written to meta).
     uint32 extendedMetaDataSizeBytes;
 };
 
