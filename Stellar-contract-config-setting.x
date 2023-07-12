@@ -48,16 +48,16 @@ struct ConfigSettingContractLedgerCostV0
     int64 feeWriteLedgerEntry; // Fee per ledger entry write
 
     int64 feeRead1KB;  // Fee for reading 1KB
-    int64 feeWrite1KB; // Fee for writing 1KB
 
-    // Bucket list fees grow slowly up to that size
-    int64 bucketListSizeBytes;
-    // Fee rate in stroops when the bucket list is empty
-    int64 bucketListFeeRateLow;
-    // Fee rate in stroops when the bucket list reached bucketListSizeBytes
-    int64 bucketListFeeRateHigh;
-    // Rate multiplier for any additional data past the first bucketListSizeBytes
-    uint32 bucketListGrowthFactor;
+    // The following parameters determine the write fee per 1KB.
+    // Write fee grows linearly until bucket list reaches this size
+    int64 bucketListTargetSizeBytes;
+    // Fee per 1KB write when the bucket list is empty
+    int64 writeFee1KBBucketListLow;
+    // Fee per 1KB write when the bucket list has reached `bucketListTargetSizeBytes` 
+    int64 writeFee1KBBucketListHigh;
+    // Write fee multiplier for any additional data past the first `bucketListTargetSizeBytes`
+    uint32 bucketListWriteFeeGrowthFactor;
 };
 
 // Historical data (pushed to core archives) settings for contracts.
