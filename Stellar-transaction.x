@@ -503,10 +503,16 @@ struct CreateContractArgs
     ContractExecutable executable;
 };
 
+struct InvokeContractArgs {
+    SCAddress contractAddress;
+    SCSymbol functionName;
+    SCVal args<>;
+};
+
 union HostFunction switch (HostFunctionType type)
 {
 case HOST_FUNCTION_TYPE_INVOKE_CONTRACT:
-    SCVec invokeContract;
+    InvokeContractArgs invokeContract;
 case HOST_FUNCTION_TYPE_CREATE_CONTRACT:
     CreateContractArgs createContract;
 case HOST_FUNCTION_TYPE_UPLOAD_CONTRACT_WASM:
@@ -519,17 +525,10 @@ enum SorobanAuthorizedFunctionType
     SOROBAN_AUTHORIZED_FUNCTION_TYPE_CREATE_CONTRACT_HOST_FN = 1
 };
 
-struct SorobanAuthorizedContractFunction 
-{
-    SCAddress contractAddress;
-    SCSymbol functionName;
-    SCVec args;
-};
-
 union SorobanAuthorizedFunction switch (SorobanAuthorizedFunctionType type)
 {
 case SOROBAN_AUTHORIZED_FUNCTION_TYPE_CONTRACT_FN:
-    SorobanAuthorizedContractFunction contractFn;
+    InvokeContractArgs contractFn;
 case SOROBAN_AUTHORIZED_FUNCTION_TYPE_CREATE_CONTRACT_HOST_FN:
     CreateContractArgs createContractHostFn;
 };
@@ -545,7 +544,7 @@ struct SorobanAddressCredentials
     SCAddress address;
     int64 nonce;
     uint32 signatureExpirationLedger;    
-    SCVec signatureArgs;
+    SCVal signature;
 };
 
 enum SorobanCredentialsType
