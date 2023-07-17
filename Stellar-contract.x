@@ -102,9 +102,19 @@ enum SCErrorCode
     SCEC_UNEXPECTED_SIZE = 9    // something's size wasn't as expected
 };
 
-struct SCError
+union SCError switch (SCErrorType type)
 {
-    SCErrorType type;
+case SCE_CONTRACT:
+    uint32 contractCode;
+case SCE_WASM_VM:
+case SCE_CONTEXT:
+case SCE_STORAGE:
+case SCE_OBJECT:
+case SCE_CRYPTO:
+case SCE_EVENTS:
+case SCE_BUDGET:
+case SCE_VALUE:
+case SCE_AUTH:
     SCErrorCode code;
 };
 
