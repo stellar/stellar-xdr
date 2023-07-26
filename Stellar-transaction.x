@@ -815,9 +815,9 @@ struct SorobanResources
     // The maximum number of bytes this transaction can write to ledger
     uint32 writeBytes;
 
-    // Maximum size of dynamic metadata produced by this contract (
-    // bytes read from ledger + bytes written to ledger + event bytes written to meta).
-    uint32 extendedMetaDataSizeBytes;
+    // Maximum size of the contract events (serialized to XDR) this transaction
+    // can emit.
+    uint32 contractEventsSizeBytes;
 };
 
 // The transaction extension for Soroban.
