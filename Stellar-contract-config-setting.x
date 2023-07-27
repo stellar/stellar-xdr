@@ -66,7 +66,7 @@ struct ConfigSettingContractHistoricalDataV0
     int64 feeHistorical1KB; // Fee for storing 1KB in archives
 };
 
-// Meta data (pushed to downstream systems) settings for contracts.
+// Contract event-related settings.
 struct ConfigSettingContractEventsV0
 {
     // Maximum size of events that a contract call can emit.
@@ -197,7 +197,7 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_COMPUTE_V0 = 1,
     CONFIG_SETTING_CONTRACT_LEDGER_COST_V0 = 2,
     CONFIG_SETTING_CONTRACT_HISTORICAL_DATA_V0 = 3,
-    CONFIG_SETTING_CONTRACT_META_DATA_V0 = 4,
+    CONFIG_SETTING_CONTRACT_EVENTS_V0 = 4,
     CONFIG_SETTING_CONTRACT_BANDWIDTH_V0 = 5,
     CONFIG_SETTING_CONTRACT_COST_PARAMS_CPU_INSTRUCTIONS = 6,
     CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES = 7,
@@ -218,7 +218,7 @@ case CONFIG_SETTING_CONTRACT_LEDGER_COST_V0:
     ConfigSettingContractLedgerCostV0 contractLedgerCost;
 case CONFIG_SETTING_CONTRACT_HISTORICAL_DATA_V0:
     ConfigSettingContractHistoricalDataV0 contractHistoricalData;
-case CONFIG_SETTING_CONTRACT_META_DATA_V0:
+case CONFIG_SETTING_CONTRACT_EVENTS_V0:
     ConfigSettingContractEventsV0 contractEvents;
 case CONFIG_SETTING_CONTRACT_BANDWIDTH_V0:
     ConfigSettingContractBandwidthV0 contractBandwidth;
