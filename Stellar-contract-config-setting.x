@@ -183,6 +183,15 @@ struct StateExpirationSettings {
 
     // Maximum number of bytes that we scan for eviction per ledger
     uint64 evictionScanSize;
+
+    // Lowest BucketList level to be scanned to evict entries
+    uint32 startingEvictionScanLevel;
+};
+
+struct EvictionIterator {
+    uint32 bucketListLevel;
+    bool isCurrBucket;
+    uint64 bucketFileOffset;
 };
 
 // limits the ContractCostParams size to 20kB
@@ -205,7 +214,8 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
     CONFIG_SETTING_STATE_EXPIRATION = 10,
     CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,
-    CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW = 12
+    CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW = 12,
+    CONFIG_SETTING_EVICTION_ITERATOR = 13
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -236,5 +246,7 @@ case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
     ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
 case CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW:
     uint64 bucketListSizeWindow<>;
+case CONFIG_SETTING_EVICTION_ITERATOR:
+    EvictionIterator evictionIterator;
 };
 }
