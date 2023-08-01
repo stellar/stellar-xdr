@@ -121,40 +121,38 @@ enum ContractCostType {
     MapEntry = 12,
     // Cost of accessing an entry in a Vec
     VecEntry = 13,
-    // Cost of guarding a frame, which involves pushing and poping a frame and capturing a rollback point.
-    GuardFrame = 14,
     // Cost of verifying ed25519 signature of a payload.
-    VerifyEd25519Sig = 15,
+    VerifyEd25519Sig = 14,
     // Cost of reading a slice of vm linear memory
-    VmMemRead = 16,
+    VmMemRead = 15,
     // Cost of writing to a slice of vm linear memory
-    VmMemWrite = 17,
+    VmMemWrite = 16,
     // Cost of instantiation a VM from wasm bytes code.
-    VmInstantiation = 18,
+    VmInstantiation = 17,
     // Cost of instantiation a VM from a cached state.
-    VmCachedInstantiation = 19,
+    VmCachedInstantiation = 18,
     // Roundtrip cost of invoking a VM function from the host.
-    InvokeVmFunction = 20,
+    InvokeVmFunction = 19,
     // Cost of charging a value to the budgeting system.
-    ChargeBudget = 21,
+    ChargeBudget = 20,
     // Cost of computing a keccak256 hash from bytes.
-    ComputeKeccak256Hash = 22,
+    ComputeKeccak256Hash = 21,
     // Cost of computing an ECDSA secp256k1 pubkey from bytes.
-    ComputeEcdsaSecp256k1Key = 23,
+    ComputeEcdsaSecp256k1Key = 22,
     // Cost of computing an ECDSA secp256k1 signature from bytes.
-    ComputeEcdsaSecp256k1Sig = 24,
+    ComputeEcdsaSecp256k1Sig = 23,
     // Cost of recovering an ECDSA secp256k1 key from a signature.
-    RecoverEcdsaSecp256k1Key = 25,
+    RecoverEcdsaSecp256k1Key = 24,
     // Cost of int256 addition (`+`) and subtraction (`-`) operations
-    Int256AddSub = 26,
+    Int256AddSub = 25,
     // Cost of int256 multiplication (`*`) operation
-    Int256Mul = 27,
+    Int256Mul = 26,
     // Cost of int256 division (`/`) operation
-    Int256Div = 28,
+    Int256Div = 27,
     // Cost of int256 power (`exp`) operation
-    Int256Pow = 29,    
+    Int256Pow = 28,
     // Cost of int256 shift (`shl`, `shr`) operation
-    Int256Shift = 30
+    Int256Shift = 29
 };
 
 struct ContractCostParamEntry {
