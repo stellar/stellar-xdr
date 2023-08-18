@@ -814,10 +814,6 @@ struct SorobanResources
     uint32 readBytes;
     // The maximum number of bytes this transaction can write to ledger
     uint32 writeBytes;
-
-    // Maximum size of the contract events (serialized to XDR) this transaction
-    // can emit.
-    uint32 contractEventsSizeBytes;
 };
 
 // The transaction extension for Soroban.
