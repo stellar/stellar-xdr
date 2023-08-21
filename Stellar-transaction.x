@@ -814,10 +814,6 @@ struct SorobanResources
     uint32 readBytes;
     // The maximum number of bytes this transaction can write to ledger
     uint32 writeBytes;
-
-    // Maximum size of the contract events (serialized to XDR) this transaction
-    // can emit.
-    uint32 contractEventsSizeBytes;
 };
 
 // The transaction extension for Soroban.
@@ -1793,7 +1789,8 @@ enum InvokeHostFunctionResultCode
     INVOKE_HOST_FUNCTION_MALFORMED = -1,
     INVOKE_HOST_FUNCTION_TRAPPED = -2,
     INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED = -3,
-    INVOKE_HOST_FUNCTION_ENTRY_EXPIRED = -4
+    INVOKE_HOST_FUNCTION_ENTRY_EXPIRED = -4,
+    INVOKE_HOST_FUNCTION_INSUFFICIENT_REFUNDABLE_FEE = -5
 };
 
 union InvokeHostFunctionResult switch (InvokeHostFunctionResultCode code)
@@ -1804,6 +1801,7 @@ case INVOKE_HOST_FUNCTION_MALFORMED:
 case INVOKE_HOST_FUNCTION_TRAPPED:
 case INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED:
 case INVOKE_HOST_FUNCTION_ENTRY_EXPIRED:
+case INVOKE_HOST_FUNCTION_INSUFFICIENT_REFUNDABLE_FEE:
     void;
 };
 
@@ -1814,7 +1812,8 @@ enum BumpFootprintExpirationResultCode
 
     // codes considered as "failure" for the operation
     BUMP_FOOTPRINT_EXPIRATION_MALFORMED = -1,
-    BUMP_FOOTPRINT_EXPIRATION_RESOURCE_LIMIT_EXCEEDED = -2
+    BUMP_FOOTPRINT_EXPIRATION_RESOURCE_LIMIT_EXCEEDED = -2,
+    BUMP_FOOTPRINT_EXPIRATION_INSUFFICIENT_REFUNDABLE_FEE = -3
 };
 
 union BumpFootprintExpirationResult switch (BumpFootprintExpirationResultCode code)
@@ -1823,6 +1822,7 @@ case BUMP_FOOTPRINT_EXPIRATION_SUCCESS:
     void;
 case BUMP_FOOTPRINT_EXPIRATION_MALFORMED:
 case BUMP_FOOTPRINT_EXPIRATION_RESOURCE_LIMIT_EXCEEDED:
+case BUMP_FOOTPRINT_EXPIRATION_INSUFFICIENT_REFUNDABLE_FEE:
     void;
 };
 
@@ -1833,7 +1833,8 @@ enum RestoreFootprintResultCode
 
     // codes considered as "failure" for the operation
     RESTORE_FOOTPRINT_MALFORMED = -1,
-    RESTORE_FOOTPRINT_RESOURCE_LIMIT_EXCEEDED = -2
+    RESTORE_FOOTPRINT_RESOURCE_LIMIT_EXCEEDED = -2,
+    RESTORE_FOOTPRINT_INSUFFICIENT_REFUNDABLE_FEE = -3
 };
 
 union RestoreFootprintResult switch (RestoreFootprintResultCode code)
@@ -1842,6 +1843,7 @@ case RESTORE_FOOTPRINT_SUCCESS:
     void;
 case RESTORE_FOOTPRINT_MALFORMED:
 case RESTORE_FOOTPRINT_RESOURCE_LIMIT_EXCEEDED:
+case RESTORE_FOOTPRINT_INSUFFICIENT_REFUNDABLE_FEE:
     void;
 };
 
