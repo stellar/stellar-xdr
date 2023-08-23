@@ -519,7 +519,7 @@ struct ExpirationEntry {
     // Hash of the LedgerKey that is associated with this ExpirationEntry
     Hash keyHash;
     uint32 expirationLedgerSeq;
-}
+};
 
 
 struct LedgerEntryExtensionV1
