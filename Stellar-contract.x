@@ -80,7 +80,7 @@ enum SCErrorType
     SCE_CONTEXT = 2,           // Errors in the contract's host context.
     SCE_STORAGE = 3,           // Errors accessing host storage.
     SCE_OBJECT = 4,            // Errors working with host objects.
-    SCE_CRYPTO = 5,            // Errors in cryptograhpic operations.
+    SCE_CRYPTO = 5,            // Errors in cryptographic operations.
     SCE_EVENTS = 6,            // Errors while emitting events.
     SCE_BUDGET = 7,            // Errors relating to budget limits.
     SCE_VALUE = 8,             // Errors working with host values or SCVals.
