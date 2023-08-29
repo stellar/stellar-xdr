@@ -1949,14 +1949,12 @@ enum TransactionResultCode
     txBAD_AUTH_EXTRA = -10,      // unused signatures attached to transaction
     txINTERNAL_ERROR = -11,      // an unknown error occurred
 
-    txNOT_SUPPORTED = -12,         // transaction type not supported
-    txFEE_BUMP_INNER_FAILED = -13, // fee bump inner transaction failed
-    txBAD_SPONSORSHIP = -14,       // sponsorship not confirmed
-    txBAD_MIN_SEQ_AGE_OR_GAP =
-        -15, // minSeqAge or minSeqLedgerGap conditions not met
-    txMALFORMED = -16, // precondition is invalid
-    // declared Soroban resource usage exceeds the network limit
-    txSOROBAN_RESOURCE_LIMIT_EXCEEDED = -17
+    txNOT_SUPPORTED = -12,          // transaction type not supported
+    txFEE_BUMP_INNER_FAILED = -13,  // fee bump inner transaction failed
+    txBAD_SPONSORSHIP = -14,        // sponsorship not confirmed
+    txBAD_MIN_SEQ_AGE_OR_GAP = -15, // minSeqAge or minSeqLedgerGap conditions not met
+    txMALFORMED = -16,              // precondition is invalid
+    txSOROBAN_INVALID = -17         // soroban-specific preconditions were not met
 };
 
 // InnerTransactionResult must be binary compatible with TransactionResult
@@ -1987,7 +1985,7 @@ struct InnerTransactionResult
     case txBAD_SPONSORSHIP:
     case txBAD_MIN_SEQ_AGE_OR_GAP:
     case txMALFORMED:
-    case txSOROBAN_RESOURCE_LIMIT_EXCEEDED:
+    case txSOROBAN_INVALID:
         void;
     }
     result;
@@ -2034,7 +2032,7 @@ struct TransactionResult
     case txBAD_SPONSORSHIP:
     case txBAD_MIN_SEQ_AGE_OR_GAP:
     case txMALFORMED:
-    case txSOROBAN_RESOURCE_LIMIT_EXCEEDED:
+    case txSOROBAN_INVALID:
         void;
     }
     result;
