@@ -521,7 +521,6 @@ struct ExpirationEntry {
     uint32 expirationLedgerSeq;
 };
 
-
 struct LedgerEntryExtensionV1
 {
     SponsorshipDescriptor sponsoringID;
