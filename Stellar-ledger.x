@@ -145,7 +145,7 @@ case LEDGER_UPGRADE_BASE_RESERVE:
 case LEDGER_UPGRADE_FLAGS:
     uint32 newFlags; // update flags
 case LEDGER_UPGRADE_CONFIG:
-    // Update arbitray `ConfigSetting` entries identified by the key.
+    // Update arbitrary `ConfigSetting` entries identified by the key.
     ConfigUpgradeSetKey newConfig;
 case LEDGER_UPGRADE_MAX_SOROBAN_TX_SET_SIZE:
     // Update ConfigSettingContractExecutionLanesV0.ledgerMaxTxCount without
