@@ -149,7 +149,9 @@ enum ContractCostType {
     // Cost of int256 power (`exp`) operation
     Int256Pow = 26,
     // Cost of int256 shift (`shl`, `shr`) operation
-    Int256Shift = 27
+    Int256Shift = 27,
+    // Cost of drawing random bytes using a ChaCha20 PRNG
+    ChaCha20DrawBytes = 28
 };
 
 struct ContractCostParamEntry {
