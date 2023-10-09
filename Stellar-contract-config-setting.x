@@ -162,17 +162,17 @@ struct ContractCostParamEntry {
     int64 linearTerm;
 };
 
-struct StateExpirationSettings {
-    uint32 maxEntryExpiration;
-    uint32 minTempEntryExpiration;
-    uint32 minPersistentEntryExpiration;
+struct StateArchivalSettings {
+    uint32 maxEntryTTL;
+    uint32 minTemporaryTTL;
+    uint32 minPersistentTTL;
 
     // rent_fee = wfee_rate_average / rent_rate_denominator_for_type
     int64 persistentRentRateDenominator;
     int64 tempRentRateDenominator;
 
-    // max number of entries that emit expiration meta in a single ledger
-    uint32 maxEntriesToExpire;
+    // max number of entries that emit archival meta in a single ledger
+    uint32 maxEntriesToArchive;
 
     // Number of snapshots to use when calculating average BucketList size
     uint32 bucketListSizeWindowSampleSize;
@@ -208,7 +208,7 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_COST_PARAMS_MEMORY_BYTES = 7,
     CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES = 8,
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
-    CONFIG_SETTING_STATE_EXPIRATION = 10,
+    CONFIG_SETTING_STATE_ARCHIVAL = 10,
     CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,
     CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW = 12,
     CONFIG_SETTING_EVICTION_ITERATOR = 13
@@ -236,8 +236,8 @@ case CONFIG_SETTING_CONTRACT_DATA_KEY_SIZE_BYTES:
     uint32 contractDataKeySizeBytes;
 case CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES:
     uint32 contractDataEntrySizeBytes;
-case CONFIG_SETTING_STATE_EXPIRATION:
-    StateExpirationSettings stateExpirationSettings;
+case CONFIG_SETTING_STATE_ARCHIVAL:
+    StateArchivalSettings stateArchivalSettings;
 case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
     ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
 case CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW:

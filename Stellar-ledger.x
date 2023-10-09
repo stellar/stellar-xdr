@@ -509,10 +509,10 @@ struct LedgerCloseMetaV1
     // systems calculating storage fees correctly.
     uint64 totalByteSizeOfBucketList;
 
-    // Expired temp keys that are being evicted at this ledger.
+    // Temp keys that are being evicted at this ledger.
     LedgerKey evictedTemporaryLedgerKeys<>;
 
-    // Expired restorable ledger entries that are being
+    // Archived restorable ledger entries that are being
     // evicted at this ledger.
     LedgerEntry evictedPersistentLedgerEntries<>;
 };
