@@ -821,7 +821,7 @@ struct SorobanTransactionData
 {
     ExtensionPoint ext;
     SorobanResources resources;
-    // Portion of transaction `fee` allocated to the Soroban resource fees.
+    // Amount of the transaction `fee` allocated to the Soroban resource fees.
     // The fraction of `resourceFee` corresponding to `resources` specified 
     // above is *not* refundable (i.e. fees for instructions, ledger I/O), as
     // well as fees for the transaction size.
