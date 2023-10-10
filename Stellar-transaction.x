@@ -506,7 +506,7 @@ struct CreateContractArgs
 struct InvokeContractArgs {
     SCAddress contractAddress;
     SCSymbol functionName;
-    SCVal args<>;
+    SCVal args<DEFAULT_SIZE_LIMIT>;
 };
 
 union HostFunction switch (HostFunctionType type)
@@ -516,7 +516,7 @@ case HOST_FUNCTION_TYPE_INVOKE_CONTRACT:
 case HOST_FUNCTION_TYPE_CREATE_CONTRACT:
     CreateContractArgs createContract;
 case HOST_FUNCTION_TYPE_UPLOAD_CONTRACT_WASM:
-    opaque wasm<>;
+    opaque wasm<DEFAULT_SIZE_LIMIT>;
 };
 
 enum SorobanAuthorizedFunctionType
@@ -536,7 +536,7 @@ case SOROBAN_AUTHORIZED_FUNCTION_TYPE_CREATE_CONTRACT_HOST_FN:
 struct SorobanAuthorizedInvocation
 {
     SorobanAuthorizedFunction function;
-    SorobanAuthorizedInvocation subInvocations<>;
+    SorobanAuthorizedInvocation subInvocations<DEFAULT_SIZE_LIMIT>;
 };
 
 struct SorobanAddressCredentials
@@ -582,7 +582,7 @@ struct InvokeHostFunctionOp
     // Host function to invoke.
     HostFunction hostFunction;
     // Per-address authorizations for this host function.
-    SorobanAuthorizationEntry auth<>;
+    SorobanAuthorizationEntry auth<DEFAULT_SIZE_LIMIT>;
 };
 
 /* Extend the TTL of the entries specified in the readOnly footprint
@@ -797,8 +797,8 @@ case PRECOND_V2:
 // Ledger key sets touched by a smart contract transaction.
 struct LedgerFootprint
 {
-    LedgerKey readOnly<>;
-    LedgerKey readWrite<>;
+    LedgerKey readOnly<DEFAULT_SIZE_LIMIT>;
+    LedgerKey readWrite<DEFAULT_SIZE_LIMIT>;
 };
 
 // Resource limits for a Soroban transaction.
@@ -1133,7 +1133,7 @@ union PathPaymentStrictReceiveResult switch (
 case PATH_PAYMENT_STRICT_RECEIVE_SUCCESS:
     struct
     {
-        ClaimAtom offers<>;
+        ClaimAtom offers<DEFAULT_SIZE_LIMIT>;
         SimplePaymentResult last;
     } success;
 case PATH_PAYMENT_STRICT_RECEIVE_MALFORMED:
@@ -1188,7 +1188,7 @@ union PathPaymentStrictSendResult switch (PathPaymentStrictSendResultCode code)
 case PATH_PAYMENT_STRICT_SEND_SUCCESS:
     struct
     {
-        ClaimAtom offers<>;
+        ClaimAtom offers<DEFAULT_SIZE_LIMIT>;
         SimplePaymentResult last;
     } success;
 case PATH_PAYMENT_STRICT_SEND_MALFORMED:
@@ -1247,7 +1247,7 @@ enum ManageOfferEffect
 struct ManageOfferSuccessResult
 {
     // offers that got claimed while creating this offer
-    ClaimAtom offersClaimed<>;
+    ClaimAtom offersClaimed<DEFAULT_SIZE_LIMIT>;
 
     union switch (ManageOfferEffect effect)
     {
@@ -1477,7 +1477,7 @@ struct InflationPayout // or use PaymentResultAtom to limit types?
 union InflationResult switch (InflationResultCode code)
 {
 case INFLATION_SUCCESS:
-    InflationPayout payouts<>;
+    InflationPayout payouts<DEFAULT_SIZE_LIMIT>;
 case INFLATION_NOT_TIME:
     void;
 };
@@ -1977,7 +1977,7 @@ struct InnerTransactionResult
     // txFEE_BUMP_INNER_SUCCESS is not included
     case txSUCCESS:
     case txFAILED:
-        OperationResult results<>;
+        OperationResult results<DEFAULT_SIZE_LIMIT>;
     case txTOO_EARLY:
     case txTOO_LATE:
     case txMISSING_OPERATION:
@@ -2024,7 +2024,7 @@ struct TransactionResult
         InnerTransactionResultPair innerResultPair;
     case txSUCCESS:
     case txFAILED:
-        OperationResult results<>;
+        OperationResult results<DEFAULT_SIZE_LIMIT>;
     case txTOO_EARLY:
     case txTOO_LATE:
     case txMISSING_OPERATION:

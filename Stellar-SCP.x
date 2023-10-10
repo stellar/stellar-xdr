@@ -7,7 +7,7 @@
 namespace stellar
 {
 
-typedef opaque Value<>;
+typedef opaque Value<DEFAULT_SIZE_LIMIT>;
 
 struct SCPBallot
 {
@@ -26,8 +26,8 @@ enum SCPStatementType
 struct SCPNomination
 {
     Hash quorumSetHash; // D
-    Value votes<>;      // X
-    Value accepted<>;   // Y
+    Value votes<DEFAULT_SIZE_LIMIT>;      // X
+    Value accepted<DEFAULT_SIZE_LIMIT>;   // Y
 };
 
 struct SCPStatement
@@ -80,7 +80,7 @@ struct SCPEnvelope
 struct SCPQuorumSet
 {
     uint32 threshold;
-    NodeID validators<>;
-    SCPQuorumSet innerSets<>;
+    NodeID validators<DEFAULT_SIZE_LIMIT>;
+    SCPQuorumSet innerSets<DEFAULT_SIZE_LIMIT>;
 };
 }

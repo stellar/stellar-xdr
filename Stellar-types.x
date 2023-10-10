@@ -5,6 +5,8 @@
 namespace stellar
 {
 
+const DEFAULT_SIZE_LIMIT = 2048;
+
 typedef opaque Hash[32];
 typedef opaque uint256[32];
 

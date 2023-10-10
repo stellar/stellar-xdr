@@ -195,11 +195,11 @@ case SC_ADDRESS_TYPE_CONTRACT:
 
 const SCSYMBOL_LIMIT = 32;
 
-typedef SCVal SCVec<>;
-typedef SCMapEntry SCMap<>;
+typedef SCVal SCVec<DEFAULT_SIZE_LIMIT>;
+typedef SCMapEntry SCMap<DEFAULT_SIZE_LIMIT>;
 
-typedef opaque SCBytes<>;
-typedef string SCString<>;
+typedef opaque SCBytes<DEFAULT_SIZE_LIMIT>;
+typedef string SCString<DEFAULT_SIZE_LIMIT>;
 typedef string SCSymbol<SCSYMBOL_LIMIT>;
 
 struct SCNonceKey {

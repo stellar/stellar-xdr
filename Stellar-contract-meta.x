@@ -11,8 +11,8 @@ namespace stellar
 
 struct SCMetaV0
 {
-    string key<>;
-    string val<>;
+    string key<DEFAULT_SIZE_LIMIT>;
+    string val<DEFAULT_SIZE_LIMIT>;
 };
 
 enum SCMetaKind

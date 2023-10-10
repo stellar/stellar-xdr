@@ -241,7 +241,7 @@ case CONFIG_SETTING_STATE_ARCHIVAL:
 case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
     ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
 case CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW:
-    uint64 bucketListSizeWindow<>;
+    uint64 bucketListSizeWindow<DEFAULT_SIZE_LIMIT>;
 case CONFIG_SETTING_EVICTION_ITERATOR:
     EvictionIterator evictionIterator;
 };

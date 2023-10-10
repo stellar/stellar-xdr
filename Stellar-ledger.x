@@ -154,7 +154,7 @@ case LEDGER_UPGRADE_MAX_SOROBAN_TX_SET_SIZE:
 };
 
 struct ConfigUpgradeSet {
-    ConfigSettingEntry updatedEntry<>;
+    ConfigSettingEntry updatedEntry<DEFAULT_SIZE_LIMIT>;
 };
 
 /* Entries used to define the bucket list */
@@ -207,14 +207,14 @@ case TXSET_COMP_TXS_MAYBE_DISCOUNTED_FEE:
   struct
   {
     int64* baseFee;
-    TransactionEnvelope txs<>;
+    TransactionEnvelope txs<DEFAULT_SIZE_LIMIT>;
   } txsMaybeDiscountedFee;
 };
 
 union TransactionPhase switch (int v)
 {
 case 0:
-    TxSetComponent v0Components<>;
+    TxSetComponent v0Components<DEFAULT_SIZE_LIMIT>;
 };
 
 // Transaction sets are the unit used by SCP to decide on transitions
@@ -222,13 +222,13 @@ case 0:
 struct TransactionSet
 {
     Hash previousLedgerHash;
-    TransactionEnvelope txs<>;
+    TransactionEnvelope txs<DEFAULT_SIZE_LIMIT>;
 };
 
 struct TransactionSetV1
 {
     Hash previousLedgerHash;
-    TransactionPhase phases<>;
+    TransactionPhase phases<DEFAULT_SIZE_LIMIT>;
 };
 
 union GeneralizedTransactionSet switch (int v)
@@ -247,7 +247,7 @@ struct TransactionResultPair
 // TransactionResultSet is used to recover results between ledgers
 struct TransactionResultSet
 {
-    TransactionResultPair results<>;
+    TransactionResultPair results<DEFAULT_SIZE_LIMIT>;
 };
 
 // Entries below are used in the historical subsystem
@@ -301,14 +301,14 @@ struct LedgerHeaderHistoryEntry
 struct LedgerSCPMessages
 {
     uint32 ledgerSeq;
-    SCPEnvelope messages<>;
+    SCPEnvelope messages<DEFAULT_SIZE_LIMIT>;
 };
 
 // note: ledgerMessages may refer to any quorumSets encountered
 // in the file so far, not just the one from this entry
 struct SCPHistoryEntryV0
 {
-    SCPQuorumSet quorumSets<>; // additional quorum sets used by ledgerMessages
+    SCPQuorumSet quorumSets<DEFAULT_SIZE_LIMIT>; // additional quorum sets used by ledgerMessages
     LedgerSCPMessages ledgerMessages;
 };
 
@@ -344,7 +344,7 @@ case LEDGER_ENTRY_STATE:
     LedgerEntry state;
 };
 
-typedef LedgerEntryChange LedgerEntryChanges<>;
+typedef LedgerEntryChange LedgerEntryChanges<DEFAULT_SIZE_LIMIT>;
 
 struct OperationMeta
 {
@@ -354,14 +354,14 @@ struct OperationMeta
 struct TransactionMetaV1
 {
     LedgerEntryChanges txChanges; // tx level changes if any
-    OperationMeta operations<>;   // meta for each operation
+    OperationMeta operations<DEFAULT_SIZE_LIMIT>;   // meta for each operation
 };
 
 struct TransactionMetaV2
 {
     LedgerEntryChanges txChangesBefore; // tx level changes before operations
                                         // are applied if any
-    OperationMeta operations<>;         // meta for each operation
+    OperationMeta operations<DEFAULT_SIZE_LIMIT>;         // meta for each operation
     LedgerEntryChanges txChangesAfter;  // tx level changes after operations are
                                         // applied if any
 };
@@ -387,7 +387,7 @@ struct ContractEvent
     case 0:
         struct
         {
-            SCVal topics<>;
+            SCVal topics<DEFAULT_SIZE_LIMIT>;
             SCVal data;
         } v0;
     }
@@ -404,14 +404,14 @@ struct SorobanTransactionMeta
 {
     ExtensionPoint ext;
 
-    ContractEvent events<>;             // custom events populated by the
+    ContractEvent events<DEFAULT_SIZE_LIMIT>;             // custom events populated by the
                                         // contracts themselves.
     SCVal returnValue;                  // return value of the host fn invocation
 
     // Diagnostics events that are not hashed.
     // This will contain all contract and diagnostic events. Even ones
     // that were emitted in a failed contract call.
-    DiagnosticEvent diagnosticEvents<>;
+    DiagnosticEvent diagnosticEvents<DEFAULT_SIZE_LIMIT>;
 };
 
 struct TransactionMetaV3
@@ -420,7 +420,7 @@ struct TransactionMetaV3
 
     LedgerEntryChanges txChangesBefore;  // tx level changes before operations
                                          // are applied if any
-    OperationMeta operations<>;          // meta for each operation
+    OperationMeta operations<DEFAULT_SIZE_LIMIT>;          // meta for each operation
     LedgerEntryChanges txChangesAfter;   // tx level changes after operations are
                                          // applied if any
     SorobanTransactionMeta* sorobanMeta; // Soroban-specific meta (only for 
@@ -431,7 +431,7 @@ struct TransactionMetaV3
 struct InvokeHostFunctionSuccessPreImage
 {
     SCVal returnValue;
-    ContractEvent events<>;
+    ContractEvent events<DEFAULT_SIZE_LIMIT>;
 };
 
 // this is the meta produced when applying transactions
@@ -439,7 +439,7 @@ struct InvokeHostFunctionSuccessPreImage
 union TransactionMeta switch (int v)
 {
 case 0:
-    OperationMeta operations<>;
+    OperationMeta operations<DEFAULT_SIZE_LIMIT>;
 case 1:
     TransactionMetaV1 v1;
 case 2:
@@ -475,13 +475,13 @@ struct LedgerCloseMetaV0
     // NB: transactions are sorted in apply order here
     // fees for all transactions are processed first
     // followed by applying transactions
-    TransactionResultMeta txProcessing<>;
+    TransactionResultMeta txProcessing<DEFAULT_SIZE_LIMIT>;
 
     // upgrades are applied last
-    UpgradeEntryMeta upgradesProcessing<>;
+    UpgradeEntryMeta upgradesProcessing<DEFAULT_SIZE_LIMIT>;
 
     // other misc information attached to the ledger close
-    SCPHistoryEntry scpInfo<>;
+    SCPHistoryEntry scpInfo<DEFAULT_SIZE_LIMIT>;
 };
 
 struct LedgerCloseMetaV1
@@ -497,24 +497,24 @@ struct LedgerCloseMetaV1
     // NB: transactions are sorted in apply order here
     // fees for all transactions are processed first
     // followed by applying transactions
-    TransactionResultMeta txProcessing<>;
+    TransactionResultMeta txProcessing<DEFAULT_SIZE_LIMIT>;
 
     // upgrades are applied last
-    UpgradeEntryMeta upgradesProcessing<>;
+    UpgradeEntryMeta upgradesProcessing<DEFAULT_SIZE_LIMIT>;
 
     // other misc information attached to the ledger close
-    SCPHistoryEntry scpInfo<>;
+    SCPHistoryEntry scpInfo<DEFAULT_SIZE_LIMIT>;
 
     // Size in bytes of BucketList, to support downstream
     // systems calculating storage fees correctly.
     uint64 totalByteSizeOfBucketList;
 
     // Temp keys that are being evicted at this ledger.
-    LedgerKey evictedTemporaryLedgerKeys<>;
+    LedgerKey evictedTemporaryLedgerKeys<DEFAULT_SIZE_LIMIT>;
 
     // Archived restorable ledger entries that are being
     // evicted at this ledger.
-    LedgerEntry evictedPersistentLedgerEntries<>;
+    LedgerEntry evictedPersistentLedgerEntries<DEFAULT_SIZE_LIMIT>;
 };
 
 union LedgerCloseMeta switch (int v)

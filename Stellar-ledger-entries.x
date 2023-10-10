@@ -512,7 +512,7 @@ struct ContractCodeEntry {
     ExtensionPoint ext;
 
     Hash hash;
-    opaque code<>;
+    opaque code<DEFAULT_SIZE_LIMIT>;
 };
 
 struct TTLEntry {

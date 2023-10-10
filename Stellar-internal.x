@@ -26,16 +26,16 @@ struct StoredDebugTransactionSet
 
 struct PersistedSCPStateV0
 {
-	SCPEnvelope scpEnvelopes<>;
-	SCPQuorumSet quorumSets<>;
-	StoredTransactionSet txSets<>;
+	SCPEnvelope scpEnvelopes<DEFAULT_SIZE_LIMIT>;
+	SCPQuorumSet quorumSets<DEFAULT_SIZE_LIMIT>;
+	StoredTransactionSet txSets<DEFAULT_SIZE_LIMIT>;
 };
 
 struct PersistedSCPStateV1
 {
 	// Tx sets are saved separately
-	SCPEnvelope scpEnvelopes<>;
-	SCPQuorumSet quorumSets<>;
+	SCPEnvelope scpEnvelopes<DEFAULT_SIZE_LIMIT>;
+	SCPQuorumSet quorumSets<DEFAULT_SIZE_LIMIT>;
 };
 
 union PersistedSCPState switch (int v)
