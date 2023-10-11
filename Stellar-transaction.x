@@ -543,7 +543,7 @@ struct SorobanAddressCredentials
 {
     SCAddress address;
     int64 nonce;
-    uint32 signatureExpirationLedger;    
+    uint32 signatureLiveUntilLedgerSeq;    
     SCVal signature;
 };
 
@@ -704,7 +704,7 @@ case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION:
     {
         Hash networkID;
         int64 nonce;
-        uint32 signatureExpirationLedger;
+        uint32 signatureLiveUntilLedgerSeq;
         SorobanAuthorizedInvocation invocation;
     } sorobanAuthorization;
 };
