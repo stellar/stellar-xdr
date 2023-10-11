@@ -1924,7 +1924,7 @@ case opINNER:
     case INVOKE_HOST_FUNCTION:
         InvokeHostFunctionResult invokeHostFunctionResult;
     case EXTEND_FOOTPRINT_TTL:
-        ExtendFootprintTTLResult ExtendFootprintTTLResult;
+        ExtendFootprintTTLResult extendFootprintTTLResult;
     case RESTORE_FOOTPRINT:
         RestoreFootprintResult restoreFootprintResult;
     }
