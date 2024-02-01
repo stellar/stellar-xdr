@@ -165,8 +165,11 @@ struct StateArchivalSettings {
     // Number of snapshots to use when calculating average BucketList size
     uint32 bucketListSizeWindowSampleSize;
 
+    // How often to sample the BucketList size for the average, in ledgers
+    uint32 bucketListWindowSamplePeriod;
+
     // Maximum number of bytes that we scan for eviction per ledger
-    uint64 evictionScanSize;
+    uint32 evictionScanSize;
 
     // Lowest BucketList level to be scanned to evict entries
     uint32 startingEvictionScanLevel;
