@@ -139,7 +139,49 @@ enum ContractCostType {
     // Cost of int256 shift (`shl`, `shr`) operation
     Int256Shift = 21,
     // Cost of drawing random bytes using a ChaCha20 PRNG
-    ChaCha20DrawBytes = 22
+    ChaCha20DrawBytes = 22,
+
+    // Cost of parsing wasm bytes that only encode instructions.
+    ParseWasmInstructions = 23,
+    // Cost of parsing a known number of wasm functions.
+    ParseWasmFunctions = 24,
+    // Cost of parsing a known number of wasm globals.
+    ParseWasmGlobals = 25,
+    // Cost of parsing a known number of wasm table entries.
+    ParseWasmTableEntries = 26,
+    // Cost of parsing a known number of wasm types.
+    ParseWasmTypes = 27,
+    // Cost of parsing a known number of wasm data segments.
+    ParseWasmDataSegments = 28,
+    // Cost of parsing a known number of wasm element segments.
+    ParseWasmElemSegments = 29,
+    // Cost of parsing a known number of wasm imports.
+    ParseWasmImports = 30,
+    // Cost of parsing a known number of wasm exports.
+    ParseWasmExports = 31,
+    // Cost of parsing a known number of data segment bytes.
+    ParseWasmDataSegmentBytes = 32,
+
+    // Cost of instantiating wasm bytes that only encode instructions.
+    InstantiateWasmInstructions = 33,
+    // Cost of instantiating a known number of wasm functions.
+    InstantiateWasmFunctions = 34,
+    // Cost of instantiating a known number of wasm globals.
+    InstantiateWasmGlobals = 35,
+    // Cost of instantiating a known number of wasm table entries.
+    InstantiateWasmTableEntries = 36,
+    // Cost of instantiating a known number of wasm types.
+    InstantiateWasmTypes = 37,
+    // Cost of instantiating a known number of wasm data segments.
+    InstantiateWasmDataSegments = 38,
+    // Cost of instantiating a known number of wasm element segments.
+    InstantiateWasmElemSegments = 39,
+    // Cost of instantiating a known number of wasm imports.
+    InstantiateWasmImports = 40,
+    // Cost of instantiating a known number of wasm exports.
+    InstantiateWasmExports = 41,
+    // Cost of instantiating a known number of data segment bytes.
+    InstantiateWasmDataSegmentBytes = 42
 };
 
 struct ContractCostParamEntry {
