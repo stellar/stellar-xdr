@@ -484,11 +484,22 @@ struct LedgerCloseMetaV0
     SCPHistoryEntry scpInfo<>;
 };
 
+struct LedgerCloseMetaExtV1
+{
+    int64 sorobanFeeWrite1KB;
+};
+
+union LedgerCloseMetaExt switch (int v)
+{
+case 0:
+    void;
+case 1:
+    LedgerCloseMetaExtV1 v1;
+};
+
 struct LedgerCloseMetaV1
 {
-    // We forgot to add an ExtensionPoint in v0 but at least
-    // we can add one now in v1.
-    ExtensionPoint ext;
+    LedgerCloseMetaExt ext;
 
     LedgerHeaderHistoryEntry ledgerHeader;
 
