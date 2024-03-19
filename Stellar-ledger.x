@@ -486,6 +486,7 @@ struct LedgerCloseMetaV0
 
 struct LedgerCloseMetaExtV1
 {
+    ExtensionPoint ext;
     int64 sorobanFeeWrite1KB;
 };
 
