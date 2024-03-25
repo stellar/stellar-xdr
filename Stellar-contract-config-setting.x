@@ -124,8 +124,9 @@ enum ContractCostType {
     InvokeVmFunction = 13,
     // Cost of computing a keccak256 hash from bytes.
     ComputeKeccak256Hash = 14,
-    // Cost of computing an ECDSA secp256k1 signature from bytes.
-    ComputeEcdsaSecp256k1Sig = 15,
+    // Cost of decoding an ECDSA signature computed from a 256-bit prime modulus
+    // curve (e.g. secp256k1 and secp256r1)
+    DecodeEcdsaCurve256Sig = 15,
     // Cost of recovering an ECDSA secp256k1 key from a signature.
     RecoverEcdsaSecp256k1Key = 16,
     // Cost of int256 addition (`+`) and subtraction (`-`) operations
@@ -181,7 +182,13 @@ enum ContractCostType {
     // Cost of instantiating a known number of wasm exports.
     InstantiateWasmExports = 41,
     // Cost of instantiating a known number of data segment bytes.
-    InstantiateWasmDataSegmentBytes = 42
+    InstantiateWasmDataSegmentBytes = 42,
+
+    // Cost of decoding a bytes array representing an uncompressed SEC-1 encoded
+    // point on a 256-bit elliptic curve
+    Sec1DecodePointUncompressed = 43,
+    // Cost of verifying an ECDSA Secp256r1 signature
+    VerifyEcdsaSecp256r1Sig = 44
 };
 
 struct ContractCostParamEntry {
