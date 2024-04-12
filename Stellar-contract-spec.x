@@ -42,6 +42,7 @@ enum SCSpecType
     SC_SPEC_TYPE_MAP = 1004,
     SC_SPEC_TYPE_TUPLE = 1005,
     SC_SPEC_TYPE_BYTES_N = 1006,
+    SC_SPEC_TYPE_HASH = 1007,
 
     // User defined types.
     SC_SPEC_TYPE_UDT = 2000
@@ -75,6 +76,11 @@ struct SCSpecTypeTuple
 };
 
 struct SCSpecTypeBytesN
+{
+    uint32 n;
+};
+
+struct SCSpectTypeHash
 {
     uint32 n;
 };
@@ -117,6 +123,8 @@ case SC_SPEC_TYPE_TUPLE:
     SCSpecTypeTuple tuple;
 case SC_SPEC_TYPE_BYTES_N:
     SCSpecTypeBytesN bytesN;
+case SC_SPEC_TYPE_HASH:
+    SCSpectTypeHash hash;
 case SC_SPEC_TYPE_UDT:
     SCSpecTypeUDT udt;
 };
