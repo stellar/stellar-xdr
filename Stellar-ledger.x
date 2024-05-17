@@ -400,6 +400,8 @@ struct DiagnosticEvent
     ContractEvent event;
 };
 
+typedef DiagnosticEvent DiagnosticEvents<>;
+
 struct SorobanTransactionMetaExtV1
 {
     ExtensionPoint ext;
