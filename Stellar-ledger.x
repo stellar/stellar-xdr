@@ -157,6 +157,13 @@ struct ConfigUpgradeSet {
     ConfigSettingEntry updatedEntry<>;
 };
 
+enum BucketListType
+{
+    LIVE = 0,
+    HOT_ARCHIVE = 1,
+    COLD_ARCHIVE = 2
+};
+
 /* Entries used to define the bucket list */
 enum BucketEntryType
 {
@@ -166,6 +173,16 @@ enum BucketEntryType
                    // At-and-after protocol 11: only updated.
     DEADENTRY = 1,
     INITENTRY = 2 // At-and-after protocol 11: only created.
+};
+
+enum HotArchiveBucketEntryType
+{
+    HOT_ARCHIVE_METAENTRY = -1, // Bucket metadata, should come first.
+    HOT_ARCHIVE_ARCHIVED = 0,   // Entry is Archived
+    HOT_ARCHIVE_LIVE = 1,       // Entry was previously HOT_ARCHIVE_ARCHIVED, or HOT_ARCHIVE_DELETED, but
+                                // has been added back to the live BucketList.
+                                // Does not need to be persisted.
+    HOT_ARCHIVE_DELETED = 2     // Entry deleted (Note: must be persisted in archive)
 };
 
 struct BucketMetadata
@@ -178,6 +195,8 @@ struct BucketMetadata
     {
     case 0:
         void;
+    case 1:
+        BucketListType bucketListType;
     }
     ext;
 };
@@ -191,6 +210,18 @@ case INITENTRY:
 case DEADENTRY:
     LedgerKey deadEntry;
 case METAENTRY:
+    BucketMetadata metaEntry;
+};
+
+union HotArchiveBucketEntry switch (HotArchiveBucketEntryType type)
+{
+case HOT_ARCHIVE_ARCHIVED:
+    LedgerEntry archivedEntry;
+
+case HOT_ARCHIVE_LIVE:
+case HOT_ARCHIVE_DELETED:
+    LedgerKey key;
+case HOT_ARCHIVE_METAENTRY:
     BucketMetadata metaEntry;
 };
 
