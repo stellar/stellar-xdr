@@ -863,6 +863,14 @@ struct SorobanResources
     uint32 writeBytes;
 };
 
+struct SorobanResourcesExtV0
+{
+    // Vector of indices representing what Soroban
+    // entries in the footprint are archived, based on the
+    // order of keys provided in the readWrite footprint.
+    uint32 archivedSorobanEntries<>;
+};
+
 // The transaction extension for Soroban.
 struct SorobanTransactionData
 {
@@ -871,7 +879,7 @@ struct SorobanTransactionData
     case 0:
         void;
     case 1:
-        ArchivalProof proofs<>;
+        SorobanResourcesExtV0 resourceExt;
     } ext;
     SorobanResources resources;
     // Amount of the transaction `fee` allocated to the Soroban resource fees.
