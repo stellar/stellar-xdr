@@ -527,27 +527,12 @@ struct LedgerCloseMetaExtV1
     int64 sorobanFeeWrite1KB;
 };
 
-struct LedgerCloseMetaExtV2
-{
-    ExtensionPoint ext;
-    int64 sorobanFeeWrite1KB;
-
-    uint32 currentArchivalEpoch;
-
-    // The last epoch currently stored by validators
-    // Any entry restored from an epoch older than this will
-    // require a proof.
-    uint32 lastArchivalEpochPersisted;
-};
-
 union LedgerCloseMetaExt switch (int v)
 {
 case 0:
     void;
 case 1:
     LedgerCloseMetaExtV1 v1;
-case 2:
-    LedgerCloseMetaExtV2 v2;
 };
 
 struct LedgerCloseMetaV1
