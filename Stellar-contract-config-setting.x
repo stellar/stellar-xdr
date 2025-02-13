@@ -70,6 +70,13 @@ struct ConfigSettingContractLedgerCostV0
     uint32 bucketListWriteFeeGrowthFactor;
 };
 
+// Ledger access settings for contracts.
+struct ConfigSettingContractLedgerCostExtV0
+{
+    // Maximum number of in-memory ledger entry read operations per transaction
+    uint32 txMaxInMemoryReadEntries;
+};
+
 // Historical data (pushed to core archives) settings for contracts.
 struct ConfigSettingContractHistoricalDataV0
 {
@@ -313,7 +320,8 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,
     CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW = 12,
     CONFIG_SETTING_EVICTION_ITERATOR = 13,
-    CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14
+    CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14,
+    CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -348,5 +356,7 @@ case CONFIG_SETTING_EVICTION_ITERATOR:
     EvictionIterator evictionIterator;
 case CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0:
     ConfigSettingContractParallelComputeV0 contractParallelCompute;
+case CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0:
+    ConfigSettingContractLedgerCostExtV0 contractLedgerCostExt;
 };
 }
