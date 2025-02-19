@@ -949,7 +949,6 @@ struct Transaction
 
     Operation operations<MAX_OPS_PER_TX>;
 
-    // reserved for future use
     union switch (int v)
     {
     case 0:
