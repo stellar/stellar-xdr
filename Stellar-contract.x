@@ -179,7 +179,8 @@ case CONTRACT_EXECUTABLE_STELLAR_ASSET:
 enum SCAddressType
 {
     SC_ADDRESS_TYPE_ACCOUNT = 0,
-    SC_ADDRESS_TYPE_CONTRACT = 1
+    SC_ADDRESS_TYPE_CONTRACT = 1,
+    SC_ADDRESS_TYPE_MUXED_ACCOUNT = 2
 };
 
 union SCAddress switch (SCAddressType type)
@@ -188,6 +189,8 @@ case SC_ADDRESS_TYPE_ACCOUNT:
     AccountID accountId;
 case SC_ADDRESS_TYPE_CONTRACT:
     Hash contractId;
+case SC_ADDRESS_TYPE_MUXED_ACCOUNT:
+    MuxedAccount muxedAccount;
 };
 
 %struct SCVal;

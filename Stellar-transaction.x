@@ -891,13 +891,7 @@ struct SorobanResources
 // The transaction extension for Soroban.
 struct SorobanTransactionData
 {
-    union switch (int v)
-    {
-    case 0:
-        void;
-    case 1:
-        ArchivalProof proofs<>;
-    } ext;
+    ExtensionPoint ext;
     SorobanResources resources;
     // Amount of the transaction `fee` allocated to the Soroban resource fees.
     // The fraction of `resourceFee` corresponding to `resources` specified 
