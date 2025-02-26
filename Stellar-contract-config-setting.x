@@ -75,9 +75,10 @@ struct ConfigSettingContractLedgerCostExtV0
 {
     // Maximum number of in-memory ledger entry read operations per transaction
     uint32 txMaxInMemoryReadEntries;
-    // Fee per 1 KB of classic state written by Soroban.
-    // This is a flat fee because Soroban can't increase the classic state size.
-    int64 feeWrite1KBClassic;
+    // Fee per 1 KB of data written to the ledger.
+    // Unlike the rent fee, this is a flat fee that is charged for any ledger
+    // write, independent of the type of the entry being written.
+    int64 feeWrite1KB;
 };
 
 // Historical data (pushed to core archives) settings for contracts.
