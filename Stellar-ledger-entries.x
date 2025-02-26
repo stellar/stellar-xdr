@@ -14,7 +14,6 @@ typedef string string32<32>;
 typedef string string64<64>;
 typedef int64 SequenceNumber;
 typedef opaque DataValue<64>;
-typedef Hash PoolID; // SHA256(LiquidityPoolParameters)
 
 // 1-4 alphanumeric characters right-padded with 0 bytes
 typedef opaque AssetCode4[4];
@@ -407,17 +406,6 @@ case CLAIMANT_TYPE_V0:
         AccountID destination;    // The account that can use this condition
         ClaimPredicate predicate; // Claimable if predicate is true
     } v0;
-};
-
-enum ClaimableBalanceIDType
-{
-    CLAIMABLE_BALANCE_ID_TYPE_V0 = 0
-};
-
-union ClaimableBalanceID switch (ClaimableBalanceIDType type)
-{
-case CLAIMABLE_BALANCE_ID_TYPE_V0:
-    Hash v0;
 };
 
 enum ClaimableBalanceFlags

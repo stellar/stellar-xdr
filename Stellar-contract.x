@@ -3,9 +3,21 @@
 // of this distribution or at http://www.apache.org/licenses/LICENSE-2.0
 
 % #include "xdr/Stellar-types.h"
-% #include "xdr/Stellar-ledger-entries.h"
 namespace stellar
 {
+
+typedef Hash PoolID; // SHA256(LiquidityPoolParameters)
+
+enum ClaimableBalanceIDType
+{
+    CLAIMABLE_BALANCE_ID_TYPE_V0 = 0
+};
+
+union ClaimableBalanceID switch (ClaimableBalanceIDType type)
+{
+case CLAIMABLE_BALANCE_ID_TYPE_V0:
+    Hash v0;
+};
 
 // We fix a maximum of 128 value types in the system for two reasons: we want to
 // keep the codes relatively small (<= 8 bits) when bit-packing values into a
