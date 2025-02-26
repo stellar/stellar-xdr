@@ -314,14 +314,6 @@ struct OperationMeta
     LedgerEntryChanges changes;
 };
 
-struct OperationMetaV2
-{
-    ExtensionPoint ext;
-    LedgerEntryChanges changes;
-    ContractEvent events<>;
-    DiagnosticEvent diagnosticEvents<>;
-};
-
 struct TransactionMetaV1
 {
     LedgerEntryChanges txChanges; // tx level changes if any
@@ -364,6 +356,8 @@ struct ContractEvent
     }
     body;
 };
+
+typedef ContractEvent ContractEvents<>;
 
 struct DiagnosticEvent
 {
@@ -448,6 +442,14 @@ struct TransactionMetaV3
                                          // Soroban transactions).
 };
 
+struct OperationMetaV2
+{
+    ExtensionPoint ext;
+    LedgerEntryChanges changes;
+    ContractEvents* contractEvents;
+    DiagnosticEvents* diagnosticEvents;
+};
+
 struct TransactionMetaV4
 {
     ExtensionPoint ext;
@@ -455,8 +457,8 @@ struct TransactionMetaV4
     OperationMetaV2 operations<>;
     LedgerEntryChanges txChangesAfter;
     SorobanTransactionMetaV2* sorobanMeta;
-    ContractEvent events<>;
-    DiagnosticEvent txDiagnosticEvents<>;
+    ContractEvents events;
+    DiagnosticEvents txDiagnosticEvents;
 };
 
 // This is in Stellar-ledger.x to due to a circular dependency 
