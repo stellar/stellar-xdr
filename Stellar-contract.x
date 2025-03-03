@@ -19,6 +19,19 @@ case CLAIMABLE_BALANCE_ID_TYPE_V0:
     Hash v0;
 };
 
+// Source or destination of a payment operation
+union MuxedAccount switch (CryptoKeyType type)
+{
+case KEY_TYPE_ED25519:
+    uint256 ed25519;
+case KEY_TYPE_MUXED_ED25519:
+    struct
+    {
+        uint64 id;
+        uint256 ed25519;
+    } med25519;
+};
+
 // We fix a maximum of 128 value types in the system for two reasons: we want to
 // keep the codes relatively small (<= 8 bits) when bit-packing values into a
 // u64 at the environment interface level, so that we keep many bits for
@@ -194,7 +207,8 @@ enum SCAddressType
     SC_ADDRESS_TYPE_ACCOUNT = 0,
     SC_ADDRESS_TYPE_CONTRACT = 1,
     SC_ADDRESS_TYPE_CLAIMABLE_BALANCE = 2,
-    SC_ADDRESS_TYPE_LIQUIDITY_POOL = 3
+    SC_ADDRESS_TYPE_LIQUIDITY_POOL = 3,
+    SC_ADDRESS_TYPE_MUXED_ACCOUNT = 4
 };
 
 union SCAddress switch (SCAddressType type)
@@ -207,6 +221,8 @@ case SC_ADDRESS_TYPE_CLAIMABLE_BALANCE:
     ClaimableBalanceID claimableBalanceId;
 case SC_ADDRESS_TYPE_LIQUIDITY_POOL:
     PoolID liquidityPoolId;
+case SC_ADDRESS_TYPE_MUXED_ACCOUNT:
+    MuxedAccount muxedAccount;
 };
 
 %struct SCVal;

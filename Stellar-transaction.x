@@ -17,19 +17,6 @@ case LIQUIDITY_POOL_CONSTANT_PRODUCT:
     LiquidityPoolConstantProductParameters constantProduct;
 };
 
-// Source or destination of a payment operation
-union MuxedAccount switch (CryptoKeyType type)
-{
-case KEY_TYPE_ED25519:
-    uint256 ed25519;
-case KEY_TYPE_MUXED_ED25519:
-    struct
-    {
-        uint64 id;
-        uint256 ed25519;
-    } med25519;
-};
-
 struct DecoratedSignature
 {
     SignatureHint hint;  // last 4 bytes of the public key, used as a hint
