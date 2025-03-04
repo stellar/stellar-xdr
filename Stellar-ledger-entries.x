@@ -682,7 +682,8 @@ enum EnvelopeType
 enum BucketListType
 {
     LIVE = 0,
-    HOT_ARCHIVE = 1
+    HOT_ARCHIVE = 1,
+    COLD_ARCHIVE = 2
 };
 
 /* Entries used to define the bucket list */
