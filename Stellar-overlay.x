@@ -112,6 +112,9 @@ enum MessageType
     // new messages
     HELLO = 13,
 
+    // SURVEY_REQUEST (14) removed and replaced by TIME_SLICED_SURVEY_REQUEST
+    // SURVEY_RESPONSE (15) removed and replaced by TIME_SLICED_SURVEY_RESPONSE
+
     SEND_MORE = 16,
     SEND_MORE_EXTENDED = 20,
 
