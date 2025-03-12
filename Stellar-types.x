@@ -134,4 +134,17 @@ struct SerializedBinaryFuseFilter
     // Array of uint8_t, uint16_t, or uint32_t depending on filter type
     opaque fingerprints<>;
 };
+
+typedef Hash PoolID; // SHA256(LiquidityPoolParameters)
+
+enum ClaimableBalanceIDType
+{
+    CLAIMABLE_BALANCE_ID_TYPE_V0 = 0
+};
+
+union ClaimableBalanceID switch (ClaimableBalanceIDType type)
+{
+case CLAIMABLE_BALANCE_ID_TYPE_V0:
+    Hash v0;
+};
 }
