@@ -441,7 +441,6 @@ struct OperationMetaV2
     LedgerEntryChanges changes;
 
     ContractEvent events<>;
-    DiagnosticEvent diagnosticEvents<>;
 };
 
 struct SorobanTransactionMetaV2
@@ -464,8 +463,7 @@ struct TransactionMetaV4
                                            // Soroban transactions).
 
     ContractEvent events<>; // Used for transaction-level events (like fee payment)
-    DiagnosticEvent txDiagnosticEvents<>; // Used for transaction-level diagnostic
-                                          //  information
+    DiagnosticEvent diagnosticEvents<>; // Used for all diagnostic information
 };
 
 
