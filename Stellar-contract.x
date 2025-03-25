@@ -196,7 +196,7 @@ union SCAddress switch (SCAddressType type)
 case SC_ADDRESS_TYPE_ACCOUNT:
     AccountID accountId;
 case SC_ADDRESS_TYPE_CONTRACT:
-    Hash contractId;
+    ContractID contractId;
 case SC_ADDRESS_TYPE_MUXED_ACCOUNT:
     MuxedEd25519Account muxedAccount;
 case SC_ADDRESS_TYPE_CLAIMABLE_BALANCE:
