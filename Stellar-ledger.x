@@ -128,7 +128,7 @@ enum LedgerUpgradeType
 };
 
 struct ConfigUpgradeSetKey {
-    Hash contractID;
+    ContractID contractID;
     Hash contentHash;
 };
 
@@ -374,7 +374,7 @@ struct ContractEvent
     // is first, to change ContractEvent into a union.
     ExtensionPoint ext;
 
-    Hash* contractID;
+    ContractID* contractID;
     ContractEventType type;
 
     union switch (int v)

@@ -84,6 +84,8 @@ typedef opaque SignatureHint[4];
 typedef PublicKey NodeID;
 typedef PublicKey AccountID;
 
+typedef Hash ContractID;
+
 struct Curve25519Secret
 {
     opaque key[32];
