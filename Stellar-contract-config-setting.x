@@ -23,6 +23,16 @@ struct ConfigSettingContractComputeV0
     uint32 txMemoryLimit;
 };
 
+// Settings for running the contract transactions in parallel.
+struct ConfigSettingContractParallelComputeV0
+{
+    // Maximum number of clusters with dependent transactions allowed in a
+    // stage of parallel tx set component.
+    // This effectively sets the lower bound on the number of physical threads
+    // necessary to effectively apply transaction sets in parallel.
+    uint32 ledgerMaxDependentTxClusters;
+};
+
 // Ledger access settings for contracts.
 struct ConfigSettingContractLedgerCostV0
 {
@@ -58,6 +68,17 @@ struct ConfigSettingContractLedgerCostV0
     int64 writeFee1KBBucketListHigh;
     // Write fee multiplier for any additional data past the first `bucketListTargetSizeBytes`
     uint32 bucketListWriteFeeGrowthFactor;
+};
+
+// Ledger access settings for contracts.
+struct ConfigSettingContractLedgerCostExtV0
+{
+    // Maximum number of in-memory ledger entry read operations per transaction
+    uint32 txMaxInMemoryReadEntries;
+    // Fee per 1 KB of data written to the ledger.
+    // Unlike the rent fee, this is a flat fee that is charged for any ledger
+    // write, independent of the type of the entry being written.
+    int64 feeWrite1KB;
 };
 
 // Historical data (pushed to core archives) settings for contracts.
@@ -302,7 +323,9 @@ enum ConfigSettingID
     CONFIG_SETTING_STATE_ARCHIVAL = 10,
     CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,
     CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW = 12,
-    CONFIG_SETTING_EVICTION_ITERATOR = 13
+    CONFIG_SETTING_EVICTION_ITERATOR = 13,
+    CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14,
+    CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -335,5 +358,9 @@ case CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW:
     uint64 bucketListSizeWindow<>;
 case CONFIG_SETTING_EVICTION_ITERATOR:
     EvictionIterator evictionIterator;
+case CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0:
+    ConfigSettingContractParallelComputeV0 contractParallelCompute;
+case CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0:
+    ConfigSettingContractLedgerCostExtV0 contractLedgerCostExt;
 };
 }
