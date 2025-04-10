@@ -36,38 +36,38 @@ struct ConfigSettingContractParallelComputeV0
 // Ledger access settings for contracts.
 struct ConfigSettingContractLedgerCostV0
 {
-    // Maximum number of ledger entry read operations per ledger
-    uint32 ledgerMaxReadLedgerEntries;
-    // Maximum number of bytes that can be read per ledger
-    uint32 ledgerMaxReadBytes;
+    // Maximum number of disk entry read operations per ledger
+    uint32 ledgerMaxDiskReadEntries;
+    // Maximum number of bytes of disk reads that can be performed per ledger
+    uint32 ledgerMaxDiskReadBytes;
     // Maximum number of ledger entry write operations per ledger
     uint32 ledgerMaxWriteLedgerEntries;
     // Maximum number of bytes that can be written per ledger
     uint32 ledgerMaxWriteBytes;
 
-    // Maximum number of ledger entry read operations per transaction
-    uint32 txMaxReadLedgerEntries;
-    // Maximum number of bytes that can be read per transaction
-    uint32 txMaxReadBytes;
+    // Maximum number of disk entry read operations per transaction
+    uint32 txMaxDiskReadEntries;
+    // Maximum number of bytes of disk reads that can be performed per transaction
+    uint32 txMaxDiskReadBytes;
     // Maximum number of ledger entry write operations per transaction
     uint32 txMaxWriteLedgerEntries;
     // Maximum number of bytes that can be written per transaction
     uint32 txMaxWriteBytes;
 
-    int64 feeReadLedgerEntry;  // Fee per ledger entry read
-    int64 feeWriteLedgerEntry; // Fee per ledger entry write
+    int64 feeDiskReadLedgerEntry;  // Fee per disk ledger entry read
+    int64 feeWriteLedgerEntry;     // Fee per ledger entry write
 
-    int64 feeRead1KB;  // Fee for reading 1KB
+    int64 feeDiskRead1KB;          // Fee for reading 1KB disk
 
     // The following parameters determine the write fee per 1KB.
-    // Write fee grows linearly until bucket list reaches this size
-    int64 bucketListTargetSizeBytes;
-    // Fee per 1KB write when the bucket list is empty
-    int64 writeFee1KBBucketListLow;
-    // Fee per 1KB write when the bucket list has reached `bucketListTargetSizeBytes` 
-    int64 writeFee1KBBucketListHigh;
-    // Write fee multiplier for any additional data past the first `bucketListTargetSizeBytes`
-    uint32 bucketListWriteFeeGrowthFactor;
+    // Rent fee grows linearly until soroban state reaches this size
+    int64 sorobanStateTargetSizeBytes;
+    // Fee per 1KB rent when the soroban state is empty
+    int64 rentFee1KBSorobanStateSizeLow;
+    // Fee per 1KB rent when the soroban state has reached `sorobanStateTargetSizeBytes`
+    int64 rentFee1KBSorobanStateSizeHigh;
+    // Rent fee multiplier for any additional data past the first `sorobanStateTargetSizeBytes`
+    uint32 sorobanStateRentFeeGrowthFactor;
 };
 
 // Ledger access settings for contracts.
