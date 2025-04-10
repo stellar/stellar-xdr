@@ -727,7 +727,6 @@ case HOT_ARCHIVE_ARCHIVED:
     LedgerEntry archivedEntry;
 
 case HOT_ARCHIVE_LIVE:
-case HOT_ARCHIVE_DELETED:
     LedgerKey key;
 case HOT_ARCHIVE_METAENTRY:
     BucketMetadata metaEntry;
