@@ -164,6 +164,33 @@ enum TxSetComponentType
   TXSET_COMP_TXS_MAYBE_DISCOUNTED_FEE = 0
 };
 
+// A collection of transactions that *may* have arbitrary read-write data
+// dependencies between each other, i.e. in a general case the transaction
+// execution order within a cluster may not be arbitrarily shuffled without
+// affecting the end result.
+typedef TransactionEnvelope DependentTxCluster<>;
+// A collection of clusters such that are *guaranteed* to not have read-write 
+// data dependencies in-between clusters, i.e. such that the cluster execution 
+// order can be arbitrarily shuffled without affecting the end result. Thus
+// clusters can be executed in parallel with respect to each other.
+typedef DependentTxCluster ParallelTxExecutionStage<>;
+
+// Transaction set component that contains transactions organized in a 
+// parallelism-friendly fashion.
+//
+// The component consists of several stages that have to be executed in 
+// sequential order, each stage consists of several clusters that can be 
+// executed in parallel, and the cluster itself consists of several 
+// transactions that have to be executed in sequential order in a general case.
+struct ParallelTxsComponent
+{
+  int64* baseFee;
+  // A sequence of stages that *may* have arbitrary data dependencies between
+  // each other, i.e. in a general case the stage execution order may not be
+  // arbitrarily shuffled without affecting the end result.
+  ParallelTxExecutionStage executionStages<>;
+};
+
 union TxSetComponent switch (TxSetComponentType type)
 {
 case TXSET_COMP_TXS_MAYBE_DISCOUNTED_FEE:
@@ -178,6 +205,8 @@ union TransactionPhase switch (int v)
 {
 case 0:
     TxSetComponent v0Components<>;
+case 1:
+    ParallelTxsComponent parallelTxsComponent;
 };
 
 // Transaction sets are the unit used by SCP to decide on transitions
@@ -292,7 +321,8 @@ enum LedgerEntryChangeType
     LEDGER_ENTRY_CREATED = 0, // entry was added to the ledger
     LEDGER_ENTRY_UPDATED = 1, // entry was modified in the ledger
     LEDGER_ENTRY_REMOVED = 2, // entry was removed from the ledger
-    LEDGER_ENTRY_STATE = 3    // value of the entry
+    LEDGER_ENTRY_STATE    = 3, // value of the entry
+    LEDGER_ENTRY_RESTORED = 4  // archived entry was restored in the ledger
 };
 
 union LedgerEntryChange switch (LedgerEntryChangeType type)
@@ -305,6 +335,8 @@ case LEDGER_ENTRY_REMOVED:
     LedgerKey removed;
 case LEDGER_ENTRY_STATE:
     LedgerEntry state;
+case LEDGER_ENTRY_RESTORED:
+    LedgerEntry restored;
 };
 
 typedef LedgerEntryChange LedgerEntryChanges<>;
@@ -362,8 +394,6 @@ struct DiagnosticEvent
     bool inSuccessfulContractCall;
     ContractEvent event;
 };
-
-typedef DiagnosticEvent DiagnosticEvents<>;
 
 struct SorobanTransactionMetaExtV1
 {
@@ -563,10 +593,12 @@ struct LedgerCloseMetaV1
     // systems calculating storage fees correctly.
     uint64 totalByteSizeOfBucketList;
 
-    // Temp keys that are being evicted at this ledger.
+    // Temp keys and all TTL keys that are being evicted at this ledger.
+    // Note that this can contain TTL keys for both persistent and temporary
+    // entries, but the name is kept for legacy reasons.
     LedgerKey evictedTemporaryLedgerKeys<>;
 
-    // Archived restorable ledger entries that are being
+    // Archived persistent ledger entries that are being
     // evicted at this ledger.
     LedgerEntry evictedPersistentLedgerEntries<>;
 };
