@@ -283,11 +283,11 @@ struct StateArchivalSettings {
     // max number of entries that emit archival meta in a single ledger
     uint32 maxEntriesToArchive;
 
-    // Number of snapshots to use when calculating average BucketList size
-    uint32 bucketListSizeWindowSampleSize;
+    // Number of snapshots to use when calculating average live Soroban State size
+    uint32 liveSorobanStateSizeWindowSampleSize;
 
-    // How often to sample the BucketList size for the average, in ledgers
-    uint32 bucketListWindowSamplePeriod;
+    // How often to sample the live Soroban State size for the average, in ledgers
+    uint32 liveSorobanStateSizeWindowSamplePeriod;
 
     // Maximum number of bytes that we scan for eviction per ledger
     uint32 evictionScanSize;
@@ -322,7 +322,7 @@ enum ConfigSettingID
     CONFIG_SETTING_CONTRACT_DATA_ENTRY_SIZE_BYTES = 9,
     CONFIG_SETTING_STATE_ARCHIVAL = 10,
     CONFIG_SETTING_CONTRACT_EXECUTION_LANES = 11,
-    CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW = 12,
+    CONFIG_SETTING_LIVE_SOROBAN_STATE_SIZE_WINDOW = 12,
     CONFIG_SETTING_EVICTION_ITERATOR = 13,
     CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14,
     CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15
@@ -354,8 +354,8 @@ case CONFIG_SETTING_STATE_ARCHIVAL:
     StateArchivalSettings stateArchivalSettings;
 case CONFIG_SETTING_CONTRACT_EXECUTION_LANES:
     ConfigSettingContractExecutionLanesV0 contractExecutionLanes;
-case CONFIG_SETTING_BUCKETLIST_SIZE_WINDOW:
-    uint64 bucketListSizeWindow<>;
+case CONFIG_SETTING_LIVE_SOROBAN_STATE_SIZE_WINDOW:
+    uint64 liveSorobanStateSizeWindow<>;
 case CONFIG_SETTING_EVICTION_ITERATOR:
     EvictionIterator evictionIterator;
 case CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0:
