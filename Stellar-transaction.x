@@ -594,6 +594,8 @@ struct SorobanAuthorizationEntry
     SorobanAuthorizedInvocation rootInvocation;
 };
 
+typedef SorobanAuthorizationEntry SorobanAuthorizationEntries<>;
+
 /* Upload Wasm, create, and invoke contracts in Soroban.
 
     Threshold: med
