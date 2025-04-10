@@ -589,9 +589,9 @@ struct LedgerCloseMetaV1
     // other misc information attached to the ledger close
     SCPHistoryEntry scpInfo<>;
 
-    // Size in bytes of BucketList, to support downstream
+    // Size in bytes of live Soroban state, to support downstream
     // systems calculating storage fees correctly.
-    uint64 totalByteSizeOfBucketList;
+    uint64 totalByteSizeOfLiveSorobanState;
 
     // TTL and data/code keys that have been evicted at this ledger.
     LedgerKey evictedKeys<>;
