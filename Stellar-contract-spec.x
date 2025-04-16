@@ -216,13 +216,53 @@ struct SCSpecFunctionV0
     SCSpecTypeDef outputs<1>;
 };
 
+struct SCSpecEventTopicV0
+{
+    string doc<SC_SPEC_DOC_LIMIT>;
+    string name<30>;
+    SCSpecTypeDef type;
+};
+
+struct SCSpecEventDataValueV0
+{
+    string doc<SC_SPEC_DOC_LIMIT>;
+    string name<30>;
+    SCSpecTypeDef type;
+};
+
+enum SCSpecEventDataFormatV0
+{
+    SC_SPEC_EVENT_DATA_FORMAT_SINGLE_VALUE_V0 = 0,
+    SC_SPEC_EVENT_DATA_FORMAT_VEC_V0 = 1,
+    SC_SPEC_EVENT_DATA_FORMAT_MAP_V0 = 2
+};
+
+union SCSpecEventDataV0 switch (SCSpecEventDataFormatV0 type)
+{
+case SC_SPEC_EVENT_DATA_FORMAT_SINGLE_VALUE_V0:
+    SCSpecEventDataValueV0 singleValue;
+case SC_SPEC_EVENT_DATA_FORMAT_VEC_V0:
+    SCSpecEventDataValueV0 vec<30>;
+case SC_SPEC_EVENT_DATA_FORMAT_MAP_V0:
+    SCSpecEventDataValueV0 map<30>;
+};
+
+struct SCSpecEventV0
+{
+    string doc<SC_SPEC_DOC_LIMIT>;
+    SCSymbol name;
+    SCSpecEventTopicV0 topics<4>;
+    SCSpecEventDataV0 data;
+};
+
 enum SCSpecEntryKind
 {
     SC_SPEC_ENTRY_FUNCTION_V0 = 0,
     SC_SPEC_ENTRY_UDT_STRUCT_V0 = 1,
     SC_SPEC_ENTRY_UDT_UNION_V0 = 2,
     SC_SPEC_ENTRY_UDT_ENUM_V0 = 3,
-    SC_SPEC_ENTRY_UDT_ERROR_ENUM_V0 = 4
+    SC_SPEC_ENTRY_UDT_ERROR_ENUM_V0 = 4,
+    SC_SPEC_ENTRY_EVENT_V0 = 5
 };
 
 union SCSpecEntry switch (SCSpecEntryKind kind)
@@ -237,6 +277,8 @@ case SC_SPEC_ENTRY_UDT_ENUM_V0:
     SCSpecUDTEnumV0 udtEnumV0;
 case SC_SPEC_ENTRY_UDT_ERROR_ENUM_V0:
     SCSpecUDTErrorEnumV0 udtErrorEnumV0;
+case SC_SPEC_ENTRY_EVENT_V0:
+    SCSpecEventV0 eventV0;
 };
 
 }
