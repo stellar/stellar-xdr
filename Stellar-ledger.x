@@ -477,7 +477,7 @@ struct SorobanTransactionMetaV2
 {
     SorobanTransactionMetaExt ext;
 
-    SCVal returnValue;
+    SCVal* returnValue;
 };
 
 struct TransactionMetaV4
