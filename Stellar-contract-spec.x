@@ -216,14 +216,21 @@ struct SCSpecFunctionV0
     SCSpecTypeDef outputs<1>;
 };
 
+enum SCSpecEventFieldKindV0
+{
+    SC_SPEC_EVENT_FIELD_KIND_TOPIC = 0,
+    SC_SPEC_EVENT_FIELD_KIND_DATA = 1
+};
+
 struct SCSpecEventFieldV0
 {
+    SCSpecEventFieldKindV0 kind;
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<30>;
     SCSpecTypeDef type;
 };
 
-enum SCSpecEventDataFormatV0
+enum SCSpecEventDataFormat
 {
     SC_SPEC_EVENT_DATA_FORMAT_SINGLE_VALUE = 0,
     SC_SPEC_EVENT_DATA_FORMAT_VEC = 1,
@@ -235,9 +242,8 @@ struct SCSpecEventV0
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     SCSymbol name;
-    SCSpecEventFieldV0 topics<4>;
-    SCSpecEventDataFormatV0 dataFormat;
-    SCSpecEventFieldV0 data<30>;
+    SCSpecEventFieldV0 fields<50>;
+    SCSpecEventDataFormat dataFormat;
 };
 
 enum SCSpecEntryKind
