@@ -239,11 +239,11 @@ enum SCSpecEventDataFormat
 
 struct SCSpecEventV0
 {
+    SCSpecEventDataFormat dataFormat;
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     SCSymbol name;
     SCSpecEventFieldV0 fields<50>;
-    SCSpecEventDataFormat dataFormat;
 };
 
 enum SCSpecEntryKind
