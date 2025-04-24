@@ -233,6 +233,7 @@ enum SCSpecEventDataFormatV0
 struct SCSpecEventV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
+    string lib<80>;
     SCSymbol name;
     SCSpecEventFieldV0 topics<4>;
     SCSpecEventDataFormatV0 dataFormat;
