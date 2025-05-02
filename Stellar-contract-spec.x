@@ -220,16 +220,16 @@ struct SCSpecFunctionV0
 
 enum SCSpecEventFieldLocationV0
 {
-    SC_SPEC_EVENT_FIELD_LOCATION_TOPIC_LIST = 0,
-    SC_SPEC_EVENT_FIELD_LOCATION_DATA = 1
+    SC_SPEC_EVENT_FIELD_LOCATION_DATA = 0,
+    SC_SPEC_EVENT_FIELD_LOCATION_TOPIC_LIST = 1
 };
 
 struct SCSpecEventFieldV0
 {
-    SCSpecEventFieldLocationV0 location;
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<30>;
     SCSpecTypeDef type;
+    SCSpecEventFieldLocationV0 location;
 };
 
 enum SCSpecEventDataFormat
