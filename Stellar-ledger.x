@@ -488,13 +488,13 @@ struct SorobanTransactionMetaV2
 enum TransactionEventStage {
     // The event has happened before any one of the transactions has its 
     // operations applied.
-    TRANSCATION_EVENT_STAGE_BEFORE_ALL_TXS = 0,
+    TRANSACTION_EVENT_STAGE_BEFORE_ALL_TXS = 0,
     // The event has happened immediately after operations of the transaction
     // have been applied.
-    TRANSCATION_EVENT_STAGE_AFTER_TX = 1,
+    TRANSACTION_EVENT_STAGE_AFTER_TX = 1,
     // The event has happened after every transaction had its operations 
     // applied.
-    TRANSCATION_EVENT_STAGE_AFTER_ALL_TXS = 2
+    TRANSACTION_EVENT_STAGE_AFTER_ALL_TXS = 2
 }
 
 // Represents a transaction-level event in metadata.
