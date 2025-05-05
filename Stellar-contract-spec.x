@@ -218,18 +218,18 @@ struct SCSpecFunctionV0
     SCSpecTypeDef outputs<1>;
 };
 
-enum SCSpecEventFieldLocationV0
+enum SCSpecEventParamLocationV0
 {
-    SC_SPEC_EVENT_FIELD_LOCATION_DATA = 0,
-    SC_SPEC_EVENT_FIELD_LOCATION_TOPIC_LIST = 1
+    SC_SPEC_EVENT_PARAM_LOCATION_DATA = 0,
+    SC_SPEC_EVENT_PARAM_LOCATION_TOPIC_LIST = 1
 };
 
-struct SCSpecEventFieldV0
+struct SCSpecEventParamV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<30>;
     SCSpecTypeDef type;
-    SCSpecEventFieldLocationV0 location;
+    SCSpecEventParamLocationV0 location;
 };
 
 enum SCSpecEventDataFormat
@@ -244,7 +244,7 @@ struct SCSpecEventV0
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     SCSymbol name;
-    SCSpecEventFieldV0 fields<50>;
+    SCSpecEventParamV0 params<50>;
     SCSpecEventDataFormat dataFormat;
 };
 
