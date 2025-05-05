@@ -302,6 +302,14 @@ struct EvictionIterator {
     uint64 bucketFileOffset;
 };
 
+struct ConfigSettingSCPTiming {
+    uint32 ledgerTargetCloseTimeMilliseconds;
+    uint32 nominationTimeoutInitialMilliseconds;
+    uint32 nominationTimeoutIncrementMilliseconds;
+    uint32 ballotTimeoutInitialMilliseconds;
+    uint32 ballotTimeoutIncrementMilliseconds;
+};
+
 // limits the ContractCostParams size to 20kB
 const CONTRACT_COST_COUNT_LIMIT = 1024;
 
@@ -325,7 +333,8 @@ enum ConfigSettingID
     CONFIG_SETTING_LIVE_SOROBAN_STATE_SIZE_WINDOW = 12,
     CONFIG_SETTING_EVICTION_ITERATOR = 13,
     CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0 = 14,
-    CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15
+    CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0 = 15,
+    CONFIG_SETTING_SCP_TIMING = 16
 };
 
 union ConfigSettingEntry switch (ConfigSettingID configSettingID)
@@ -362,5 +371,7 @@ case CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0:
     ConfigSettingContractParallelComputeV0 contractParallelCompute;
 case CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0:
     ConfigSettingContractLedgerCostExtV0 contractLedgerCostExt;
+case CONFIG_SETTING_SCP_TIMING:
+    ConfigSettingSCPTiming contractSCPTiming;
 };
 }
