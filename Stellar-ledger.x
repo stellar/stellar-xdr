@@ -481,8 +481,8 @@ struct SorobanTransactionMetaV2
 };
 
 // Transaction-level events happen at different stages of the ledger apply flow
-// (as opposed to the operation events that all happen atomically when 
-// transaction is applied).
+// (as opposed to the operation events that all happen atomically after 
+// a transaction is applied).
 // This enum represents the possible stages during which an event has been
 // emitted.
 enum TransactionEventStage {
@@ -495,7 +495,7 @@ enum TransactionEventStage {
     // The event has happened after every transaction had its operations 
     // applied.
     TRANSACTION_EVENT_STAGE_AFTER_ALL_TXS = 2
-}
+};
 
 // Represents a transaction-level event in metadata.
 // Currently this is limited to the fee events (when fee is charged or 
@@ -503,7 +503,7 @@ enum TransactionEventStage {
 struct TransactionEvent {    
     TransactionEventStage stage;  // Stage at which an event has occurred.
     ContractEvent event;  // The contract event that has occurred.
-}
+};
 
 struct TransactionMetaV4
 {
