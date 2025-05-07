@@ -594,6 +594,8 @@ struct SorobanAuthorizationEntry
     SorobanAuthorizedInvocation rootInvocation;
 };
 
+typedef SorobanAuthorizationEntry SorobanAuthorizationEntries<>;
+
 /* Upload Wasm, create, and invoke contracts in Soroban.
 
     Threshold: med
@@ -832,8 +834,8 @@ struct SorobanResources
     // The maximum number of instructions this transaction can use
     uint32 instructions; 
 
-    // The maximum number of bytes this transaction can read from ledger
-    uint32 readBytes;
+    // The maximum number of bytes this transaction can read from disk backed entries
+    uint32 diskReadBytes;
     // The maximum number of bytes this transaction can write to ledger
     uint32 writeBytes;
 };
@@ -1833,8 +1835,7 @@ enum InvokeHostFunctionResultCode
     INVOKE_HOST_FUNCTION_TRAPPED = -2,
     INVOKE_HOST_FUNCTION_RESOURCE_LIMIT_EXCEEDED = -3,
     INVOKE_HOST_FUNCTION_ENTRY_ARCHIVED = -4,
-    INVOKE_HOST_FUNCTION_INSUFFICIENT_REFUNDABLE_FEE = -5,
-    INVOKE_HOST_FUNCTION_INVALID_CREATION_PROOF = -6
+    INVOKE_HOST_FUNCTION_INSUFFICIENT_REFUNDABLE_FEE = -5
 };
 
 union InvokeHostFunctionResult switch (InvokeHostFunctionResultCode code)
@@ -1878,8 +1879,7 @@ enum RestoreFootprintResultCode
     // codes considered as "failure" for the operation
     RESTORE_FOOTPRINT_MALFORMED = -1,
     RESTORE_FOOTPRINT_RESOURCE_LIMIT_EXCEEDED = -2,
-    RESTORE_FOOTPRINT_INSUFFICIENT_REFUNDABLE_FEE = -3,
-    RESTORE_FOOTPRINT_INVALID_PROOF = -4
+    RESTORE_FOOTPRINT_INSUFFICIENT_REFUNDABLE_FEE = -3
 };
 
 union RestoreFootprintResult switch (RestoreFootprintResultCode code)

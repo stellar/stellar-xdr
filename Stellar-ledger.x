@@ -128,7 +128,7 @@ enum LedgerUpgradeType
 };
 
 struct ConfigUpgradeSetKey {
-    Hash contractID;
+    ContractID contractID;
     Hash contentHash;
 };
 
@@ -318,9 +318,9 @@ case 0:
 
 enum LedgerEntryChangeType
 {
-    LEDGER_ENTRY_CREATED  = 0, // entry was added to the ledger
-    LEDGER_ENTRY_UPDATED  = 1, // entry was modified in the ledger
-    LEDGER_ENTRY_REMOVED  = 2, // entry was removed from the ledger
+    LEDGER_ENTRY_CREATED = 0, // entry was added to the ledger
+    LEDGER_ENTRY_UPDATED = 1, // entry was modified in the ledger
+    LEDGER_ENTRY_REMOVED = 2, // entry was removed from the ledger
     LEDGER_ENTRY_STATE    = 3, // value of the entry
     LEDGER_ENTRY_RESTORED = 4  // archived entry was restored in the ledger
 };
@@ -374,7 +374,7 @@ struct ContractEvent
     // is first, to change ContractEvent into a union.
     ExtensionPoint ext;
 
-    Hash* contractID;
+    ContractID* contractID;
     ContractEventType type;
 
     union switch (int v)
@@ -464,6 +464,64 @@ struct TransactionMetaV3
                                          // Soroban transactions).
 };
 
+struct OperationMetaV2
+{
+    ExtensionPoint ext;
+
+    LedgerEntryChanges changes;
+
+    ContractEvent events<>;
+};
+
+struct SorobanTransactionMetaV2
+{
+    SorobanTransactionMetaExt ext;
+
+    SCVal* returnValue;
+};
+
+// Transaction-level events happen at different stages of the ledger apply flow
+// (as opposed to the operation events that all happen atomically after 
+// a transaction is applied).
+// This enum represents the possible stages during which an event has been
+// emitted.
+enum TransactionEventStage {
+    // The event has happened before any one of the transactions has its 
+    // operations applied.
+    TRANSACTION_EVENT_STAGE_BEFORE_ALL_TXS = 0,
+    // The event has happened immediately after operations of the transaction
+    // have been applied.
+    TRANSACTION_EVENT_STAGE_AFTER_TX = 1,
+    // The event has happened after every transaction had its operations 
+    // applied.
+    TRANSACTION_EVENT_STAGE_AFTER_ALL_TXS = 2
+};
+
+// Represents a transaction-level event in metadata.
+// Currently this is limited to the fee events (when fee is charged or 
+// refunded).
+struct TransactionEvent {    
+    TransactionEventStage stage;  // Stage at which an event has occurred.
+    ContractEvent event;  // The contract event that has occurred.
+};
+
+struct TransactionMetaV4
+{
+    ExtensionPoint ext;
+
+    LedgerEntryChanges txChangesBefore;  // tx level changes before operations
+                                         // are applied if any
+    OperationMetaV2 operations<>;        // meta for each operation
+    LedgerEntryChanges txChangesAfter;   // tx level changes after operations are
+                                         // applied if any
+    SorobanTransactionMetaV2* sorobanMeta; // Soroban-specific meta (only for
+                                           // Soroban transactions).
+
+    TransactionEvent events<>; // Used for transaction-level events (like fee payment)
+    DiagnosticEvent diagnosticEvents<>; // Used for all diagnostic information
+};
+
+
 // This is in Stellar-ledger.x to due to a circular dependency 
 struct InvokeHostFunctionSuccessPreImage
 {
@@ -483,6 +541,8 @@ case 2:
     TransactionMetaV2 v2;
 case 3:
     TransactionMetaV3 v3;
+case 4:
+    TransactionMetaV4 v4;
 };
 
 // This struct groups together changes on a per transaction basis
@@ -568,18 +628,15 @@ struct LedgerCloseMetaV1
     // other misc information attached to the ledger close
     SCPHistoryEntry scpInfo<>;
 
-    // Size in bytes of BucketList, to support downstream
+    // Size in bytes of live Soroban state, to support downstream
     // systems calculating storage fees correctly.
-    uint64 totalByteSizeOfBucketList;
+    uint64 totalByteSizeOfLiveSorobanState;
 
-    // Temp keys and all TTL keys that are being evicted at this ledger.
-    // Note that this can contain TTL keys for both persistent and temporary
-    // entries, but the name is kept for legacy reasons.
-    LedgerKey evictedTemporaryLedgerKeys<>;
+    // TTL and data/code keys that have been evicted at this ledger.
+    LedgerKey evictedKeys<>;
 
-    // Archived persistent ledger entries that are being
-    // evicted at this ledger.
-    LedgerEntry evictedPersistentLedgerEntries<>;
+    // Maintained for backwards compatibility, should never be populated.
+    LedgerEntry unused<>;
 };
 
 struct LedgerCloseMetaV2
