@@ -555,6 +555,20 @@ struct TransactionResultMeta
     TransactionMeta txApplyProcessing;
 };
 
+// This struct groups together changes on a per transaction basis
+// note however that fees and transaction application are done in separate
+// phases
+struct TransactionResultMetaV1
+{
+    ExtensionPoint ext;
+
+    TransactionResultPair result;
+    LedgerEntryChanges feeProcessing;
+    TransactionMeta txApplyProcessing;
+
+    LedgerEntryChanges postTxApplyFeeProcessing;
+};
+
 // this represents a single upgrade that was performed as part of a ledger
 // upgrade
 struct UpgradeEntryMeta
@@ -625,11 +639,46 @@ struct LedgerCloseMetaV1
     LedgerEntry unused<>;
 };
 
+struct LedgerCloseMetaV2
+{
+    LedgerCloseMetaExt ext;
+
+    LedgerHeaderHistoryEntry ledgerHeader;
+
+    GeneralizedTransactionSet txSet;
+
+    // NB: transactions are sorted in apply order here
+    // fees for all transactions are processed first
+    // followed by applying transactions
+    TransactionResultMetaV1 txProcessing<>;
+
+    // upgrades are applied last
+    UpgradeEntryMeta upgradesProcessing<>;
+
+    // other misc information attached to the ledger close
+    SCPHistoryEntry scpInfo<>;
+
+    // Size in bytes of BucketList, to support downstream
+    // systems calculating storage fees correctly.
+    uint64 totalByteSizeOfBucketList;
+
+    // Temp keys and all TTL keys that are being evicted at this ledger.
+    // Note that this can contain TTL keys for both persistent and temporary
+    // entries, but the name is kept for legacy reasons.
+    LedgerKey evictedTemporaryLedgerKeys<>;
+
+    // Archived persistent ledger entries that are being
+    // evicted at this ledger.
+    LedgerEntry evictedPersistentLedgerEntries<>;
+};
+
 union LedgerCloseMeta switch (int v)
 {
 case 0:
     LedgerCloseMetaV0 v0;
 case 1:
     LedgerCloseMetaV1 v1;
+case 2:
+    LedgerCloseMetaV2 v2;
 };
 }
