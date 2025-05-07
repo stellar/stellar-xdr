@@ -488,7 +488,7 @@ case 3:
 // This struct groups together changes on a per transaction basis
 // note however that fees and transaction application are done in separate
 // phases
-struct TransactionResultMetaV0
+struct TransactionResultMeta
 {
     TransactionResultPair result;
     LedgerEntryChanges feeProcessing;
@@ -526,7 +526,7 @@ struct LedgerCloseMetaV0
     // NB: transactions are sorted in apply order here
     // fees for all transactions are processed first
     // followed by applying transactions
-    TransactionResultMetaV0 txProcessing<>;
+    TransactionResultMeta txProcessing<>;
 
     // upgrades are applied last
     UpgradeEntryMeta upgradesProcessing<>;
@@ -560,7 +560,7 @@ struct LedgerCloseMetaV1
     // NB: transactions are sorted in apply order here
     // fees for all transactions are processed first
     // followed by applying transactions
-    TransactionResultMetaV0 txProcessing<>;
+    TransactionResultMeta txProcessing<>;
 
     // upgrades are applied last
     UpgradeEntryMeta upgradesProcessing<>;
