@@ -279,13 +279,12 @@ case SCV_ADDRESS:
 
 // Special SCVals reserved for system-constructed contract-data
 // ledger keys, not generally usable elsewhere.
+case SCV_CONTRACT_INSTANCE:
+    SCContractInstance instance;
 case SCV_LEDGER_KEY_CONTRACT_INSTANCE:
     void;
 case SCV_LEDGER_KEY_NONCE:
     SCNonceKey nonce_key;
-
-case SCV_CONTRACT_INSTANCE:
-    SCContractInstance instance;
 };
 
 struct SCMapEntry
