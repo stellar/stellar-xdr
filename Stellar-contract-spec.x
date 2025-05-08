@@ -34,6 +34,7 @@ enum SCSpecType
     SC_SPEC_TYPE_STRING = 16,
     SC_SPEC_TYPE_SYMBOL = 17,
     SC_SPEC_TYPE_ADDRESS = 19,
+    SC_SPEC_TYPE_MUXED_ADDRESS = 20,
 
     // Types with parameters.
     SC_SPEC_TYPE_OPTION = 1000,
@@ -104,6 +105,7 @@ case SC_SPEC_TYPE_BYTES:
 case SC_SPEC_TYPE_STRING:
 case SC_SPEC_TYPE_SYMBOL:
 case SC_SPEC_TYPE_ADDRESS:
+case SC_SPEC_TYPE_MUXED_ADDRESS:
     void;
 case SC_SPEC_TYPE_OPTION:
     SCSpecTypeOption option;

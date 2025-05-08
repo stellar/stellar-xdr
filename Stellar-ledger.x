@@ -128,7 +128,7 @@ enum LedgerUpgradeType
 };
 
 struct ConfigUpgradeSetKey {
-    Hash contractID;
+    ContractID contractID;
     Hash contentHash;
 };
 
@@ -164,12 +164,30 @@ enum TxSetComponentType
   TXSET_COMP_TXS_MAYBE_DISCOUNTED_FEE = 0
 };
 
-typedef TransactionEnvelope TxExecutionThread<>;
-typedef TxExecutionThread ParallelTxExecutionStage<>;
+// A collection of transactions that *may* have arbitrary read-write data
+// dependencies between each other, i.e. in a general case the transaction
+// execution order within a cluster may not be arbitrarily shuffled without
+// affecting the end result.
+typedef TransactionEnvelope DependentTxCluster<>;
+// A collection of clusters such that are *guaranteed* to not have read-write 
+// data dependencies in-between clusters, i.e. such that the cluster execution 
+// order can be arbitrarily shuffled without affecting the end result. Thus
+// clusters can be executed in parallel with respect to each other.
+typedef DependentTxCluster ParallelTxExecutionStage<>;
 
+// Transaction set component that contains transactions organized in a 
+// parallelism-friendly fashion.
+//
+// The component consists of several stages that have to be executed in 
+// sequential order, each stage consists of several clusters that can be 
+// executed in parallel, and the cluster itself consists of several 
+// transactions that have to be executed in sequential order in a general case.
 struct ParallelTxsComponent
 {
   int64* baseFee;
+  // A sequence of stages that *may* have arbitrary data dependencies between
+  // each other, i.e. in a general case the stage execution order may not be
+  // arbitrarily shuffled without affecting the end result.
   ParallelTxExecutionStage executionStages<>;
 };
 
@@ -300,9 +318,9 @@ case 0:
 
 enum LedgerEntryChangeType
 {
-    LEDGER_ENTRY_CREATED  = 0, // entry was added to the ledger
-    LEDGER_ENTRY_UPDATED  = 1, // entry was modified in the ledger
-    LEDGER_ENTRY_REMOVED  = 2, // entry was removed from the ledger
+    LEDGER_ENTRY_CREATED = 0, // entry was added to the ledger
+    LEDGER_ENTRY_UPDATED = 1, // entry was modified in the ledger
+    LEDGER_ENTRY_REMOVED = 2, // entry was removed from the ledger
     LEDGER_ENTRY_STATE    = 3, // value of the entry
     LEDGER_ENTRY_RESTORED = 4  // archived entry was restored in the ledger
 };
@@ -356,7 +374,7 @@ struct ContractEvent
     // is first, to change ContractEvent into a union.
     ExtensionPoint ext;
 
-    Hash* contractID;
+    ContractID* contractID;
     ContractEventType type;
 
     union switch (int v)
@@ -446,6 +464,64 @@ struct TransactionMetaV3
                                          // Soroban transactions).
 };
 
+struct OperationMetaV2
+{
+    ExtensionPoint ext;
+
+    LedgerEntryChanges changes;
+
+    ContractEvent events<>;
+};
+
+struct SorobanTransactionMetaV2
+{
+    SorobanTransactionMetaExt ext;
+
+    SCVal* returnValue;
+};
+
+// Transaction-level events happen at different stages of the ledger apply flow
+// (as opposed to the operation events that all happen atomically after 
+// a transaction is applied).
+// This enum represents the possible stages during which an event has been
+// emitted.
+enum TransactionEventStage {
+    // The event has happened before any one of the transactions has its 
+    // operations applied.
+    TRANSACTION_EVENT_STAGE_BEFORE_ALL_TXS = 0,
+    // The event has happened immediately after operations of the transaction
+    // have been applied.
+    TRANSACTION_EVENT_STAGE_AFTER_TX = 1,
+    // The event has happened after every transaction had its operations 
+    // applied.
+    TRANSACTION_EVENT_STAGE_AFTER_ALL_TXS = 2
+};
+
+// Represents a transaction-level event in metadata.
+// Currently this is limited to the fee events (when fee is charged or 
+// refunded).
+struct TransactionEvent {    
+    TransactionEventStage stage;  // Stage at which an event has occurred.
+    ContractEvent event;  // The contract event that has occurred.
+};
+
+struct TransactionMetaV4
+{
+    ExtensionPoint ext;
+
+    LedgerEntryChanges txChangesBefore;  // tx level changes before operations
+                                         // are applied if any
+    OperationMetaV2 operations<>;        // meta for each operation
+    LedgerEntryChanges txChangesAfter;   // tx level changes after operations are
+                                         // applied if any
+    SorobanTransactionMetaV2* sorobanMeta; // Soroban-specific meta (only for
+                                           // Soroban transactions).
+
+    TransactionEvent events<>; // Used for transaction-level events (like fee payment)
+    DiagnosticEvent diagnosticEvents<>; // Used for all diagnostic information
+};
+
+
 // This is in Stellar-ledger.x to due to a circular dependency 
 struct InvokeHostFunctionSuccessPreImage
 {
@@ -465,6 +541,8 @@ case 2:
     TransactionMetaV2 v2;
 case 3:
     TransactionMetaV3 v3;
+case 4:
+    TransactionMetaV4 v4;
 };
 
 // This struct groups together changes on a per transaction basis
@@ -475,6 +553,20 @@ struct TransactionResultMeta
     TransactionResultPair result;
     LedgerEntryChanges feeProcessing;
     TransactionMeta txApplyProcessing;
+};
+
+// This struct groups together changes on a per transaction basis
+// note however that fees and transaction application are done in separate
+// phases
+struct TransactionResultMetaV1
+{
+    ExtensionPoint ext;
+
+    TransactionResultPair result;
+    LedgerEntryChanges feeProcessing;
+    TransactionMeta txApplyProcessing;
+
+    LedgerEntryChanges postTxApplyFeeProcessing;
 };
 
 // this represents a single upgrade that was performed as part of a ledger
@@ -509,27 +601,12 @@ struct LedgerCloseMetaExtV1
     int64 sorobanFeeWrite1KB;
 };
 
-struct LedgerCloseMetaExtV2
-{
-    ExtensionPoint ext;
-    int64 sorobanFeeWrite1KB;
-
-    uint32 currentArchivalEpoch;
-
-    // The last epoch currently stored by validators
-    // Any entry restored from an epoch older than this will
-    // require a proof.
-    uint32 lastArchivalEpochPersisted;
-};
-
 union LedgerCloseMetaExt switch (int v)
 {
 case 0:
     void;
 case 1:
     LedgerCloseMetaExtV1 v1;
-case 2:
-    LedgerCloseMetaExtV2 v2;
 };
 
 struct LedgerCloseMetaV1
@@ -544,6 +621,36 @@ struct LedgerCloseMetaV1
     // fees for all transactions are processed first
     // followed by applying transactions
     TransactionResultMeta txProcessing<>;
+
+    // upgrades are applied last
+    UpgradeEntryMeta upgradesProcessing<>;
+
+    // other misc information attached to the ledger close
+    SCPHistoryEntry scpInfo<>;
+
+    // Size in bytes of live Soroban state, to support downstream
+    // systems calculating storage fees correctly.
+    uint64 totalByteSizeOfLiveSorobanState;
+
+    // TTL and data/code keys that have been evicted at this ledger.
+    LedgerKey evictedKeys<>;
+
+    // Maintained for backwards compatibility, should never be populated.
+    LedgerEntry unused<>;
+};
+
+struct LedgerCloseMetaV2
+{
+    LedgerCloseMetaExt ext;
+
+    LedgerHeaderHistoryEntry ledgerHeader;
+
+    GeneralizedTransactionSet txSet;
+
+    // NB: transactions are sorted in apply order here
+    // fees for all transactions are processed first
+    // followed by applying transactions
+    TransactionResultMetaV1 txProcessing<>;
 
     // upgrades are applied last
     UpgradeEntryMeta upgradesProcessing<>;
@@ -571,5 +678,7 @@ case 0:
     LedgerCloseMetaV0 v0;
 case 1:
     LedgerCloseMetaV1 v1;
+case 2:
+    LedgerCloseMetaV2 v2;
 };
 }
