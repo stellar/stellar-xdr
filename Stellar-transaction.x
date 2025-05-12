@@ -594,6 +594,8 @@ struct SorobanAuthorizationEntry
     SorobanAuthorizedInvocation rootInvocation;
 };
 
+typedef SorobanAuthorizationEntry SorobanAuthorizationEntries<>;
+
 /* Upload Wasm, create, and invoke contracts in Soroban.
 
     Threshold: med
@@ -832,8 +834,8 @@ struct SorobanResources
     // The maximum number of instructions this transaction can use
     uint32 instructions; 
 
-    // The maximum number of bytes this transaction can read from ledger
-    uint32 readBytes;
+    // The maximum number of bytes this transaction can read from disk backed entries
+    uint32 diskReadBytes;
     // The maximum number of bytes this transaction can write to ledger
     uint32 writeBytes;
 };

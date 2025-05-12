@@ -477,7 +477,32 @@ struct SorobanTransactionMetaV2
 {
     SorobanTransactionMetaExt ext;
 
-    SCVal returnValue;
+    SCVal* returnValue;
+};
+
+// Transaction-level events happen at different stages of the ledger apply flow
+// (as opposed to the operation events that all happen atomically after 
+// a transaction is applied).
+// This enum represents the possible stages during which an event has been
+// emitted.
+enum TransactionEventStage {
+    // The event has happened before any one of the transactions has its 
+    // operations applied.
+    TRANSACTION_EVENT_STAGE_BEFORE_ALL_TXS = 0,
+    // The event has happened immediately after operations of the transaction
+    // have been applied.
+    TRANSACTION_EVENT_STAGE_AFTER_TX = 1,
+    // The event has happened after every transaction had its operations 
+    // applied.
+    TRANSACTION_EVENT_STAGE_AFTER_ALL_TXS = 2
+};
+
+// Represents a transaction-level event in metadata.
+// Currently this is limited to the fee events (when fee is charged or 
+// refunded).
+struct TransactionEvent {    
+    TransactionEventStage stage;  // Stage at which an event has occurred.
+    ContractEvent event;  // The contract event that has occurred.
 };
 
 struct TransactionMetaV4
@@ -492,7 +517,7 @@ struct TransactionMetaV4
     SorobanTransactionMetaV2* sorobanMeta; // Soroban-specific meta (only for
                                            // Soroban transactions).
 
-    ContractEvent events<>; // Used for transaction-level events (like fee payment)
+    TransactionEvent events<>; // Used for transaction-level events (like fee payment)
     DiagnosticEvent diagnosticEvents<>; // Used for all diagnostic information
 };
 
@@ -528,6 +553,20 @@ struct TransactionResultMeta
     TransactionResultPair result;
     LedgerEntryChanges feeProcessing;
     TransactionMeta txApplyProcessing;
+};
+
+// This struct groups together changes on a per transaction basis
+// note however that fees and transaction application are done in separate
+// phases
+struct TransactionResultMetaV1
+{
+    ExtensionPoint ext;
+
+    TransactionResultPair result;
+    LedgerEntryChanges feeProcessing;
+    TransactionMeta txApplyProcessing;
+
+    LedgerEntryChanges postTxApplyFeeProcessing;
 };
 
 // this represents a single upgrade that was performed as part of a ledger
@@ -589,6 +628,36 @@ struct LedgerCloseMetaV1
     // other misc information attached to the ledger close
     SCPHistoryEntry scpInfo<>;
 
+    // Size in bytes of live Soroban state, to support downstream
+    // systems calculating storage fees correctly.
+    uint64 totalByteSizeOfLiveSorobanState;
+
+    // TTL and data/code keys that have been evicted at this ledger.
+    LedgerKey evictedKeys<>;
+
+    // Maintained for backwards compatibility, should never be populated.
+    LedgerEntry unused<>;
+};
+
+struct LedgerCloseMetaV2
+{
+    LedgerCloseMetaExt ext;
+
+    LedgerHeaderHistoryEntry ledgerHeader;
+
+    GeneralizedTransactionSet txSet;
+
+    // NB: transactions are sorted in apply order here
+    // fees for all transactions are processed first
+    // followed by applying transactions
+    TransactionResultMetaV1 txProcessing<>;
+
+    // upgrades are applied last
+    UpgradeEntryMeta upgradesProcessing<>;
+
+    // other misc information attached to the ledger close
+    SCPHistoryEntry scpInfo<>;
+
     // Size in bytes of BucketList, to support downstream
     // systems calculating storage fees correctly.
     uint64 totalByteSizeOfBucketList;
@@ -609,5 +678,7 @@ case 0:
     LedgerCloseMetaV0 v0;
 case 1:
     LedgerCloseMetaV1 v1;
+case 2:
+    LedgerCloseMetaV2 v2;
 };
 }
