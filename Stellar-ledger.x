@@ -658,18 +658,12 @@ struct LedgerCloseMetaV2
     // other misc information attached to the ledger close
     SCPHistoryEntry scpInfo<>;
 
-    // Size in bytes of BucketList, to support downstream
+    // Size in bytes of live Soroban state, to support downstream
     // systems calculating storage fees correctly.
-    uint64 totalByteSizeOfBucketList;
+    uint64 totalByteSizeOfLiveSorobanState;
 
-    // Temp keys and all TTL keys that are being evicted at this ledger.
-    // Note that this can contain TTL keys for both persistent and temporary
-    // entries, but the name is kept for legacy reasons.
-    LedgerKey evictedTemporaryLedgerKeys<>;
-
-    // Archived persistent ledger entries that are being
-    // evicted at this ledger.
-    LedgerEntry evictedPersistentLedgerEntries<>;
+    // TTL and data/code keys that have been evicted at this ledger.
+    LedgerKey evictedKeys<>;
 };
 
 union LedgerCloseMeta switch (int v)
