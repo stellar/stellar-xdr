@@ -529,6 +529,34 @@ struct InvokeHostFunctionSuccessPreImage
     ContractEvent events<>;
 };
 
+struct BucketEntryCounters
+{
+    // The count of each type of entry in the bucketlist.
+    uint64_t accountEntryCount;
+    uint64_t trustLineEntryCount;
+    uint64_t offerEntryCount;
+    uint64_t dataEntryCount;
+    uint64_t claimableBalanceEntryCount;
+    uint64_t liquidityPoolEntryCount;
+    uint64_t temporaryContractDataEntryCount;
+    uint64_t persistentContractDataEntryCount;
+    uint64_t contractCodeEntryCount;
+    uint64_t configSettingEntryCount;
+    uint64_t ttlEntryCount;
+    // The size in bytes of each type of entry in the bucketlist.
+    uint64_t accountEntrySizeBytes;
+    uint64_t trustLineEntrySizeBytes;
+    uint64_t offerEntrySizeBytes;
+    uint64_t dataEntrySizeBytes;
+    uint64_t claimableBalanceEntrySizeBytes;
+    uint64_t liquidityPoolEntrySizeBytes;
+    uint64_t temporaryContractDataEntrySizeBytes;
+    uint64_t persistentContractDataEntrySizeBytes;
+    uint64_t contractCodeEntrySizeBytes;
+    uint64_t configSettingEntrySizeBytes;
+    uint64_t ttlEntrySizeBytes;
+};
+
 // this is the meta produced when applying transactions
 // it does not include pre-apply updates such as fees
 union TransactionMeta switch (int v)
@@ -670,6 +698,9 @@ struct LedgerCloseMetaV2
     // Archived persistent ledger entries that are being
     // evicted at this ledger.
     LedgerEntry evictedPersistentLedgerEntries<>;
+
+    // The count and size of all types of entries in the bucketlist.
+    BucketEntryCounters bucketEntryCounters;
 };
 
 union LedgerCloseMeta switch (int v)
