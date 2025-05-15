@@ -73,8 +73,8 @@ struct ConfigSettingContractLedgerCostV0
 // Ledger access settings for contracts.
 struct ConfigSettingContractLedgerCostExtV0
 {
-    // Maximum number of in-memory ledger entry read operations per transaction
-    uint32 txMaxInMemoryReadEntries;
+    // Maximum number of RO+RW entries in the transaction footprint.
+    uint32 txMaxFootprintEntries;
     // Fee per 1 KB of data written to the ledger.
     // Unlike the rent fee, this is a flat fee that is charged for any ledger
     // write, independent of the type of the entry being written.
