@@ -624,7 +624,7 @@ struct ExtendFootprintTTLOp
 /* Restore the archived entries specified in the readWrite footprint.
 
     Threshold: low
-    Result: RestoreFootprintOp
+    Result: RestoreFootprintResult
 */
 struct RestoreFootprintOp
 {
