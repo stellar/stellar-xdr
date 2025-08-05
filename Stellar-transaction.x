@@ -64,7 +64,8 @@ enum OperationType
     LIQUIDITY_POOL_WITHDRAW = 23,
     INVOKE_HOST_FUNCTION = 24,
     EXTEND_FOOTPRINT_TTL = 25,
-    RESTORE_FOOTPRINT = 26
+    RESTORE_FOOTPRINT = 26,
+    PAD_FOR_TESTING = -1
 };
 
 /* CreateAccount
@@ -631,6 +632,17 @@ struct RestoreFootprintOp
     ExtensionPoint ext;
 };
 
+/* Operation with just padding for testing purposes. This should not be
+   valid on the production network.
+
+    Threshold: low
+    Result: void
+*/
+struct PadForTestingOp
+{
+    opaque padding<>;
+};
+
 /* An operation is the lowest unit of work that a transaction does */
 struct Operation
 {
@@ -695,6 +707,8 @@ struct Operation
         ExtendFootprintTTLOp extendFootprintTTLOp;
     case RESTORE_FOOTPRINT:
         RestoreFootprintOp restoreFootprintOp;
+    case PAD_FOR_TESTING:
+        PadForTestingOp padForTestingOp;
     }
     body;
 };
@@ -1964,6 +1978,8 @@ case opINNER:
         ExtendFootprintTTLResult extendFootprintTTLResult;
     case RESTORE_FOOTPRINT:
         RestoreFootprintResult restoreFootprintResult;
+    case PAD_FOR_TESTING:
+        void;
     }
     tr;
 case opBAD_AUTH:
