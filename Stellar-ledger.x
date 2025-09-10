@@ -370,13 +370,9 @@ enum ContractEventType
 
 struct ContractEvent
 {
-    // We can use this to add more fields, or because it
-    // is first, to change ContractEvent into a union.
-    ExtensionPoint ext;
-
+    // ...
     ContractID* contractID;
     ContractEventType type;
-
     union switch (int v)
     {
     case 0:
