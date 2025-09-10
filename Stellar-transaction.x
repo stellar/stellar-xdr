@@ -910,30 +910,13 @@ struct TransactionV0Envelope
 */
 struct Transaction
 {
-    // account used to run the transaction
     MuxedAccount sourceAccount;
-
-    // the fee the sourceAccount will pay
     uint32 fee;
-
-    // sequence number to consume in the account
     SequenceNumber seqNum;
-
-    // validity conditions
     Preconditions cond;
-
     Memo memo;
-
     Operation operations<MAX_OPS_PER_TX>;
-
-    union switch (int v)
-    {
-    case 0:
-        void;
-    case 1:
-        SorobanTransactionData sorobanData;
-    }
-    ext;
+    //...
 };
 
 struct TransactionV1Envelope
