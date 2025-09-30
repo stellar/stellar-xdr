@@ -45,7 +45,11 @@ struct StellarValue
     case STELLAR_VALUE_SIGNED:
         LedgerCloseValueSignature lcValueSignature;
     case STELLAR_VALUE_SKIP:
-        StellarValue originalValue;
+        struct
+        {
+            Hash txSetHash;
+            LedgerCloseValueSignature lcValueSignature;
+        } originalValue;
     }
     ext;
 };
