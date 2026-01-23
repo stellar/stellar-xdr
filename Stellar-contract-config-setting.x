@@ -291,7 +291,9 @@ enum ContractCostType {
     // Cost of performing BN254 scalar element exponentiation
     Bn254FrPow = 83,
      // Cost of performing BN254 scalar element inversion
-    Bn254FrInv = 84
+    Bn254FrInv = 84,
+    // Cost of performing BN254 G1 multi-scalar multiplication (MSM)
+    Bn254G1Msm = 85
 };
 
 struct ContractCostParamEntry {
