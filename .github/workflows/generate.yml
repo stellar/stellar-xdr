@@ -40,7 +40,7 @@ jobs:
         run: git rm -rf .
 
       - name: Copy files from main
-        run: cp main/*.x main/Makefile main/LICENSE ${{ matrix.branch }}/
+        run: cp main/*.x main/Makefile main/LICENSE main/README.md ${{ matrix.branch }}/
 
       - name: Preprocess XDR files
         working-directory: ${{ matrix.branch }}
