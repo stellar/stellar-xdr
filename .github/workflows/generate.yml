@@ -8,13 +8,11 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   generate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: ${{ github.event_name == 'push' && 'write' || 'read' }}
     strategy:
       matrix:
         include:
