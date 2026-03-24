@@ -5,5 +5,5 @@ PREPROCESS_FLAGS ?=
 
 preprocess:
 	@for f in $(XFILES); do \
-		stellar-xdr xfile preprocess $(PREPROCESS_FLAGS) "$$f" > "$$f.tmp" && mv "$$f.tmp" "$$f"; \
+		stellar-xdr xfile preprocess $(PREPROCESS_FLAGS) "$$f" > "$$f.tmp" && mv "$$f.tmp" "$$f" || exit 1; \
 	done
