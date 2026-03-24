@@ -1,0 +1,58 @@
+name: Generate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - branch: curr
+            preprocess_flags: ""
+          - branch: next
+            preprocess_flags: "--all-features"
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          path: main
+
+      - name: Checkout ${{ matrix.branch }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+          path: ${{ matrix.branch }}
+
+      - name: Install stellar-xdr CLI
+        run: cargo install --locked stellar-xdr --features cli
+
+      - name: Remove all files from ${{ matrix.branch }}
+        working-directory: ${{ matrix.branch }}
+        run: git rm -rf .
+
+      - name: Copy files from main
+        run: cp main/*.x main/Makefile main/LICENSE ${{ matrix.branch }}/
+
+      - name: Preprocess XDR files
+        working-directory: ${{ matrix.branch }}
+        run: make preprocess PREPROCESS_FLAGS="${{ matrix.preprocess_flags }}"
+
+      - name: Commit and push
+        if: github.event_name == 'push'
+        working-directory: ${{ matrix.branch }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Generate from main ($(git -C ../main rev-parse --short HEAD))"
+            git push
+          fi
