@@ -50,7 +50,7 @@ jobs:
         working-directory: ${{ matrix.branch }}
         run: |
           git add -A
-          git diff --cached
+          git diff --cached --color=always
 
       - name: Commit and push
         if: github.event_name == 'push'
