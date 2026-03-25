@@ -150,7 +150,7 @@ case CLAIMABLE_BALANCE_ID_TYPE_V0:
     Hash v0;
 };
 
-#ifdef NEXT
+#ifdef TEST_FEATURE
 struct TestNextType
 {
     int32 value;
