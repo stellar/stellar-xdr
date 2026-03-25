@@ -149,4 +149,10 @@ union ClaimableBalanceID switch (ClaimableBalanceIDType type)
 case CLAIMABLE_BALANCE_ID_TYPE_V0:
     Hash v0;
 };
+
+struct TestNextType
+{
+    int32 value;
+};
+
 }
