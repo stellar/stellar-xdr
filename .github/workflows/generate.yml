@@ -11,6 +11,14 @@ permissions:
   contents: write
 
 jobs:
+  complete:
+    if: always()
+    needs: [generate]
+    runs-on: ubuntu-latest
+    steps:
+    - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+      run: exit 1
+
   generate:
     runs-on: ubuntu-latest
     strategy:
