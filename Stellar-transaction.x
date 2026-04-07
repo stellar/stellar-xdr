@@ -574,7 +574,7 @@ struct SorobanDelegateSignature {
     SCAddress address;
     SCVal signature;
     SorobanDelegateSignature nestedDelegates<>;
-}
+};
 
 struct SorobanAddressCredentialsWithDelegates
 {
