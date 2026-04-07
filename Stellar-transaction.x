@@ -762,7 +762,7 @@ case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS:
         uint32 signatureExpirationLedger;
         SCAddress address;
         SorobanAuthorizedInvocation invocation;
-    } sorobanAuthorization;
+    } sorobanAuthorizationWithAddress;
 #endif
 };
 
