@@ -569,10 +569,24 @@ struct SorobanAddressCredentials
     SCVal signature;
 };
 
+struct SorobanDelegateSignature {
+    SCAddress address;
+    SCVal signature;
+    SorobanDelegateSignature nestedDelegates<>;
+};
+
+struct SorobanAddressCredentialsWithDelegates
+{
+    SorobanAddressCredentials addressCredentials;
+    SorobanDelegateSignature delegates<>;
+};
+
 enum SorobanCredentialsType
 {
     SOROBAN_CREDENTIALS_SOURCE_ACCOUNT = 0,
     SOROBAN_CREDENTIALS_ADDRESS = 1
+    ,
+    SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 2
 };
 
 union SorobanCredentials switch (SorobanCredentialsType type)
@@ -581,6 +595,8 @@ case SOROBAN_CREDENTIALS_SOURCE_ACCOUNT:
     void;
 case SOROBAN_CREDENTIALS_ADDRESS:
     SorobanAddressCredentials address;
+case SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES:
+    SorobanAddressCredentialsWithDelegates addressWithDelegates;
 };
 
 /* Unit of authorization data for Soroban.
@@ -731,6 +747,15 @@ case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION:
         uint32 signatureExpirationLedger;
         SorobanAuthorizedInvocation invocation;
     } sorobanAuthorization;
+case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS:
+    struct
+    {
+        Hash networkID;
+        int64 nonce;
+        uint32 signatureExpirationLedger;
+        SCAddress address;
+        SorobanAuthorizedInvocation invocation;
+    } sorobanAuthorizationWithAddress;
 };
 
 enum MemoType
