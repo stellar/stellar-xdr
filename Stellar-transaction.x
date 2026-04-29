@@ -589,7 +589,8 @@ enum SorobanCredentialsType
     SOROBAN_CREDENTIALS_ADDRESS = 1
 #ifdef CAP_0071
     ,
-    SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 2
+    SOROBAN_CREDENTIALS_ADDRESS_V2 = 2,
+    SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 3
 #endif
 };
 
@@ -600,6 +601,8 @@ case SOROBAN_CREDENTIALS_SOURCE_ACCOUNT:
 case SOROBAN_CREDENTIALS_ADDRESS:
     SorobanAddressCredentials address;
 #ifdef CAP_0071
+case SOROBAN_CREDENTIALS_ADDRESS_V2:
+    SorobanAddressCredentials addressV2;
 case SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES:
     SorobanAddressCredentialsWithDelegates addressWithDelegates;
 #endif
