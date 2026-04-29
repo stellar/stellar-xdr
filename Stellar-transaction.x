@@ -586,7 +586,8 @@ enum SorobanCredentialsType
     SOROBAN_CREDENTIALS_SOURCE_ACCOUNT = 0,
     SOROBAN_CREDENTIALS_ADDRESS = 1
     ,
-    SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 2
+    SOROBAN_CREDENTIALS_ADDRESS_V2 = 2,
+    SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES = 3
 };
 
 union SorobanCredentials switch (SorobanCredentialsType type)
@@ -595,6 +596,8 @@ case SOROBAN_CREDENTIALS_SOURCE_ACCOUNT:
     void;
 case SOROBAN_CREDENTIALS_ADDRESS:
     SorobanAddressCredentials address;
+case SOROBAN_CREDENTIALS_ADDRESS_V2:
+    SorobanAddressCredentials addressV2;
 case SOROBAN_CREDENTIALS_ADDRESS_WITH_DELEGATES:
     SorobanAddressCredentialsWithDelegates addressWithDelegates;
 };
