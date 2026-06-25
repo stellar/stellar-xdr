@@ -183,6 +183,10 @@ enum SCAddressType
     SC_ADDRESS_TYPE_MUXED_ACCOUNT = 2,
     SC_ADDRESS_TYPE_CLAIMABLE_BALANCE = 3,
     SC_ADDRESS_TYPE_LIQUIDITY_POOL = 4
+#ifdef CAP_0084
+    ,
+    SC_ADDRESS_TYPE_MUXED_CONTRACT = 5
+#endif
 };
 
 struct MuxedEd25519Account
@@ -190,6 +194,14 @@ struct MuxedEd25519Account
     uint64 id;
     uint256 ed25519;
 };
+
+#ifdef CAP_0084
+struct MuxedContract
+{
+    uint64 id;
+    ContractID contractId;
+};
+#endif
 
 union SCAddress switch (SCAddressType type)
 {
@@ -203,6 +215,10 @@ case SC_ADDRESS_TYPE_CLAIMABLE_BALANCE:
     ClaimableBalanceID claimableBalanceId;
 case SC_ADDRESS_TYPE_LIQUIDITY_POOL:
     PoolID liquidityPoolId;
+#ifdef CAP_0084
+case SC_ADDRESS_TYPE_MUXED_CONTRACT:
+    MuxedContract muxedContract;
+#endif
 };
 
 %struct SCVal;
