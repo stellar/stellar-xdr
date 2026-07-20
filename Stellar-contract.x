@@ -6,6 +6,11 @@
 namespace stellar
 {
 
+typedef opaque SCBytes<>;
+typedef string SCString<>;
+const SCSYMBOL_LIMIT = 32;
+typedef string SCSymbol<SCSYMBOL_LIMIT>;
+
 // We fix a maximum of 128 value types in the system for two reasons: we want to
 // keep the codes relatively small (<= 8 bits) when bit-packing values into a
 // u64 at the environment interface level, so that we keep many bits for
@@ -71,6 +76,10 @@ enum SCValType
     // instance and an address' nonce, respectively.
     SCV_LEDGER_KEY_CONTRACT_INSTANCE = 20,
     SCV_LEDGER_KEY_NONCE = 21
+
+#ifdef CAP_0085_EXECUTABLE_REF
+    ,SCV_EXECUTABLE_TAG = 22
+#endif
 };
 
 enum SCErrorType
@@ -166,14 +175,9 @@ enum ContractExecutableType
 {
     CONTRACT_EXECUTABLE_WASM = 0,
     CONTRACT_EXECUTABLE_STELLAR_ASSET = 1
-};
-
-union ContractExecutable switch (ContractExecutableType type)
-{
-case CONTRACT_EXECUTABLE_WASM:
-    Hash wasm_hash;
-case CONTRACT_EXECUTABLE_STELLAR_ASSET:
-    void;
+#ifdef CAP_0085_EXECUTABLE_REF
+    ,CONTRACT_EXECUTABLE_EXTERNAL_REF = 2
+#endif
 };
 
 enum SCAddressType
@@ -221,17 +225,30 @@ case SC_ADDRESS_TYPE_MUXED_CONTRACT:
 #endif
 };
 
+#ifdef CAP_0085_EXECUTABLE_REF
+struct ContractExecutableExternalRef {
+    SCAddress executable_owner;
+    SCString tag;
+};
+#endif
+
+union ContractExecutable switch (ContractExecutableType type)
+{
+case CONTRACT_EXECUTABLE_WASM:
+    Hash wasm_hash;
+case CONTRACT_EXECUTABLE_STELLAR_ASSET:
+    void;
+#ifdef CAP_0085_EXECUTABLE_REF
+case CONTRACT_EXECUTABLE_EXTERNAL_REF:
+    ContractExecutableExternalRef external_ref;
+#endif
+};
+
 %struct SCVal;
 %struct SCMapEntry;
 
-const SCSYMBOL_LIMIT = 32;
-
 typedef SCVal SCVec<>;
 typedef SCMapEntry SCMap<>;
-
-typedef opaque SCBytes<>;
-typedef string SCString<>;
-typedef string SCSymbol<SCSYMBOL_LIMIT>;
 
 struct SCNonceKey {
     int64 nonce;
@@ -301,6 +318,11 @@ case SCV_LEDGER_KEY_CONTRACT_INSTANCE:
     void;
 case SCV_LEDGER_KEY_NONCE:
     SCNonceKey nonce_key;
+
+#ifdef CAP_0085_EXECUTABLE_REF
+case SCV_EXECUTABLE_TAG:
+    SCString executable_tag;
+#endif    
 };
 
 struct SCMapEntry
