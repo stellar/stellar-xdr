@@ -45,7 +45,8 @@ enum SCSpecType
     SC_SPEC_TYPE_BYTES_N = 1006,
 
     // User defined types.
-    SC_SPEC_TYPE_UDT = 2000
+    SC_SPEC_TYPE_UDT = 2000,
+    SC_SPEC_TYPE_UDT_V2 = 2001
 };
 
 struct SCSpecTypeOption
@@ -85,6 +86,17 @@ struct SCSpecTypeUDT
     string name<60>;
 };
 
+// References a user-defined type by both its name and the hash of its spec
+// entry. The hash is the spec-shaking v2 hash: the first 8 bytes of the
+// SHA-256 of the referenced entry's XDR encoding taken with its `lib` field
+// cleared. The hash disambiguates a reference when specs share a name and lets
+// tooling match a reference to an exact definition.
+struct SCSpecTypeUDTV2
+{
+    opaque hash[8];
+    string name<60>;
+};
+
 union SCSpecTypeDef switch (SCSpecType type)
 {
 case SC_SPEC_TYPE_VAL:
@@ -121,6 +133,27 @@ case SC_SPEC_TYPE_BYTES_N:
     SCSpecTypeBytesN bytesN;
 case SC_SPEC_TYPE_UDT:
     SCSpecTypeUDT udt;
+case SC_SPEC_TYPE_UDT_V2:
+    SCSpecTypeUDTV2 udtV2;
+};
+
+// An entry in a user-defined type's definition list. This list occupies the
+// field that was previously the `lib` string. An empty list encodes
+// identically to an empty `lib` string on the wire, so specs that did not set
+// a `lib` remain byte-for-byte compatible. A list holds at most one entry of
+// each kind.
+enum SCSpecUDTDefKind
+{
+    SC_SPEC_UDT_DEF_LIB = 0,
+    SC_SPEC_UDT_DEF_HASH = 1
+};
+
+union SCSpecUDTDef switch (SCSpecUDTDefKind kind)
+{
+case SC_SPEC_UDT_DEF_LIB:
+    string lib<80>;
+case SC_SPEC_UDT_DEF_HASH:
+    opaque hash[8];
 };
 
 struct SCSpecUDTStructFieldV0
@@ -133,7 +166,7 @@ struct SCSpecUDTStructFieldV0
 struct SCSpecUDTStructV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
-    string lib<80>;
+    SCSpecUDTDef lib<>;
     string name<60>;
     SCSpecUDTStructFieldV0 fields<>;
 };
@@ -168,7 +201,7 @@ case SC_SPEC_UDT_UNION_CASE_TUPLE_V0:
 struct SCSpecUDTUnionV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
-    string lib<80>;
+    SCSpecUDTDef lib<>;
     string name<60>;
     SCSpecUDTUnionCaseV0 cases<>;
 };
@@ -183,7 +216,7 @@ struct SCSpecUDTEnumCaseV0
 struct SCSpecUDTEnumV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
-    string lib<80>;
+    SCSpecUDTDef lib<>;
     string name<60>;
     SCSpecUDTEnumCaseV0 cases<>;
 };
@@ -198,7 +231,7 @@ struct SCSpecUDTErrorEnumCaseV0
 struct SCSpecUDTErrorEnumV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
-    string lib<80>;
+    SCSpecUDTDef lib<>;
     string name<60>;
     SCSpecUDTErrorEnumCaseV0 cases<>;
 };
@@ -242,7 +275,7 @@ enum SCSpecEventDataFormat
 struct SCSpecEventV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
-    string lib<80>;
+    SCSpecUDTDef lib<>;
     SCSymbol name;
     SCSymbol prefixTopics<2>;
     SCSpecEventParamV0 params<>;
