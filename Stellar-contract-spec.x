@@ -45,7 +45,8 @@ enum SCSpecType
     SC_SPEC_TYPE_BYTES_N = 1006,
 
     // User defined types.
-    SC_SPEC_TYPE_UDT = 2000
+    SC_SPEC_TYPE_UDT = 2000,
+    SC_SPEC_TYPE_UDT_V2 = 2001
 };
 
 struct SCSpecTypeOption
@@ -85,6 +86,12 @@ struct SCSpecTypeUDT
     string name<60>;
 };
 
+struct SCSpecTypeUDTV2
+{
+    opaque id[8];
+    string name<60>;
+};
+
 union SCSpecTypeDef switch (SCSpecType type)
 {
 case SC_SPEC_TYPE_VAL:
@@ -121,6 +128,8 @@ case SC_SPEC_TYPE_BYTES_N:
     SCSpecTypeBytesN bytesN;
 case SC_SPEC_TYPE_UDT:
     SCSpecTypeUDT udt;
+case SC_SPEC_TYPE_UDT_V2:
+    SCSpecTypeUDTV2 udtV2;
 };
 
 struct SCSpecUDTStructFieldV0
