@@ -89,7 +89,6 @@ struct SCSpecTypeUDT
 struct SCSpecTypeUDTV2
 {
     opaque id[8];
-    string name<60>;
 };
 
 union SCSpecTypeDef switch (SCSpecType type)
