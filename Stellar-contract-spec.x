@@ -12,6 +12,12 @@ namespace stellar
 
 const SC_SPEC_DOC_LIMIT = 1024;
 
+// The limit on the name of a user-defined type, and on a reference to one. It
+// is longer than the limit on the names within a type, such as its fields or
+// cases, because a type's name qualifies it: it is the name of the module or
+// namespace the type is defined in, then the type's own name.
+const SC_SPEC_TYPE_NAME_LIMIT = 256;
+
 enum SCSpecType
 {
     SC_SPEC_TYPE_VAL = 0,
@@ -82,7 +88,7 @@ struct SCSpecTypeBytesN
 
 struct SCSpecTypeUDT
 {
-    string name<60>;
+    string name<SC_SPEC_TYPE_NAME_LIMIT>;
 };
 
 union SCSpecTypeDef switch (SCSpecType type)
@@ -134,7 +140,7 @@ struct SCSpecUDTStructV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
-    string name<60>;
+    string name<SC_SPEC_TYPE_NAME_LIMIT>;
     SCSpecUDTStructFieldV0 fields<>;
 };
 
@@ -169,7 +175,7 @@ struct SCSpecUDTUnionV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
-    string name<60>;
+    string name<SC_SPEC_TYPE_NAME_LIMIT>;
     SCSpecUDTUnionCaseV0 cases<>;
 };
 
@@ -184,7 +190,7 @@ struct SCSpecUDTEnumV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
-    string name<60>;
+    string name<SC_SPEC_TYPE_NAME_LIMIT>;
     SCSpecUDTEnumCaseV0 cases<>;
 };
 
@@ -199,7 +205,7 @@ struct SCSpecUDTErrorEnumV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
-    string name<60>;
+    string name<SC_SPEC_TYPE_NAME_LIMIT>;
     SCSpecUDTErrorEnumCaseV0 cases<>;
 };
 
