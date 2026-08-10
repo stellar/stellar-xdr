@@ -12,12 +12,12 @@ namespace stellar
 
 const SC_SPEC_DOC_LIMIT = 1024;
 
-// The number of bytes in a user-defined type id. A type id is the SHA-256
-// hash of the fully qualified name of the type a reference refers to,
-// truncated to this length. Ids are unique within the build that produced
-// the contract, across the crates that make it up, even when types share a
-// name.
-const SC_SPEC_TYPE_ID_LEN = 8;
+// The number of bytes in a spec id. An id is the SHA-256 hash of the fully
+// qualified name of the item a spec entry describes, or a reference refers
+// to, truncated to this length. Ids are unique within the build that
+// produced the contract, across the crates that make it up, even when items
+// share a name.
+const SC_SPEC_ID_LEN = 8;
 
 enum SCSpecType
 {
@@ -99,7 +99,7 @@ struct SCSpecTypeUDT
 struct SCSpecTypeUDTV2
 {
     string name<60>;
-    opaque id[SC_SPEC_TYPE_ID_LEN];
+    opaque id[SC_SPEC_ID_LEN];
 };
 
 union SCSpecTypeDef switch (SCSpecType type)
@@ -275,7 +275,32 @@ enum SCSpecEntryKind
     SC_SPEC_ENTRY_UDT_UNION_V0 = 2,
     SC_SPEC_ENTRY_UDT_ENUM_V0 = 3,
     SC_SPEC_ENTRY_UDT_ERROR_ENUM_V0 = 4,
-    SC_SPEC_ENTRY_EVENT_V0 = 5
+    SC_SPEC_ENTRY_EVENT_V0 = 5,
+    SC_SPEC_ENTRY_V2 = 6
+};
+
+// An entry paired with the id that uniquely identifies it. The id is the
+// SHA-256 hash of the fully qualified name of the item the entry describes,
+// truncated to SC_SPEC_ID_LEN. A reference carrying an id, such as
+// SCSpecTypeUDTV2, refers to the entry whose id matches.
+struct SCSpecEntryV2
+{
+    opaque id[SC_SPEC_ID_LEN];
+    union switch (SCSpecEntryKind kind)
+    {
+    case SC_SPEC_ENTRY_FUNCTION_V0:
+        SCSpecFunctionV0 functionV0;
+    case SC_SPEC_ENTRY_UDT_STRUCT_V0:
+        SCSpecUDTStructV0 udtStructV0;
+    case SC_SPEC_ENTRY_UDT_UNION_V0:
+        SCSpecUDTUnionV0 udtUnionV0;
+    case SC_SPEC_ENTRY_UDT_ENUM_V0:
+        SCSpecUDTEnumV0 udtEnumV0;
+    case SC_SPEC_ENTRY_UDT_ERROR_ENUM_V0:
+        SCSpecUDTErrorEnumV0 udtErrorEnumV0;
+    case SC_SPEC_ENTRY_EVENT_V0:
+        SCSpecEventV0 eventV0;
+    } body;
 };
 
 union SCSpecEntry switch (SCSpecEntryKind kind)
@@ -292,6 +317,8 @@ case SC_SPEC_ENTRY_UDT_ERROR_ENUM_V0:
     SCSpecUDTErrorEnumV0 udtErrorEnumV0;
 case SC_SPEC_ENTRY_EVENT_V0:
     SCSpecEventV0 eventV0;
+case SC_SPEC_ENTRY_V2:
+    SCSpecEntryV2 v2;
 };
 
 }
