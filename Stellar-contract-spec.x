@@ -13,9 +13,10 @@ namespace stellar
 const SC_SPEC_DOC_LIMIT = 1024;
 
 // The number of bytes in a user-defined type id. A type id is the SHA-256
-// hash of the type's fully qualified name, truncated to this length. Ids are
-// unique within the build that produced the contract, across the crates that
-// make it up, even when types share a name.
+// hash of the fully qualified name of the type a reference refers to,
+// truncated to this length. Ids are unique within the build that produced
+// the contract, across the crates that make it up, even when types share a
+// name.
 const SC_SPEC_TYPE_ID_LEN = 8;
 
 enum SCSpecType
@@ -92,9 +93,9 @@ struct SCSpecTypeUDT
     string name<60>;
 };
 
-// A reference to a user-defined type by name and id. The id matches the id
-// of the type's definition entry exactly, so the reference is unambiguous
-// even when types share a name.
+// A reference to a user-defined type by name and id. The id identifies the
+// referenced type exactly, so two references are known to refer to the same
+// type, or to different types, even when the types share a name.
 struct SCSpecTypeUDTV2
 {
     string name<60>;
@@ -153,7 +154,6 @@ struct SCSpecUDTStructV0
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<60>;
-    opaque id[SC_SPEC_TYPE_ID_LEN];
     SCSpecUDTStructFieldV0 fields<>;
 };
 
@@ -189,7 +189,6 @@ struct SCSpecUDTUnionV0
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<60>;
-    opaque id[SC_SPEC_TYPE_ID_LEN];
     SCSpecUDTUnionCaseV0 cases<>;
 };
 
@@ -205,7 +204,6 @@ struct SCSpecUDTEnumV0
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<60>;
-    opaque id[SC_SPEC_TYPE_ID_LEN];
     SCSpecUDTEnumCaseV0 cases<>;
 };
 
@@ -221,7 +219,6 @@ struct SCSpecUDTErrorEnumV0
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<60>;
-    opaque id[SC_SPEC_TYPE_ID_LEN];
     SCSpecUDTErrorEnumCaseV0 cases<>;
 };
 
