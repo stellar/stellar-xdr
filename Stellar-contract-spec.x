@@ -249,7 +249,7 @@ struct SCSpecEventV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
-    SCSymbol name;
+    string name<SC_SPEC_TYPE_NAME_LIMIT>;
     SCSymbol prefixTopics<2>;
     SCSpecEventParamV0 params<>;
     SCSpecEventDataFormat dataFormat;
