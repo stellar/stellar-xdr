@@ -4,12 +4,17 @@
 
 import { readFileSync } from "node:fs";
 
-// SCValType variants that cannot cross a contract function boundary, and so
-// intentionally have no SCSpecType counterpart.
+// SCValType variants that intentionally have no SCSpecType counterpart.
 const EXCLUDED = [
+  // Internal values that cannot cross a contract function boundary.
   "CONTRACT_INSTANCE",
   "LEDGER_KEY_CONTRACT_INSTANCE",
   "LEDGER_KEY_NONCE",
+  // Technically can be passed across a contract function boundary, but the SDK
+  // does not support it and does not plan to. For a better and more consistent
+  // UX the SDK exposes the executable tag everywhere as a String, and uses
+  // SCV_EXECUTABLE_TAG as a storage implementation detail.
+  "EXECUTABLE_TAG",
 ];
 
 const spec = readFileSync("Stellar-contract-spec.x", "utf8");
