@@ -15,6 +15,11 @@ enum StellarValueType
     STELLAR_VALUE_BASIC = 0,
     STELLAR_VALUE_SIGNED = 1,
     STELLAR_VALUE_EMPTY_TX_SET = 2
+#ifdef MS_CLOSE_TIME
+    ,
+    STELLAR_VALUE_SIGNED_MS = 3,
+    STELLAR_VALUE_EMPTY_TX_SET_MS = 4
+#endif // MS_CLOSE_TIME
 };
 
 struct LedgerCloseValueSignature
@@ -52,6 +57,23 @@ struct StellarValue
             uint32 previousLedgerVersion;
             LedgerCloseValueSignature lcValueSignature;
         } proposedValue;
+#ifdef MS_CLOSE_TIME
+    case STELLAR_VALUE_SIGNED_MS:
+        struct
+        {
+            uint32 closeTimeMs; // millisecond component of closeTime, [0, 999]
+            LedgerCloseValueSignature lcValueSignature;
+        } signedMsValue;
+    case STELLAR_VALUE_EMPTY_TX_SET_MS:
+        struct
+        {
+            uint32 closeTimeMs; // millisecond component of closeTime, [0, 999]
+            Hash txSetHash;
+            Hash previousLedgerHash;
+            uint32 previousLedgerVersion;
+            LedgerCloseValueSignature lcValueSignature;
+        } proposedMsValue;
+#endif // MS_CLOSE_TIME
     }
     ext;
 };
