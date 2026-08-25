@@ -12,11 +12,7 @@ namespace stellar
 
 const SC_SPEC_DOC_LIMIT = 1024;
 
-// The limit on the name of a user-defined type, and on a reference to one. It
-// is longer than the limit on the names within a type, such as its fields or
-// cases, because a type's name qualifies it: it is the name of the module or
-// namespace the type is defined in, then the type's own name.
-const SC_SPEC_TYPE_NAME_LIMIT = 256;
+const SC_SPEC_TYPE_NAME_LIMIT = 1024;
 
 enum SCSpecType
 {
