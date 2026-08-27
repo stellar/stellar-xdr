@@ -61,13 +61,13 @@ struct StellarValue
     case STELLAR_VALUE_SIGNED_MS:
         struct
         {
-            uint32 closeTimeMs; // millisecond component of closeTime, [0, 999]
+            TimePointMilliseconds closeTimeMs; // closeTime == closeTimeMs / 1000
             LedgerCloseValueSignature lcValueSignature;
         } signedMsValue;
     case STELLAR_VALUE_EMPTY_TX_SET_MS:
         struct
         {
-            uint32 closeTimeMs; // millisecond component of closeTime, [0, 999]
+            TimePointMilliseconds closeTimeMs; // closeTime == closeTimeMs / 1000
             Hash txSetHash;
             Hash previousLedgerHash;
             uint32 previousLedgerVersion;
