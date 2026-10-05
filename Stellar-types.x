@@ -16,10 +16,8 @@ typedef hyper int64;
 
 typedef uint64 TimePoint;
 typedef uint64 Duration;
-#ifdef MS_CLOSE_TIME
 // Milliseconds since the Unix epoch. TimePoint is whole seconds.
 typedef uint64 TimePointMs;
-#endif // MS_CLOSE_TIME
 
 // An ExtensionPoint is always marshaled as a 32-bit 0 value.  At a
 // later point, it can be replaced by a different union so as to
