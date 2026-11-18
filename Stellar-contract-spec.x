@@ -14,7 +14,7 @@ const SC_SPEC_DOC_LIMIT = 1024;
 
 const SC_SPEC_TYPE_NAME_LIMIT = 1024;
 
-enum SCSpecType
+enum ScSpecType
 {
     SC_SPEC_TYPE_VAL = 0,
 
@@ -50,44 +50,44 @@ enum SCSpecType
     SC_SPEC_TYPE_UDT = 2000
 };
 
-struct SCSpecTypeOption
+struct ScSpecTypeOption
 {
-    SCSpecTypeDef valueType;
+    ScSpecTypeDef valueType;
 };
 
-struct SCSpecTypeResult
+struct ScSpecTypeResult
 {
-    SCSpecTypeDef okType;
-    SCSpecTypeDef errorType;
+    ScSpecTypeDef okType;
+    ScSpecTypeDef errorType;
 };
 
-struct SCSpecTypeVec
+struct ScSpecTypeVec
 {
-    SCSpecTypeDef elementType;
+    ScSpecTypeDef elementType;
 };
 
-struct SCSpecTypeMap
+struct ScSpecTypeMap
 {
-    SCSpecTypeDef keyType;
-    SCSpecTypeDef valueType;
+    ScSpecTypeDef keyType;
+    ScSpecTypeDef valueType;
 };
 
-struct SCSpecTypeTuple
+struct ScSpecTypeTuple
 {
-    SCSpecTypeDef valueTypes<12>;
+    ScSpecTypeDef valueTypes<12>;
 };
 
-struct SCSpecTypeBytesN
+struct ScSpecTypeBytesN
 {
     uint32 n;
 };
 
-struct SCSpecTypeUDT
+struct ScSpecTypeUdt
 {
     string name<SC_SPEC_TYPE_NAME_LIMIT>;
 };
 
-union SCSpecTypeDef switch (SCSpecType type)
+union ScSpecTypeDef switch (ScSpecType type)
 {
 case SC_SPEC_TYPE_VAL:
 case SC_SPEC_TYPE_BOOL:
@@ -110,148 +110,148 @@ case SC_SPEC_TYPE_ADDRESS:
 case SC_SPEC_TYPE_MUXED_ADDRESS:
     void;
 case SC_SPEC_TYPE_OPTION:
-    SCSpecTypeOption option;
+    ScSpecTypeOption option;
 case SC_SPEC_TYPE_RESULT:
-    SCSpecTypeResult result;
+    ScSpecTypeResult result;
 case SC_SPEC_TYPE_VEC:
-    SCSpecTypeVec vec;
+    ScSpecTypeVec vec;
 case SC_SPEC_TYPE_MAP:
-    SCSpecTypeMap map;
+    ScSpecTypeMap map;
 case SC_SPEC_TYPE_TUPLE:
-    SCSpecTypeTuple tuple;
+    ScSpecTypeTuple tuple;
 case SC_SPEC_TYPE_BYTES_N:
-    SCSpecTypeBytesN bytesN;
+    ScSpecTypeBytesN bytesN;
 case SC_SPEC_TYPE_UDT:
-    SCSpecTypeUDT udt;
+    ScSpecTypeUdt udt;
 };
 
-struct SCSpecUDTStructFieldV0
+struct ScSpecUdtStructFieldV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<30>;
-    SCSpecTypeDef type;
+    ScSpecTypeDef type;
 };
 
-struct SCSpecUDTStructV0
+struct ScSpecUdtStructV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<SC_SPEC_TYPE_NAME_LIMIT>;
-    SCSpecUDTStructFieldV0 fields<>;
+    ScSpecUdtStructFieldV0 fields<>;
 };
 
-struct SCSpecUDTUnionCaseVoidV0
+struct ScSpecUdtUnionCaseVoidV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<60>;
 };
 
-struct SCSpecUDTUnionCaseTupleV0
+struct ScSpecUdtUnionCaseTupleV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<60>;
-    SCSpecTypeDef type<>;
+    ScSpecTypeDef type<>;
 };
 
-enum SCSpecUDTUnionCaseV0Kind
+enum ScSpecUdtUnionCaseV0Kind
 {
     SC_SPEC_UDT_UNION_CASE_VOID_V0 = 0,
     SC_SPEC_UDT_UNION_CASE_TUPLE_V0 = 1
 };
 
-union SCSpecUDTUnionCaseV0 switch (SCSpecUDTUnionCaseV0Kind kind)
+union ScSpecUdtUnionCaseV0 switch (ScSpecUdtUnionCaseV0Kind kind)
 {
 case SC_SPEC_UDT_UNION_CASE_VOID_V0:
-    SCSpecUDTUnionCaseVoidV0 voidCase;
+    ScSpecUdtUnionCaseVoidV0 voidCase;
 case SC_SPEC_UDT_UNION_CASE_TUPLE_V0:
-    SCSpecUDTUnionCaseTupleV0 tupleCase;
+    ScSpecUdtUnionCaseTupleV0 tupleCase;
 };
 
-struct SCSpecUDTUnionV0
+struct ScSpecUdtUnionV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<SC_SPEC_TYPE_NAME_LIMIT>;
-    SCSpecUDTUnionCaseV0 cases<>;
+    ScSpecUdtUnionCaseV0 cases<>;
 };
 
-struct SCSpecUDTEnumCaseV0
+struct ScSpecUdtEnumCaseV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<60>;
     uint32 value;
 };
 
-struct SCSpecUDTEnumV0
+struct ScSpecUdtEnumV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<SC_SPEC_TYPE_NAME_LIMIT>;
-    SCSpecUDTEnumCaseV0 cases<>;
+    ScSpecUdtEnumCaseV0 cases<>;
 };
 
-struct SCSpecUDTErrorEnumCaseV0
+struct ScSpecUdtErrorEnumCaseV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<60>;
     uint32 value;
 };
 
-struct SCSpecUDTErrorEnumV0
+struct ScSpecUdtErrorEnumV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<SC_SPEC_TYPE_NAME_LIMIT>;
-    SCSpecUDTErrorEnumCaseV0 cases<>;
+    ScSpecUdtErrorEnumCaseV0 cases<>;
 };
 
-struct SCSpecFunctionInputV0
+struct ScSpecFunctionInputV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<30>;
-    SCSpecTypeDef type;
+    ScSpecTypeDef type;
 };
 
-struct SCSpecFunctionV0
+struct ScSpecFunctionV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
-    SCSymbol name;
-    SCSpecFunctionInputV0 inputs<>;
-    SCSpecTypeDef outputs<1>;
+    ScSymbol name;
+    ScSpecFunctionInputV0 inputs<>;
+    ScSpecTypeDef outputs<1>;
 };
 
-enum SCSpecEventParamLocationV0
+enum ScSpecEventParamLocationV0
 {
     SC_SPEC_EVENT_PARAM_LOCATION_DATA = 0,
     SC_SPEC_EVENT_PARAM_LOCATION_TOPIC_LIST = 1
 };
 
-struct SCSpecEventParamV0
+struct ScSpecEventParamV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string name<30>;
-    SCSpecTypeDef type;
-    SCSpecEventParamLocationV0 location;
+    ScSpecTypeDef type;
+    ScSpecEventParamLocationV0 location;
 };
 
-enum SCSpecEventDataFormat
+enum ScSpecEventDataFormat
 {
     SC_SPEC_EVENT_DATA_FORMAT_SINGLE_VALUE = 0,
     SC_SPEC_EVENT_DATA_FORMAT_VEC = 1,
     SC_SPEC_EVENT_DATA_FORMAT_MAP = 2
 };
 
-struct SCSpecEventV0
+struct ScSpecEventV0
 {
     string doc<SC_SPEC_DOC_LIMIT>;
     string lib<80>;
     string name<SC_SPEC_TYPE_NAME_LIMIT>;
-    SCSymbol prefixTopics<2>;
-    SCSpecEventParamV0 params<>;
-    SCSpecEventDataFormat dataFormat;
+    ScSymbol prefixTopics<2>;
+    ScSpecEventParamV0 params<>;
+    ScSpecEventDataFormat dataFormat;
 };
 
-enum SCSpecEntryKind
+enum ScSpecEntryKind
 {
     SC_SPEC_ENTRY_FUNCTION_V0 = 0,
     SC_SPEC_ENTRY_UDT_STRUCT_V0 = 1,
@@ -261,20 +261,20 @@ enum SCSpecEntryKind
     SC_SPEC_ENTRY_EVENT_V0 = 5
 };
 
-union SCSpecEntry switch (SCSpecEntryKind kind)
+union ScSpecEntry switch (ScSpecEntryKind kind)
 {
 case SC_SPEC_ENTRY_FUNCTION_V0:
-    SCSpecFunctionV0 functionV0;
+    ScSpecFunctionV0 functionV0;
 case SC_SPEC_ENTRY_UDT_STRUCT_V0:
-    SCSpecUDTStructV0 udtStructV0;
+    ScSpecUdtStructV0 udtStructV0;
 case SC_SPEC_ENTRY_UDT_UNION_V0:
-    SCSpecUDTUnionV0 udtUnionV0;
+    ScSpecUdtUnionV0 udtUnionV0;
 case SC_SPEC_ENTRY_UDT_ENUM_V0:
-    SCSpecUDTEnumV0 udtEnumV0;
+    ScSpecUdtEnumV0 udtEnumV0;
 case SC_SPEC_ENTRY_UDT_ERROR_ENUM_V0:
-    SCSpecUDTErrorEnumV0 udtErrorEnumV0;
+    ScSpecUdtErrorEnumV0 udtErrorEnumV0;
 case SC_SPEC_ENTRY_EVENT_V0:
-    SCSpecEventV0 eventV0;
+    ScSpecEventV0 eventV0;
 };
 
 }

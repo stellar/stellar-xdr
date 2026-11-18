@@ -77,7 +77,7 @@ Result: CreateAccountResult
 */
 struct CreateAccountOp
 {
-    AccountID destination; // account to create
+    AccountId destination; // account to create
     int64 startingBalance; // amount they end up with
 };
 
@@ -161,7 +161,7 @@ struct ManageSellOfferOp
     Price price;  // price of thing being sold in terms of what you are buying
 
     // 0=create a new offer, otherwise edit an existing offer
-    int64 offerID;
+    int64 offerId;
 };
 
 /* Creates, updates or deletes an offer with amount in terms of buying asset
@@ -180,7 +180,7 @@ struct ManageBuyOfferOp
                      // selling
 
     // 0=create a new offer, otherwise edit an existing offer
-    int64 offerID;
+    int64 offerId;
 };
 
 /* Creates an offer that doesn't take offers of the same price
@@ -209,7 +209,7 @@ struct CreatePassiveSellOfferOp
 */
 struct SetOptionsOp
 {
-    AccountID* inflationDest; // sets the inflation destination
+    AccountId* inflationDest; // sets the inflation destination
 
     uint32* clearFlags; // which flags to clear
     uint32* setFlags;   // which flags to set
@@ -270,7 +270,7 @@ struct ChangeTrustOp
 */
 struct AllowTrustOp
 {
-    AccountID trustor;
+    AccountId trustor;
     AssetCode asset;
 
     // One of 0, AUTHORIZED_FLAG, or AUTHORIZED_TO_MAINTAIN_LIABILITIES_FLAG
@@ -342,13 +342,13 @@ struct CreateClaimableBalanceOp
 */
 struct ClaimClaimableBalanceOp
 {
-    ClaimableBalanceID balanceID;
+    ClaimableBalanceId balanceId;
 };
 
 /* BeginSponsoringFutureReserves
 
     Establishes the is-sponsoring-future-reserves-for relationship between
-    the source account and sponsoredID
+    the source account and sponsoredId
 
     Threshold: med
 
@@ -356,7 +356,7 @@ struct ClaimClaimableBalanceOp
 */
 struct BeginSponsoringFutureReservesOp
 {
-    AccountID sponsoredID;
+    AccountId sponsoredId;
 };
 
 /* EndSponsoringFutureReserves
@@ -394,7 +394,7 @@ case REVOKE_SPONSORSHIP_LEDGER_ENTRY:
 case REVOKE_SPONSORSHIP_SIGNER:
     struct
     {
-        AccountID accountID;
+        AccountId accountId;
         SignerKey signerKey;
     } signer;
 };
@@ -420,7 +420,7 @@ struct ClawbackOp
 */
 struct ClawbackClaimableBalanceOp
 {
-    ClaimableBalanceID balanceID;
+    ClaimableBalanceId balanceId;
 };
 
 /* SetTrustLineFlagsOp
@@ -434,7 +434,7 @@ struct ClawbackClaimableBalanceOp
 */
 struct SetTrustLineFlagsOp
 {
-    AccountID trustor;
+    AccountId trustor;
     Asset asset;
 
     uint32 clearFlags; // which flags to clear
@@ -451,7 +451,7 @@ const LIQUIDITY_POOL_FEE_V18 = 30;
 */
 struct LiquidityPoolDepositOp
 {
-    PoolID liquidityPoolID;
+    PoolId liquidityPoolId;
     int64 maxAmountA; // maximum amount of first asset to deposit
     int64 maxAmountB; // maximum amount of second asset to deposit
     Price minPrice;   // minimum depositA/depositB
@@ -466,7 +466,7 @@ struct LiquidityPoolDepositOp
 */
 struct LiquidityPoolWithdrawOp
 {
-    PoolID liquidityPoolID;
+    PoolId liquidityPoolId;
     int64 amount;     // amount of pool shares to withdraw
     int64 minAmountA; // minimum amount of first asset to withdraw
     int64 minAmountB; // minimum amount of second asset to withdraw
@@ -480,18 +480,18 @@ enum HostFunctionType
     HOST_FUNCTION_TYPE_CREATE_CONTRACT_V2 = 3
 };
 
-enum ContractIDPreimageType
+enum ContractIdPreimageType
 {
     CONTRACT_ID_PREIMAGE_FROM_ADDRESS = 0,
     CONTRACT_ID_PREIMAGE_FROM_ASSET = 1
 };
  
-union ContractIDPreimage switch (ContractIDPreimageType type)
+union ContractIdPreimage switch (ContractIdPreimageType type)
 {
 case CONTRACT_ID_PREIMAGE_FROM_ADDRESS:
     struct
     {
-        SCAddress address;
+        ScAddress address;
         uint256 salt;
     } fromAddress;
 case CONTRACT_ID_PREIMAGE_FROM_ASSET:
@@ -500,22 +500,22 @@ case CONTRACT_ID_PREIMAGE_FROM_ASSET:
 
 struct CreateContractArgs
 {
-    ContractIDPreimage contractIDPreimage;
+    ContractIdPreimage contractIdPreimage;
     ContractExecutable executable;
 };
 
 struct CreateContractArgsV2
 {
-    ContractIDPreimage contractIDPreimage;
+    ContractIdPreimage contractIdPreimage;
     ContractExecutable executable;
     // Arguments of the contract's constructor.
-    SCVal constructorArgs<>;
+    ScVal constructorArgs<>;
 };
 
 struct InvokeContractArgs {
-    SCAddress contractAddress;
-    SCSymbol functionName;
-    SCVal args<>;
+    ScAddress contractAddress;
+    ScSymbol functionName;
+    ScVal args<>;
 };
 
 union HostFunction switch (HostFunctionType type)
@@ -563,16 +563,16 @@ struct SorobanAuthorizedInvocation
 
 struct SorobanAddressCredentials
 {
-    SCAddress address;
+    ScAddress address;
     int64 nonce;
     uint32 signatureExpirationLedger;    
-    SCVal signature;
+    ScVal signature;
 };
 
 struct SorobanDelegateSignature
 {
-    SCAddress address;
-    SCVal signature;
+    ScAddress address;
+    ScVal signature;
     SorobanDelegateSignature nestedDelegates<>;
 };
 
@@ -632,9 +632,9 @@ struct InvokeHostFunctionOp
    so they will live at least extendTo ledgers from lcl.
 
     Threshold: low
-    Result: ExtendFootprintTTLResult
+    Result: ExtendFootprintTtlResult
 */
-struct ExtendFootprintTTLOp
+struct ExtendFootprintTtlOp
 {
     ExtensionPoint ext;
     uint32 extendTo;
@@ -711,41 +711,41 @@ struct Operation
     case INVOKE_HOST_FUNCTION:
         InvokeHostFunctionOp invokeHostFunctionOp;
     case EXTEND_FOOTPRINT_TTL:
-        ExtendFootprintTTLOp extendFootprintTTLOp;
+        ExtendFootprintTtlOp extendFootprintTtlOp;
     case RESTORE_FOOTPRINT:
         RestoreFootprintOp restoreFootprintOp;
     }
     body;
 };
 
-union HashIDPreimage switch (EnvelopeType type)
+union HashIdPreimage switch (EnvelopeType type)
 {
 case ENVELOPE_TYPE_OP_ID:
     struct
     {
-        AccountID sourceAccount;
+        AccountId sourceAccount;
         SequenceNumber seqNum;
         uint32 opNum;
-    } operationID;
+    } operationId;
 case ENVELOPE_TYPE_POOL_REVOKE_OP_ID:
     struct
     {
-        AccountID sourceAccount;
+        AccountId sourceAccount;
         SequenceNumber seqNum; 
         uint32 opNum;
-        PoolID liquidityPoolID;
+        PoolId liquidityPoolId;
         Asset asset;
-    } revokeID;
+    } revokeId;
 case ENVELOPE_TYPE_CONTRACT_ID:
     struct
     {
-        Hash networkID;
-        ContractIDPreimage contractIDPreimage;
-    } contractID;
+        Hash networkId;
+        ContractIdPreimage contractIdPreimage;
+    } contractId;
 case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION:
     struct
     {
-        Hash networkID;
+        Hash networkId;
         int64 nonce;
         uint32 signatureExpirationLedger;
         SorobanAuthorizedInvocation invocation;
@@ -753,10 +753,10 @@ case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION:
 case ENVELOPE_TYPE_SOROBAN_AUTHORIZATION_WITH_ADDRESS:
     struct
     {
-        Hash networkID;
+        Hash networkId;
         int64 nonce;
         uint32 signatureExpirationLedger;
-        SCAddress address;
+        ScAddress address;
         SorobanAuthorizedInvocation invocation;
     } sorobanAuthorizationWithAddress;
 };
@@ -899,7 +899,7 @@ struct SorobanTransactionData
     int64 resourceFee;
 };
 
-// TransactionV0 is a transaction with the AccountID discriminant stripped off,
+// TransactionV0 is a transaction with the AccountId discriminant stripped off,
 // leaving a raw ed25519 public key to identify the source account. This is used
 // for backwards compatibility starting from the protocol 12/13 boundary. If an
 // "old-style" TransactionEnvelope containing a Transaction is parsed with this
@@ -1032,7 +1032,7 @@ enum ClaimAtomType
     CLAIM_ATOM_TYPE_LIQUIDITY_POOL = 2
 };
 
-// ClaimOfferAtomV0 is a ClaimOfferAtom with the AccountID discriminant stripped
+// ClaimOfferAtomV0 is a ClaimOfferAtom with the AccountId discriminant stripped
 // off, leaving a raw ed25519 public key to identify the source account. This is
 // used for backwards compatibility starting from the protocol 17/18 boundary.
 // If an "old-style" ClaimOfferAtom is parsed with this XDR definition, it will
@@ -1041,7 +1041,7 @@ struct ClaimOfferAtomV0
 {
     // emitted to identify the offer
     uint256 sellerEd25519; // Account that owns the offer
-    int64 offerID;
+    int64 offerId;
 
     // amount and asset taken from the owner
     Asset assetSold;
@@ -1055,8 +1055,8 @@ struct ClaimOfferAtomV0
 struct ClaimOfferAtom
 {
     // emitted to identify the offer
-    AccountID sellerID; // Account that owns the offer
-    int64 offerID;
+    AccountId sellerId; // Account that owns the offer
+    int64 offerId;
 
     // amount and asset taken from the owner
     Asset assetSold;
@@ -1069,7 +1069,7 @@ struct ClaimOfferAtom
 
 struct ClaimLiquidityAtom
 {
-    PoolID liquidityPoolID;
+    PoolId liquidityPoolId;
 
     // amount and asset taken from the pool
     Asset assetSold;
@@ -1187,7 +1187,7 @@ enum PathPaymentStrictReceiveResultCode
 
 struct SimplePaymentResult
 {
-    AccountID destination;
+    AccountId destination;
     Asset asset;
     int64 amount;
 };
@@ -1296,7 +1296,7 @@ enum ManageSellOfferResultCode
 
     // update errors
     MANAGE_SELL_OFFER_NOT_FOUND =
-        -11, // offerID does not match an existing offer
+        -11, // offerId does not match an existing offer
 
     MANAGE_SELL_OFFER_LOW_RESERVE =
         -12 // not enough funds to create a new Offer
@@ -1365,7 +1365,7 @@ enum ManageBuyOfferResultCode
 
     // update errors
     MANAGE_BUY_OFFER_NOT_FOUND =
-        -11, // offerID does not match an existing offer
+        -11, // offerId does not match an existing offer
 
     MANAGE_BUY_OFFER_LOW_RESERVE = -12 // not enough funds to create a new Offer
 };
@@ -1535,7 +1535,7 @@ enum InflationResultCode
 
 struct InflationPayout // or use PaymentResultAtom to limit types?
 {
-    AccountID destination;
+    AccountId destination;
     int64 amount;
 };
 
@@ -1607,7 +1607,7 @@ union CreateClaimableBalanceResult switch (
     CreateClaimableBalanceResultCode code)
 {
 case CREATE_CLAIMABLE_BALANCE_SUCCESS:
-    ClaimableBalanceID balanceID;
+    ClaimableBalanceId balanceId;
 case CREATE_CLAIMABLE_BALANCE_MALFORMED:
 case CREATE_CLAIMABLE_BALANCE_LOW_RESERVE:
 case CREATE_CLAIMABLE_BALANCE_NO_TRUST:
@@ -1886,7 +1886,7 @@ case INVOKE_HOST_FUNCTION_INSUFFICIENT_REFUNDABLE_FEE:
     void;
 };
 
-enum ExtendFootprintTTLResultCode
+enum ExtendFootprintTtlResultCode
 {
     // codes considered as "success" for the operation
     EXTEND_FOOTPRINT_TTL_SUCCESS = 0,
@@ -1897,7 +1897,7 @@ enum ExtendFootprintTTLResultCode
     EXTEND_FOOTPRINT_TTL_INSUFFICIENT_REFUNDABLE_FEE = -3
 };
 
-union ExtendFootprintTTLResult switch (ExtendFootprintTTLResultCode code)
+union ExtendFootprintTtlResult switch (ExtendFootprintTtlResultCode code)
 {
 case EXTEND_FOOTPRINT_TTL_SUCCESS:
     void;
@@ -1997,7 +1997,7 @@ case opINNER:
     case INVOKE_HOST_FUNCTION:
         InvokeHostFunctionResult invokeHostFunctionResult;
     case EXTEND_FOOTPRINT_TTL:
-        ExtendFootprintTTLResult extendFootprintTTLResult;
+        ExtendFootprintTtlResult extendFootprintTtlResult;
     case RESTORE_FOOTPRINT:
         RestoreFootprintResult restoreFootprintResult;
     }

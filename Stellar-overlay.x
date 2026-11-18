@@ -45,10 +45,10 @@ struct Hello
     uint32 ledgerVersion;
     uint32 overlayVersion;
     uint32 overlayMinVersion;
-    Hash networkID;
+    Hash networkId;
     string versionStr<100>;
     int listeningPort;
-    NodeID peerID;
+    NodeId peerId;
     AuthCert cert;
     uint256 nonce;
 };
@@ -67,19 +67,19 @@ struct Auth
     int flags;
 };
 
-enum IPAddrType
+enum IpAddrType
 {
-    IPv4 = 0,
-    IPv6 = 1
+    Ipv4 = 0,
+    Ipv6 = 1
 };
 
 struct PeerAddress
 {
-    union switch (IPAddrType type)
+    union switch (IpAddrType type)
     {
-    case IPv4:
+    case Ipv4:
         opaque ipv4[4];
-    case IPv6:
+    case Ipv6:
         opaque ipv6[16];
     }
     ip;
@@ -145,7 +145,7 @@ enum SurveyMessageResponseType
 
 struct TimeSlicedSurveyStartCollectingMessage
 {
-    NodeID surveyorID;
+    NodeId surveyorId;
     uint32 nonce;
     uint32 ledgerNum;
 };
@@ -158,7 +158,7 @@ struct SignedTimeSlicedSurveyStartCollectingMessage
 
 struct TimeSlicedSurveyStopCollectingMessage
 {
-    NodeID surveyorID;
+    NodeId surveyorId;
     uint32 nonce;
     uint32 ledgerNum;
 };
@@ -171,8 +171,8 @@ struct SignedTimeSlicedSurveyStopCollectingMessage
 
 struct SurveyRequestMessage
 {
-    NodeID surveyorPeerID;
-    NodeID surveyedPeerID;
+    NodeId surveyorPeerId;
+    NodeId surveyedPeerId;
     uint32 ledgerNum;
     Curve25519Public encryptionKey;
     SurveyMessageCommandType commandType;
@@ -195,8 +195,8 @@ struct SignedTimeSlicedSurveyRequestMessage
 typedef opaque EncryptedBody<64000>;
 struct SurveyResponseMessage
 {
-    NodeID surveyorPeerID;
-    NodeID surveyedPeerID;
+    NodeId surveyorPeerId;
+    NodeId surveyedPeerId;
     uint32 ledgerNum;
     SurveyMessageCommandType commandType;
     EncryptedBody encryptedBody;
@@ -216,7 +216,7 @@ struct SignedTimeSlicedSurveyResponseMessage
 
 struct PeerStats
 {
-    NodeID id;
+    NodeId id;
     string versionStr<100>;
     uint64 messagesRead;
     uint64 messagesWritten;
@@ -243,8 +243,8 @@ struct TimeSlicedNodeData
     uint32 totalOutboundPeerCount;
 
     // SCP stats
-    uint32 p75SCPFirstToSelfLatencyMs;
-    uint32 p75SCPSelfToOtherLatencyMs;
+    uint32 p75ScpFirstToSelfLatencyMs;
+    uint32 p75ScpSelfToOtherLatencyMs;
 
     // How many times the node lost sync in the time slice
     uint32 lostSyncCount;
@@ -333,11 +333,11 @@ case TIME_SLICED_SURVEY_STOP_COLLECTING:
 case GET_SCP_QUORUMSET:
     uint256 qSetHash;
 case SCP_QUORUMSET:
-    SCPQuorumSet qSet;
+    ScpQuorumSet qSet;
 case SCP_MESSAGE:
-    SCPEnvelope envelope;
+    ScpEnvelope envelope;
 case GET_SCP_STATE:
-    uint32 getSCPLedgerSeq; // ledger seq requested ; if 0, requests the latest
+    uint32 getScpLedgerSeq; // ledger seq requested ; if 0, requests the latest
 case SEND_MORE:
     SendMore sendMoreMessage;
 case SEND_MORE_EXTENDED:

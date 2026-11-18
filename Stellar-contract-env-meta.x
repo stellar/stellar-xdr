@@ -9,12 +9,12 @@
 namespace stellar
 {
 
-enum SCEnvMetaKind
+enum ScEnvMetaKind
 {
     SC_ENV_META_KIND_INTERFACE_VERSION = 0
 };
 
-union SCEnvMetaEntry switch (SCEnvMetaKind kind)
+union ScEnvMetaEntry switch (ScEnvMetaKind kind)
 {
 case SC_ENV_META_KIND_INTERFACE_VERSION:
     struct {

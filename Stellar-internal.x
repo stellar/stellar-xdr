@@ -24,25 +24,25 @@ struct StoredDebugTransactionSet
 	StellarValue scpValue;
 };
 
-struct PersistedSCPStateV0
+struct PersistedScpStateV0
 {
-	SCPEnvelope scpEnvelopes<>;
-	SCPQuorumSet quorumSets<>;
+	ScpEnvelope scpEnvelopes<>;
+	ScpQuorumSet quorumSets<>;
 	StoredTransactionSet txSets<>;
 };
 
-struct PersistedSCPStateV1
+struct PersistedScpStateV1
 {
 	// Tx sets are saved separately
-	SCPEnvelope scpEnvelopes<>;
-	SCPQuorumSet quorumSets<>;
+	ScpEnvelope scpEnvelopes<>;
+	ScpQuorumSet quorumSets<>;
 };
 
-union PersistedSCPState switch (int v)
+union PersistedScpState switch (int v)
 {
 case 0:
-	PersistedSCPStateV0 v0;
+	PersistedScpStateV0 v0;
 case 1:
-	PersistedSCPStateV1 v1;
+	PersistedScpStateV1 v1;
 };
 }

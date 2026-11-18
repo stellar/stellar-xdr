@@ -83,10 +83,10 @@ typedef opaque Signature<64>;
 
 typedef opaque SignatureHint[4];
 
-typedef PublicKey NodeID;
-typedef PublicKey AccountID;
+typedef PublicKey NodeId;
+typedef PublicKey AccountId;
 
-typedef Hash ContractID;
+typedef Hash ContractId;
 
 struct Curve25519Secret
 {
@@ -139,14 +139,14 @@ struct SerializedBinaryFuseFilter
     opaque fingerprints<>;
 };
 
-typedef Hash PoolID; // SHA256(LiquidityPoolParameters)
+typedef Hash PoolId; // SHA256(LiquidityPoolParameters)
 
-enum ClaimableBalanceIDType
+enum ClaimableBalanceIdType
 {
     CLAIMABLE_BALANCE_ID_TYPE_V0 = 0
 };
 
-union ClaimableBalanceID switch (ClaimableBalanceIDType type)
+union ClaimableBalanceId switch (ClaimableBalanceIdType type)
 {
 case CLAIMABLE_BALANCE_ID_TYPE_V0:
     Hash v0;

@@ -21,8 +21,8 @@ enum StellarValueType
 
 struct LedgerCloseValueSignature
 {
-    NodeID nodeID;       // which node introduced the value
-    Signature signature; // nodeID's signature
+    NodeId nodeId;       // which node introduced the value
+    Signature signature; // nodeId's signature
 };
 
 /* StellarValue is the value used by SCP to reach consensus on a given ledger
@@ -154,7 +154,7 @@ enum LedgerUpgradeType
 };
 
 struct ConfigUpgradeSetKey {
-    ContractID contractID;
+    ContractId contractId;
     Hash contentHash;
 };
 
@@ -316,25 +316,25 @@ struct LedgerHeaderHistoryEntry
 
 // historical SCP messages
 
-struct LedgerSCPMessages
+struct LedgerScpMessages
 {
     uint32 ledgerSeq;
-    SCPEnvelope messages<>;
+    ScpEnvelope messages<>;
 };
 
 // note: ledgerMessages may refer to any quorumSets encountered
 // in the file so far, not just the one from this entry
-struct SCPHistoryEntryV0
+struct ScpHistoryEntryV0
 {
-    SCPQuorumSet quorumSets<>; // additional quorum sets used by ledgerMessages
-    LedgerSCPMessages ledgerMessages;
+    ScpQuorumSet quorumSets<>; // additional quorum sets used by ledgerMessages
+    LedgerScpMessages ledgerMessages;
 };
 
 // SCP history file is an array of these
-union SCPHistoryEntry switch (int v)
+union ScpHistoryEntry switch (int v)
 {
 case 0:
-    SCPHistoryEntryV0 v0;
+    ScpHistoryEntryV0 v0;
 };
 
 // represents the meta in the transaction table history
@@ -400,7 +400,7 @@ struct ContractEvent
     // is first, to change ContractEvent into a union.
     ExtensionPoint ext;
 
-    ContractID* contractID;
+    ContractId* contractId;
     ContractEventType type;
 
     union switch (int v)
@@ -408,8 +408,8 @@ struct ContractEvent
     case 0:
         struct
         {
-            SCVal topics<>;
-            SCVal data;
+            ScVal topics<>;
+            ScVal data;
         } v0;
     }
     body;
@@ -469,7 +469,7 @@ struct SorobanTransactionMeta
 
     ContractEvent events<>;             // custom events populated by the
                                         // contracts themselves.
-    SCVal returnValue;                  // return value of the host fn invocation
+    ScVal returnValue;                  // return value of the host fn invocation
 
     // Diagnostics events that are not hashed.
     // This will contain all contract and diagnostic events. Even ones
@@ -503,7 +503,7 @@ struct SorobanTransactionMetaV2
 {
     SorobanTransactionMetaExt ext;
 
-    SCVal* returnValue;
+    ScVal* returnValue;
 };
 
 // Transaction-level events happen at different stages of the ledger apply flow
@@ -551,7 +551,7 @@ struct TransactionMetaV4
 // This is in Stellar-ledger.x to due to a circular dependency 
 struct InvokeHostFunctionSuccessPreImage
 {
-    SCVal returnValue;
+    ScVal returnValue;
     ContractEvent events<>;
 };
 
@@ -618,13 +618,13 @@ struct LedgerCloseMetaV0
     UpgradeEntryMeta upgradesProcessing<>;
 
     // other misc information attached to the ledger close
-    SCPHistoryEntry scpInfo<>;
+    ScpHistoryEntry scpInfo<>;
 };
 
 struct LedgerCloseMetaExtV1
 {
     ExtensionPoint ext;
-    int64 sorobanFeeWrite1KB;
+    int64 sorobanFeeWrite1Kb;
 };
 
 union LedgerCloseMetaExt switch (int v)
@@ -652,7 +652,7 @@ struct LedgerCloseMetaV1
     UpgradeEntryMeta upgradesProcessing<>;
 
     // other misc information attached to the ledger close
-    SCPHistoryEntry scpInfo<>;
+    ScpHistoryEntry scpInfo<>;
 
     // Size in bytes of live Soroban state, to support downstream
     // systems calculating storage fees correctly.
@@ -682,7 +682,7 @@ struct LedgerCloseMetaV2
     UpgradeEntryMeta upgradesProcessing<>;
 
     // other misc information attached to the ledger close
-    SCPHistoryEntry scpInfo<>;
+    ScpHistoryEntry scpInfo<>;
 
     // Size in bytes of live Soroban state, to support downstream
     // systems calculating storage fees correctly.

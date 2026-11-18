@@ -60,15 +60,15 @@ struct ConfigSettingContractLedgerCostV0
     int64 feeDiskReadLedgerEntry;  // Fee per disk ledger entry read
     int64 feeWriteLedgerEntry;     // Fee per ledger entry write
 
-    int64 feeDiskRead1KB;          // Fee for reading 1KB disk
+    int64 feeDiskRead1Kb;          // Fee for reading 1KB disk
 
     // The following parameters determine the write fee per 1KB.
     // Rent fee grows linearly until soroban state reaches this size
     int64 sorobanStateTargetSizeBytes;
     // Fee per 1KB rent when the soroban state is empty
-    int64 rentFee1KBSorobanStateSizeLow;
+    int64 rentFee1KbSorobanStateSizeLow;
     // Fee per 1KB rent when the soroban state has reached `sorobanStateTargetSizeBytes`
-    int64 rentFee1KBSorobanStateSizeHigh;
+    int64 rentFee1KbSorobanStateSizeHigh;
     // Rent fee multiplier for any additional data past the first `sorobanStateTargetSizeBytes`
     uint32 sorobanStateRentFeeGrowthFactor;
 };
@@ -81,13 +81,13 @@ struct ConfigSettingContractLedgerCostExtV0
     // Fee per 1 KB of data written to the ledger.
     // Unlike the rent fee, this is a flat fee that is charged for any ledger
     // write, independent of the type of the entry being written.
-    int64 feeWrite1KB;
+    int64 feeWrite1Kb;
 };
 
 // Historical data (pushed to core archives) settings for contracts.
 struct ConfigSettingContractHistoricalDataV0
 {
-    int64 feeHistorical1KB; // Fee for storing 1KB in archives
+    int64 feeHistorical1Kb; // Fee for storing 1KB in archives
 };
 
 // Contract event-related settings.
@@ -96,7 +96,7 @@ struct ConfigSettingContractEventsV0
     // Maximum size of events that a contract call can emit.
     uint32 txMaxContractEventsSizeBytes;
     // Fee for generating 1KB of contract events.
-    int64 feeContractEvents1KB;
+    int64 feeContractEvents1Kb;
 };
 
 // Bandwidth related data settings for contracts.
@@ -110,7 +110,7 @@ struct ConfigSettingContractBandwidthV0
     uint32 txMaxSizeBytes;
 
     // Fee for 1 KB of transaction size
-    int64 feeTxSize1KB;
+    int64 feeTxSize1Kb;
 };
 
 enum ContractCostType {
@@ -326,9 +326,9 @@ struct ContractCostParamEntry {
 };
 
 struct StateArchivalSettings {
-    uint32 maxEntryTTL;
-    uint32 minTemporaryTTL;
-    uint32 minPersistentTTL;
+    uint32 maxEntryTtl;
+    uint32 minTemporaryTtl;
+    uint32 minPersistentTtl;
 
     // rent_fee = wfee_rate_average / rent_rate_denominator_for_type
     int64 persistentRentRateDenominator;
@@ -356,7 +356,7 @@ struct EvictionIterator {
     uint64 bucketFileOffset;
 };
 
-struct ConfigSettingSCPTiming {
+struct ConfigSettingScpTiming {
     uint32 ledgerTargetCloseTimeMilliseconds;
     uint32 nominationTimeoutInitialMilliseconds;
     uint32 nominationTimeoutIncrementMilliseconds;
@@ -388,7 +388,7 @@ const CONTRACT_COST_COUNT_LIMIT = 1024;
 typedef ContractCostParamEntry ContractCostParams<CONTRACT_COST_COUNT_LIMIT>;
 
 // Identifiers of all the network settings.
-enum ConfigSettingID
+enum ConfigSettingId
 {
     CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES = 0,
     CONFIG_SETTING_CONTRACT_COMPUTE_V0 = 1,
@@ -413,7 +413,7 @@ enum ConfigSettingID
     CONFIG_SETTING_FREEZE_BYPASS_TXS_DELTA = 20
 };
 
-union ConfigSettingEntry switch (ConfigSettingID configSettingID)
+union ConfigSettingEntry switch (ConfigSettingId configSettingId)
 {
 case CONFIG_SETTING_CONTRACT_MAX_SIZE_BYTES:
     uint32 contractMaxSizeBytes;
@@ -448,7 +448,7 @@ case CONFIG_SETTING_CONTRACT_PARALLEL_COMPUTE_V0:
 case CONFIG_SETTING_CONTRACT_LEDGER_COST_EXT_V0:
     ConfigSettingContractLedgerCostExtV0 contractLedgerCostExt;
 case CONFIG_SETTING_SCP_TIMING:
-    ConfigSettingSCPTiming contractSCPTiming;
+    ConfigSettingScpTiming contractScpTiming;
 case CONFIG_SETTING_FROZEN_LEDGER_KEYS:
     FrozenLedgerKeys frozenLedgerKeys;
 case CONFIG_SETTING_FROZEN_LEDGER_KEYS_DELTA:

@@ -6,10 +6,10 @@
 namespace stellar
 {
 
-typedef opaque SCBytes<>;
-typedef string SCString<>;
+typedef opaque ScBytes<>;
+typedef string ScString<>;
 const SCSYMBOL_LIMIT = 32;
-typedef string SCSymbol<SCSYMBOL_LIMIT>;
+typedef string ScSymbol<SCSYMBOL_LIMIT>;
 
 // We fix a maximum of 128 value types in the system for two reasons: we want to
 // keep the codes relatively small (<= 8 bits) when bit-packing values into a
@@ -19,11 +19,11 @@ typedef string SCSymbol<SCSYMBOL_LIMIT>;
 // codes fit in a single ULEB128-code byte, which means we can only use 7 bits.
 //
 // We also reserve several type codes from this space because we want to _reuse_
-// the SCValType codes at the environment interface level (or at least not
+// the ScValType codes at the environment interface level (or at least not
 // exceed its number-space) but there are more types at that level, assigned to
 // optimizations/special case representations of values abstract at this level.
 
-enum SCValType
+enum ScValType
 {
     SCV_BOOL = 0,
     SCV_VOID = 1,
@@ -67,12 +67,12 @@ enum SCValType
     // accounts.
     SCV_ADDRESS = 18,
 
-    // The following are the internal SCVal variants that are not
+    // The following are the internal ScVal variants that are not
     // exposed to the contracts. 
     SCV_CONTRACT_INSTANCE = 19,
 
     // SCV_LEDGER_KEY_CONTRACT_INSTANCE and SCV_LEDGER_KEY_NONCE are unique
-    // symbolic SCVals used as the key for ledger entries for a contract's
+    // symbolic ScVals used as the key for ledger entries for a contract's
     // instance and an address' nonce, respectively.
     SCV_LEDGER_KEY_CONTRACT_INSTANCE = 20,
     SCV_LEDGER_KEY_NONCE = 21,
@@ -80,7 +80,7 @@ enum SCValType
     SCV_EXECUTABLE_TAG = 22
 };
 
-enum SCErrorType
+enum ScErrorType
 {
     SCE_CONTRACT = 0,          // Contract-specific, user-defined codes.
     SCE_WASM_VM = 1,           // Errors while interpreting WASM bytecode.
@@ -90,11 +90,11 @@ enum SCErrorType
     SCE_CRYPTO = 5,            // Errors in cryptographic operations.
     SCE_EVENTS = 6,            // Errors while emitting events.
     SCE_BUDGET = 7,            // Errors relating to budget limits.
-    SCE_VALUE = 8,             // Errors working with host values or SCVals.
+    SCE_VALUE = 8,             // Errors working with host values or ScVals.
     SCE_AUTH = 9               // Errors from the authentication subsystem.
 };
 
-enum SCErrorCode
+enum ScErrorCode
 {
     SCEC_ARITH_DOMAIN = 0,      // Some arithmetic was undefined (overflow, divide-by-zero).
     SCEC_INDEX_BOUNDS = 1,      // Something was indexed beyond its bounds.
@@ -108,11 +108,11 @@ enum SCErrorCode
     SCEC_UNEXPECTED_SIZE = 9    // Something's size wasn't as expected.
 };
 
-// Smart contract errors are split into a type (SCErrorType) and a code. When an
+// Smart contract errors are split into a type (ScErrorType) and a code. When an
 // error is of type SCE_CONTRACT it carries a user-defined uint32 code that
 // Soroban assigns no specific meaning to. In all other cases, the type
 // specifies a subsystem of the Soroban host where the error originated, and the
-// accompanying code is an SCErrorCode, each of which specifies a slightly more
+// accompanying code is an ScErrorCode, each of which specifies a slightly more
 // precise class of errors within that subsystem.
 //
 // Error types and codes are not maximally precise; there is a tradeoff between
@@ -121,7 +121,7 @@ enum SCErrorCode
 // system evolution and maintenance. When additional precision is needed for
 // debugging, Soroban can be run with diagnostic events enabled.
 
-union SCError switch (SCErrorType type)
+union ScError switch (ScErrorType type)
 {
 case SCE_CONTRACT:
     uint32 contractCode;
@@ -134,7 +134,7 @@ case SCE_EVENTS:
 case SCE_BUDGET:
 case SCE_VALUE:
 case SCE_AUTH:
-    SCErrorCode code;
+    ScErrorCode code;
 };
 
 struct UInt128Parts {
@@ -176,7 +176,7 @@ enum ContractExecutableType
     CONTRACT_EXECUTABLE_EXTERNAL_REF = 2
 };
 
-enum SCAddressType
+enum ScAddressType
 {
     SC_ADDRESS_TYPE_ACCOUNT = 0,
     SC_ADDRESS_TYPE_CONTRACT = 1,
@@ -195,28 +195,28 @@ struct MuxedEd25519Account
 struct MuxedContract
 {
     uint64 id;
-    ContractID contractId;
+    ContractId contractId;
 };
 
-union SCAddress switch (SCAddressType type)
+union ScAddress switch (ScAddressType type)
 {
 case SC_ADDRESS_TYPE_ACCOUNT:
-    AccountID accountId;
+    AccountId accountId;
 case SC_ADDRESS_TYPE_CONTRACT:
-    ContractID contractId;
+    ContractId contractId;
 case SC_ADDRESS_TYPE_MUXED_ACCOUNT:
     MuxedEd25519Account muxedAccount;
 case SC_ADDRESS_TYPE_CLAIMABLE_BALANCE:
-    ClaimableBalanceID claimableBalanceId;
+    ClaimableBalanceId claimableBalanceId;
 case SC_ADDRESS_TYPE_LIQUIDITY_POOL:
-    PoolID liquidityPoolId;
+    PoolId liquidityPoolId;
 case SC_ADDRESS_TYPE_MUXED_CONTRACT:
     MuxedContract muxedContract;
 };
 
 struct ContractExecutableExternalRef {
-    SCAddress executable_owner;
-    SCString tag;
+    ScAddress executable_owner;
+    ScString tag;
 };
 
 union ContractExecutable switch (ContractExecutableType type)
@@ -229,22 +229,22 @@ case CONTRACT_EXECUTABLE_EXTERNAL_REF:
     ContractExecutableExternalRef external_ref;
 };
 
-%struct SCVal;
-%struct SCMapEntry;
+%struct ScVal;
+%struct ScMapEntry;
 
-typedef SCVal SCVec<>;
-typedef SCMapEntry SCMap<>;
+typedef ScVal ScVec<>;
+typedef ScMapEntry ScMap<>;
 
-struct SCNonceKey {
+struct ScNonceKey {
     int64 nonce;
 };
 
-struct SCContractInstance {
+struct ScContractInstance {
     ContractExecutable executable;
-    SCMap* storage;
+    ScMap* storage;
 };
 
-union SCVal switch (SCValType type)
+union ScVal switch (ScValType type)
 {
 
 case SCV_BOOL:
@@ -252,7 +252,7 @@ case SCV_BOOL:
 case SCV_VOID:
     void;
 case SCV_ERROR:
-    SCError error;
+    ScError error;
 
 case SCV_U32:
     uint32 u32;
@@ -279,39 +279,39 @@ case SCV_I256:
     Int256Parts i256;
 
 case SCV_BYTES:
-    SCBytes bytes;
+    ScBytes bytes;
 case SCV_STRING:
-    SCString str;
+    ScString str;
 case SCV_SYMBOL:
-    SCSymbol sym;
+    ScSymbol sym;
 
 // Vec and Map are recursive so need to live
 // behind an option, due to xdrpp limitations.
 case SCV_VEC:
-    SCVec *vec;
+    ScVec *vec;
 case SCV_MAP:
-    SCMap *map;
+    ScMap *map;
 
 case SCV_ADDRESS:
-    SCAddress address;
+    ScAddress address;
 
-// Special SCVals reserved for system-constructed contract-data
+// Special ScVals reserved for system-constructed contract-data
 // ledger keys, not generally usable elsewhere.
 case SCV_CONTRACT_INSTANCE:
-    SCContractInstance instance;
+    ScContractInstance instance;
 case SCV_LEDGER_KEY_CONTRACT_INSTANCE:
     void;
 case SCV_LEDGER_KEY_NONCE:
-    SCNonceKey nonce_key;
+    ScNonceKey nonce_key;
 
 case SCV_EXECUTABLE_TAG:
-    SCString executable_tag;
+    ScString executable_tag;
 };
 
-struct SCMapEntry
+struct ScMapEntry
 {
-    SCVal key;
-    SCVal val;
+    ScVal key;
+    ScVal val;
 };
 
 }

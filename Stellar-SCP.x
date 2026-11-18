@@ -9,13 +9,13 @@ namespace stellar
 
 typedef opaque Value<>;
 
-struct SCPBallot
+struct ScpBallot
 {
     uint32 counter; // n
     Value value;    // x
 };
 
-enum SCPStatementType
+enum ScpStatementType
 {
     SCP_ST_PREPARE = 0,
     SCP_ST_CONFIRM = 1,
@@ -23,34 +23,34 @@ enum SCPStatementType
     SCP_ST_NOMINATE = 3
 };
 
-struct SCPNomination
+struct ScpNomination
 {
     Hash quorumSetHash; // D
     Value votes<>;      // X
     Value accepted<>;   // Y
 };
 
-struct SCPStatement
+struct ScpStatement
 {
-    NodeID nodeID;    // v
+    NodeId nodeId;    // v
     uint64 slotIndex; // i
 
-    union switch (SCPStatementType type)
+    union switch (ScpStatementType type)
     {
     case SCP_ST_PREPARE:
         struct
         {
             Hash quorumSetHash;       // D
-            SCPBallot ballot;         // b
-            SCPBallot* prepared;      // p
-            SCPBallot* preparedPrime; // p'
+            ScpBallot ballot;         // b
+            ScpBallot* prepared;      // p
+            ScpBallot* preparedPrime; // p'
             uint32 nC;                // c.n
             uint32 nH;                // h.n
         } prepare;
     case SCP_ST_CONFIRM:
         struct
         {
-            SCPBallot ballot;   // b
+            ScpBallot ballot;   // b
             uint32 nPrepared;   // p.n
             uint32 nCommit;     // c.n
             uint32 nH;          // h.n
@@ -59,28 +59,28 @@ struct SCPStatement
     case SCP_ST_EXTERNALIZE:
         struct
         {
-            SCPBallot commit;         // c
+            ScpBallot commit;         // c
             uint32 nH;                // h.n
             Hash commitQuorumSetHash; // D used before EXTERNALIZE
         } externalize;
     case SCP_ST_NOMINATE:
-        SCPNomination nominate;
+        ScpNomination nominate;
     }
     pledges;
 };
 
-struct SCPEnvelope
+struct ScpEnvelope
 {
-    SCPStatement statement;
+    ScpStatement statement;
     Signature signature;
 };
 
 // supports things like: A,B,(C,D,E),(F,G,(H,I,(J,K,(L,M))))
 // only allows 4 levels of nesting
-struct SCPQuorumSet
+struct ScpQuorumSet
 {
     uint32 threshold;
-    NodeID validators<>;
-    SCPQuorumSet innerSets<>;
+    NodeId validators<>;
+    ScpQuorumSet innerSets<>;
 };
 }

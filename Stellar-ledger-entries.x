@@ -43,13 +43,13 @@ case ASSET_TYPE_CREDIT_ALPHANUM12:
 struct AlphaNum4
 {
     AssetCode4 assetCode;
-    AccountID issuer;
+    AccountId issuer;
 };
 
 struct AlphaNum12
 {
     AssetCode12 assetCode;
-    AccountID issuer;
+    AccountId issuer;
 };
 
 union Asset switch (AssetType type)
@@ -134,7 +134,7 @@ const MASK_ACCOUNT_FLAGS_V17 = 0xF;
 // maximum number of signers
 const MAX_SIGNERS = 20;
 
-typedef AccountID* SponsorshipDescriptor;
+typedef AccountId* SponsorshipDescriptor;
 
 struct AccountEntryExtensionV3
 {
@@ -153,7 +153,7 @@ struct AccountEntryExtensionV2
 {
     uint32 numSponsored;
     uint32 numSponsoring;
-    SponsorshipDescriptor signerSponsoringIDs<MAX_SIGNERS>;
+    SponsorshipDescriptor signerSponsoringIds<MAX_SIGNERS>;
 
     union switch (int v)
     {
@@ -189,12 +189,12 @@ struct AccountEntryExtensionV1
 */
 struct AccountEntry
 {
-    AccountID accountID;      // master public key for this account
+    AccountId accountId;      // master public key for this account
     int64 balance;            // in stroops
     SequenceNumber seqNum;    // last sequence number used for this account
     uint32 numSubEntries;     // number of sub-entries this account has
                               // drives the reserve
-    AccountID* inflationDest; // Account to vote for during inflation
+    AccountId* inflationDest; // Account to vote for during inflation
     uint32 flags;             // see AccountFlags
 
     string32 homeDomain; // can be used for reverse federation and memo lookup
@@ -256,7 +256,7 @@ case ASSET_TYPE_CREDIT_ALPHANUM12:
     AlphaNum12 alphaNum12;
 
 case ASSET_TYPE_POOL_SHARE:
-    PoolID liquidityPoolID;
+    PoolId liquidityPoolId;
 
     // add other asset types here in the future
 };
@@ -275,7 +275,7 @@ struct TrustLineEntryExtensionV2
 
 struct TrustLineEntry
 {
-    AccountID accountID;  // account this trustline belongs to
+    AccountId accountId;  // account this trustline belongs to
     TrustLineAsset asset; // type of asset (with issuer)
     int64 balance;        // how much of this asset the user has.
                           // Asset defines the unit for this;
@@ -325,8 +325,8 @@ const MASK_OFFERENTRY_FLAGS = 1;
 */
 struct OfferEntry
 {
-    AccountID sellerID;
-    int64 offerID;
+    AccountId sellerId;
+    int64 offerId;
     Asset selling; // A
     Asset buying;  // B
     int64 amount;  // amount of A
@@ -353,7 +353,7 @@ struct OfferEntry
 */
 struct DataEntry
 {
-    AccountID accountID; // account this data belongs to
+    AccountId accountId; // account this data belongs to
     string64 dataName;
     DataValue dataValue;
 
@@ -403,7 +403,7 @@ union Claimant switch (ClaimantType type)
 case CLAIMANT_TYPE_V0:
     struct
     {
-        AccountID destination;    // The account that can use this condition
+        AccountId destination;    // The account that can use this condition
         ClaimPredicate predicate; // Claimable if predicate is true
     } v0;
 };
@@ -432,7 +432,7 @@ struct ClaimableBalanceEntryExtensionV1
 struct ClaimableBalanceEntry
 {
     // Unique identifier for this ClaimableBalanceEntry
-    ClaimableBalanceID balanceID;
+    ClaimableBalanceId balanceId;
 
     // List of claimants with associated predicate
     Claimant claimants<10>;
@@ -463,7 +463,7 @@ struct LiquidityPoolConstantProductParameters
 
 struct LiquidityPoolEntry
 {
-    PoolID liquidityPoolID;
+    PoolId liquidityPoolId;
 
     union switch (LiquidityPoolType type)
     {
@@ -490,10 +490,10 @@ enum ContractDataDurability {
 struct ContractDataEntry {
     ExtensionPoint ext;
 
-    SCAddress contract;
-    SCVal key;
+    ScAddress contract;
+    ScVal key;
     ContractDataDurability durability;
-    SCVal val;
+    ScVal val;
 };
 
 struct ContractCodeCostInputs {
@@ -527,15 +527,15 @@ struct ContractCodeEntry {
     opaque code<>;
 };
 
-struct TTLEntry {
-    // Hash of the LedgerKey that is associated with this TTLEntry
+struct TtlEntry {
+    // Hash of the LedgerKey that is associated with this TtlEntry
     Hash keyHash;
     uint32 liveUntilLedgerSeq;
 };
 
 struct LedgerEntryExtensionV1
 {
-    SponsorshipDescriptor sponsoringID;
+    SponsorshipDescriptor sponsoringId;
 
     union switch (int v)
     {
@@ -570,7 +570,7 @@ struct LedgerEntry
     case CONFIG_SETTING:
         ConfigSettingEntry configSetting;
     case TTL:
-        TTLEntry ttl;
+        TtlEntry ttl;
     }
     data;
 
@@ -590,46 +590,46 @@ union LedgerKey switch (LedgerEntryType type)
 case ACCOUNT:
     struct
     {
-        AccountID accountID;
+        AccountId accountId;
     } account;
 
 case TRUSTLINE:
     struct
     {
-        AccountID accountID;
+        AccountId accountId;
         TrustLineAsset asset;
     } trustLine;
 
 case OFFER:
     struct
     {
-        AccountID sellerID;
-        int64 offerID;
+        AccountId sellerId;
+        int64 offerId;
     } offer;
 
 case DATA:
     struct
     {
-        AccountID accountID;
+        AccountId accountId;
         string64 dataName;
     } data;
 
 case CLAIMABLE_BALANCE:
     struct
     {
-        ClaimableBalanceID balanceID;
+        ClaimableBalanceId balanceId;
     } claimableBalance;
 
 case LIQUIDITY_POOL:
     struct
     {
-        PoolID liquidityPoolID;
+        PoolId liquidityPoolId;
     } liquidityPool;
 case CONTRACT_DATA:
     struct
     {
-        SCAddress contract;
-        SCVal key;
+        ScAddress contract;
+        ScVal key;
         ContractDataDurability durability;
     } contractData;
 case CONTRACT_CODE:
@@ -640,12 +640,12 @@ case CONTRACT_CODE:
 case CONFIG_SETTING:
     struct
     {
-        ConfigSettingID configSettingID;
+        ConfigSettingId configSettingId;
     } configSetting;
 case TTL:
     struct
     {
-        // Hash of the LedgerKey that is associated with this TTLEntry
+        // Hash of the LedgerKey that is associated with this TtlEntry
         Hash keyHash;
     } ttl;
 };
